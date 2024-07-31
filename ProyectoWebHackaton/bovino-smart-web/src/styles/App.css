@@ -1,0 +1,64 @@
+.navbar-color {
+  background-color: rgb(33, 34, 34); /* Color de fondo personalizado */
+}
+
+.link-unstyled {
+  text-decoration: none; /* Elimina el subrayado */
+  color: inherit; /* Usa el color heredado (generalmente, el color predeterminado) */
+}
+
+.center-button {
+  text-align: center;
+  
+}
+
+.custom-button {
+  background-color: #dda90d; 
+  color: #000000; 
+  transition: none;
+  &:hover {
+      background-color: rgb(218, 172, 22); 
+      color: #ffffff; 
+  }
+  
+  
+}
+
+/* En tu archivo CSS */
+.img-habitacion {
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.custom-client-button {
+  width: 100%; /* Establece el ancho del botón al 100% del contenedor */
+}
+
+.NameHabitacionesTabla{
+background-color: #ffffff;
+border-radius: 0px 0px 10px 10px;
+margin-top: 0px;
+font-family: 'Times New Roman', Times, serif;
+}
+
+.mt-30,xd{
+ border-radius: 10px  10px 0px 0px;
+ margin-top: 50px;
+ font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+
+/* En tu archivo App.css o en otro archivo de estilos */
+.Informacion {
+  border-radius: 5px;
+  font-family: 'Times New Roman', Times, serif;
+  background-color: white;
+  text-align: justify; /* Centra el texto */
+  padding: 20px; /* Agrega espacio alrededor del texto */
+  border: 2px solid #ccc; /* Agrega un borde alrededor del cuadro */
+  max-width: 600px; /* Limita el ancho máximo del cuadro */
+  margin: 150px auto; /* Centra el cuadro en el medio */
+}
+
+
+
