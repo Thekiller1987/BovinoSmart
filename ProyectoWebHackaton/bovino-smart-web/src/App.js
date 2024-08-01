@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Animal from './pages/Animal';
+import AnimalList from './pages/AnimalList';
 
 
 
@@ -19,7 +20,7 @@ function App() {
         
         <Route path="/about" element={<About />} />
         <Route path="/Animales" element={<Animal />} />
-       
+        <Route path="/AnimalList" element={<AnimalList />} />
       </Routes>
     </Router>
   );

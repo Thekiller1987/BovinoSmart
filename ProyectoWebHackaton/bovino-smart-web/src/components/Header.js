@@ -43,7 +43,7 @@ function Header() {
                                 </NavDropdown.Item>
 
                                 <NavDropdown.Item>
-                                    <Link to="/actualizar-Animales" className="link-unstyled">Listar Animales</Link>
+                                    <Link to="/AnimalList" className="link-unstyled">Listar Animales</Link>
                                 </NavDropdown.Item>
                             </NavDropdown>
 
