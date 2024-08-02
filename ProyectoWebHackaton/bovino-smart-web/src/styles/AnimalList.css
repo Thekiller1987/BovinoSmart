@@ -112,7 +112,7 @@
 
 .detail-panel-animal-list {
     position: fixed;
-    top: 60px; /* Ajusta este valor para mover el panel hacia abajo */
+    top: 60px;
     left: 50%;
     transform: translate(-50%, 0);
     background-color: var(--card-background);
@@ -124,9 +124,8 @@
     z-index: 1001;
     padding: 20px;
     overflow-y: auto;
-    max-height: 90vh; /* Ajusta la altura máxima para evitar que el contenido salga del panel */
+    max-height: 90vh;
 }
-
 
 .detail-header-animal-list {
     display: flex;
@@ -152,13 +151,13 @@
 
 .detail-content-animal-list {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Dos columnas */
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
     align-items: start;
 }
 
 .detail-content-animal-list img {
-    grid-column: 1 / -1; /* Imagen ocupa toda la anchura */
+    grid-column: 1 / -1;
     width: 100%;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
@@ -173,7 +172,7 @@
 
 .detail-section {
     margin-bottom: 10px;
-    flex: 1; /* Asegura que todas las secciones tengan el mismo ancho */
+    flex: 1;
 }
 
 .detail-section h4 {
@@ -193,6 +192,7 @@
 .detail-content-animal-list .value {
     color: var(--text-color);
 }
+
 .detail-column {
     display: flex;
     flex-direction: column;
@@ -200,7 +200,154 @@
 }
 
 .detail-column-control-bano {
-    grid-column: 1; /* Coloca esta sección en la segunda columna */
-    align-self: start; /* Alinea esta columna con el inicio de la otra */
-    margin-top: -130px; /* Ajusta este valor según sea necesario para mover la sección hacia arriba */
+    grid-column: 1 / -1;
+    margin-top: -35px;
+}
+
+@keyframes moveOut {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(200px);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateX(500px);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.moving-out {
+    animation: moveOut 1s forwards;
+}
+
+.delete-button-animal-list {
+    display: 20px;
+    align-items: center;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 60px;
+    height: 40px;
+    justify-content: center;
+    margin: 0 5px; /* Margen entre los botones */
+}
+
+.delete-button-animal-list:hover {
+    background-color: #388e3c;
+}
+
+.delete-button-animal-list:active {
+    transform: scale(0.95);
+}
+
+.delete-button-animal-list img {
+    width: 20px;
+}
+
+.detail-panel-animal-list .detail-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 1em;
+}
+
+.form-group input[type="date"] {
+    font-size: 0.9em;
+}
+
+.update-button-animal-list {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-top: 20px;
+    grid-column: span 2;
+}
+
+.update-button-animal-list:hover {
+    background-color: #388e3c;
+}
+
+.update-button-animal-list:active {
+    transform: scale(0.95);
+}
+
+.edit-button-animal-list {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 60px;
+    height: 40px;
+    justify-content: right;
+    margin: 0 5px; /* Margen entre los botones */
+}
+
+.edit-button-animal-list:hover {
+    background-color: #388e3c;
+}
+
+.edit-button-animal-list:active {
+    transform: scale(0.95);
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
 }
