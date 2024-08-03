@@ -42,6 +42,18 @@ module.exports = (db) => {
     });
     
 
+
+
+
+
+
+
+
+
+
+
+
+
     router.post('/createAnimal', (req, res) => {
         const {
             nombre,

@@ -15,6 +15,7 @@ function AnimalList() {
     const [listaEnfermedades, setListaEnfermedades] = useState([]);
     const [listaTratamientos, setListaTratamientos] = useState([]);
     const [listaProductos, setListaProductos] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const fetchData = async () => {
         try {
@@ -77,8 +78,6 @@ function AnimalList() {
         }
         return date.toISOString().split('T')[0];
     };
-    
-    
 
     const handleCardClick = (animal) => {
         setSelectedAnimal(animal);
@@ -110,9 +109,6 @@ function AnimalList() {
         });
         setShowEditModal(true);
     };
-    
-    
-    
 
     const handleClosePanel = () => {
         setSelectedAnimal(null);
@@ -125,7 +121,7 @@ function AnimalList() {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         const [field, index, subfield] = name.split('.');
-    
+
         if (index !== undefined) {
             setEditAnimal((prevAnimal) => {
                 const newArray = [...prevAnimal[field]];
@@ -145,10 +141,6 @@ function AnimalList() {
             }));
         }
     };
-    
-    
-    
-
 
     const handleImagenChange = (event) => {
         const file = event.target.files[0];
@@ -224,15 +216,42 @@ function AnimalList() {
         }
     };
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredAnimales = animales.filter((animal) => {
+        const search = searchQuery.toLowerCase();
+        return (
+            animal.nombre.toLowerCase().includes(search) ||
+            animal.sexo.toLowerCase().includes(search) ||
+            animal.codigo_idVaca.toLowerCase().includes(search) ||
+            animal.fecha_nacimiento.toLowerCase().includes(search) ||
+            animal.raza.toLowerCase().includes(search) ||
+            (animal.enfermedades && animal.enfermedades.toLowerCase().includes(search))
+        );
+    });
 
     return (
         <div className="body-animal-list">
             <Header />
+            <div className="search-container">
+                <FloatingLabel controlId="search" label="Buscar">
+                    <Form.Control
+                        type="text"
+                        placeholder="Buscar"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        className="form-control"
+                    />
+                </FloatingLabel>
+                <Button variant="primary" className="btn-primary" onClick={fetchData}>Buscar</Button>
+            </div>
             <div className="cards-container-animal-list">
                 {error ? (
                     <div className="alert alert-danger">{error}</div>
                 ) : (
-                    animales.map((animal) => (
+                    filteredAnimales.map((animal) => (
                         <div key={animal.idAnimal} className="card-animal-list" onClick={() => handleCardClick(animal)}>
                             <img src={animal.imagen} alt={animal.nombre} />
                             <div className="card-content-animal-list">
@@ -283,7 +302,7 @@ function AnimalList() {
                                     <p>No hay enfermedades registradas.</p>
                                 </div>
                             )}
-
+    
                             {selectedAnimal.tratamientos && selectedAnimal.tratamientos.split(', ').length > 0 ? (
                                 <div className="detail-section">
                                     <h4>Tratamientos Aplicados</h4>
@@ -306,7 +325,7 @@ function AnimalList() {
                                     <p>No hay tratamientos aplicados.</p>
                                 </div>
                             )}
-
+    
                             {selectedAnimal.productos && selectedAnimal.productos.split(', ').length > 0 ? (
                                 <div className="detail-section">
                                     <h4>Productos Aplicados</h4>
@@ -345,7 +364,7 @@ function AnimalList() {
                                 </div>
                             )}
                         </div>
-
+    
                         <div className="buttons-container">
                             <button onClick={() => handleEditClick(selectedAnimal)} className="edit-button-animal-list">
                                 <img src={EditIcon} alt="Editar" style={{ width: '30px', marginRight: '5px' }} />
@@ -357,7 +376,7 @@ function AnimalList() {
                     </div>
                 </div>
             )}
-
+    
             <Modal show={showEditModal} onHide={handleCloseEditModal} size="lg" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Editar Animal</Modal.Title>
@@ -485,7 +504,7 @@ function AnimalList() {
                                     />
                                 </FloatingLabel>
                             </Col>
-
+    
                             {/* Sección de Enfermedades */}
                             <Col sm="12">
                                 <h5>Historial de Enfermedades</h5>
@@ -519,10 +538,10 @@ function AnimalList() {
                                         </Col>
                                     </Row>
                                 ))}
-
+    
                                 <Button variant="link" onClick={() => handleAddField('enfermedades')}>Añadir Enfermedad</Button>
                             </Col>
-
+    
                             {/* Sección de Tratamientos */}
                             <Col sm="12">
                                 <h5>Tratamientos Aplicados</h5>
@@ -568,7 +587,7 @@ function AnimalList() {
                                 ))}
                                 <Button variant="link" onClick={() => handleAddField('tratamientos')}>Añadir Tratamiento</Button>
                             </Col>
-
+    
                             {/* Sección de Productos */}
                             <Col sm="12">
                                 <h5>Productos Aplicados</h5>
@@ -614,7 +633,7 @@ function AnimalList() {
                                 ))}
                                 <Button variant="link" onClick={() => handleAddField('productos')}>Añadir Producto</Button>
                             </Col>
-
+    
                             {/* Sección de Control de Baños */}
                             <Col sm="12">
                                 <h5>Control de Baños</h5>
