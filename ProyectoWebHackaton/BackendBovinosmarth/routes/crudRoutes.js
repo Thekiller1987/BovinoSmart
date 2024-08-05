@@ -43,9 +43,18 @@ module.exports = (db) => {
     
 
 
-
-
-
+    router.get('/Produccion_Leche', (req, res) => {
+        const sql = 'SELECT * FROM Produccion_Leche';
+    
+        db.query(sql, (err, results) => {
+            if (err) {
+                console.error('Error al obtener Produccion_Leche:', err);
+                return res.status(500).json({ error: 'Error al obtener Produccion_Leche' });
+            }
+            res.status(200).json(results);
+        });
+    });
+    
 
 
 
@@ -69,7 +78,8 @@ module.exports = (db) => {
             enfermedades,
             tratamientos,
             productos,
-            control_banos
+            control_banos,
+            produccion_leche // Añadido para la producción de leche
         } = req.body;
     
         if (!nombre || !sexo || !codigo_idVaca || !fecha_nacimiento || !raza) {
@@ -158,11 +168,28 @@ module.exports = (db) => {
                 });
             }
     
+            // Inserción en Producción de Leche
+            if (produccion_leche && Array.isArray(produccion_leche)) {
+                produccion_leche.forEach(leche => {
+                    const sqlLeche = `
+                        INSERT INTO Produccion_Leche (idAnimal, fecha, cantidad, calidad)
+                        VALUES (?, ?, ?, ?)
+                    `;
+                    const valuesLeche = [animalId, leche.fecha, leche.cantidad, leche.calidad];
+    
+                    db.query(sqlLeche, valuesLeche, (err) => {
+                        if (err) {
+                            console.error('Error al insertar en Producción de Leche:', err);
+                        }
+                    });
+                });
+            }
+    
             res.status(201).json({ idAnimal: animalId });
         });
     });
     
-
+    
 
 
 
@@ -183,14 +210,17 @@ module.exports = (db) => {
                 GROUP_CONCAT(DISTINCT E.nombre ORDER BY E.nombre ASC SEPARATOR ', ') AS enfermedades,
                 GROUP_CONCAT(DISTINCT HE.fecha ORDER BY HE.fecha ASC SEPARATOR ', ') AS fechas_enfermedad,
                 GROUP_CONCAT(DISTINCT T.tipo ORDER BY T.tipo ASC SEPARATOR ', ') AS tratamientos,
+                GROUP_CONCAT(DISTINCT HT.fecha ORDER BY HT.fecha ASC SEPARATOR ', ') AS fechas_tratamiento,
                 GROUP_CONCAT(DISTINCT T.dosis ORDER BY T.dosis ASC SEPARATOR ', ') AS dosis_tratamiento,
                 GROUP_CONCAT(DISTINCT T.motivo ORDER BY T.motivo ASC SEPARATOR ', ') AS motivos_tratamiento,
-                GROUP_CONCAT(DISTINCT HT.fecha ORDER BY HT.fecha ASC SEPARATOR ', ') AS fechas_tratamiento,
                 GROUP_CONCAT(DISTINCT P.nombre ORDER BY P.nombre ASC SEPARATOR ', ') AS productos,
                 GROUP_CONCAT(DISTINCT HP.dosis ORDER BY HP.dosis ASC SEPARATOR ', ') AS dosis_producto,
                 GROUP_CONCAT(DISTINCT HP.fecha ORDER BY HP.fecha ASC SEPARATOR ', ') AS fechas_producto,
                 GROUP_CONCAT(DISTINCT CB.fecha ORDER BY CB.fecha ASC SEPARATOR ', ') AS fechas_bano,
-                GROUP_CONCAT(DISTINCT CB.productos_utilizados ORDER BY CB.productos_utilizados ASC SEPARATOR ', ') AS productos_utilizados_bano
+                GROUP_CONCAT(DISTINCT CB.productos_utilizados ORDER BY CB.productos_utilizados ASC SEPARATOR ', ') AS productos_utilizados_bano,
+                GROUP_CONCAT(DISTINCT PL.fecha ORDER BY PL.fecha ASC SEPARATOR ', ') AS fechas_produccion_leche,
+                GROUP_CONCAT(DISTINCT PL.cantidad ORDER BY PL.cantidad ASC SEPARATOR ', ') AS cantidades_produccion_leche,
+                GROUP_CONCAT(DISTINCT PL.calidad ORDER BY PL.calidad ASC SEPARATOR ', ') AS calidades_produccion_leche
             FROM 
                 Animales A
             LEFT JOIN 
@@ -207,6 +237,8 @@ module.exports = (db) => {
                 Productos P ON HP.idProductos = P.idProductos
             LEFT JOIN 
                 Control_Banos CB ON A.idAnimal = CB.idAnimal
+            LEFT JOIN
+                Produccion_Leche PL ON A.idAnimal = PL.idAnimal
             GROUP BY 
                 A.idAnimal
         `;
@@ -220,6 +252,8 @@ module.exports = (db) => {
             }
         });
     });
+    
+
     router.put('/updateAnimal/:id', (req, res) => {
         const id = req.params.id;
         const {
@@ -236,7 +270,8 @@ module.exports = (db) => {
             enfermedades,
             tratamientos,
             productos,
-            control_banos
+            control_banos,
+            produccion_leche
         } = req.body;
     
         if (!nombre || !sexo || !codigo_idVaca || !fecha_nacimiento || !raza) {
@@ -362,67 +397,73 @@ module.exports = (db) => {
                 }
             });
     
+            // Eliminar registros existentes en Produccion_Leche
+            db.query('DELETE FROM Produccion_Leche WHERE idAnimal = ?', [id], (err) => {
+                if (err) {
+                    console.error('Error al eliminar registros en Produccion_Leche:', err);
+                } else {
+                    // Insertar nuevos registros en Produccion_Leche
+                    if (produccion_leche && Array.isArray(produccion_leche)) {
+                        produccion_leche.forEach(produccion => {
+                            const sqlProduccionLeche = `
+                                INSERT INTO Produccion_Leche (idAnimal, fecha, cantidad, calidad)
+                                VALUES (?, ?, ?, ?)
+                            `;
+                            const valuesProduccionLeche = [id, produccion.fecha, produccion.cantidad, produccion.calidad];
+    
+                            db.query(sqlProduccionLeche, valuesProduccionLeche, (err) => {
+                                if (err) {
+                                    console.error('Error al insertar en Producción de Leche:', err);
+                                } else {
+                                    console.log('Producción de Leche insertada:', valuesProduccionLeche);
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+    
             res.status(200).json({ message: 'Registro de Animal actualizado con éxito' });
         });
     });
+    
         
     
 
-
-router.delete('/deleteAnimal/:id', (req, res) => {
-    const id = req.params.id;
-
-    const deleteHistorialEnfermedades = 'DELETE FROM Historial_Enfermedades WHERE idAnimal = ?';
-    const deleteHistorialTratamientos = 'DELETE FROM Historial_Tratamientos WHERE idAnimal = ?';
-    const deleteHistorialProductos = 'DELETE FROM Historial_Productos WHERE idAnimal = ?';
-    const deleteControlBanos = 'DELETE FROM Control_Banos WHERE idAnimal = ?';
-    const deleteProduccionLeche = 'DELETE FROM Produccion_Leche WHERE idAnimal = ?';
-    const deleteAnimal = 'DELETE FROM Animales WHERE idAnimal = ?';
-
-    db.query(deleteHistorialEnfermedades, [id], (err, result) => {
-        if (err) {
-            console.error('Error al eliminar historial de enfermedades:', err);
-            return res.status(500).json({ error: 'Error al eliminar historial de enfermedades' });
-        }
-        
-        db.query(deleteHistorialTratamientos, [id], (err, result) => {
-            if (err) {
-                console.error('Error al eliminar historial de tratamientos:', err);
-                return res.status(500).json({ error: 'Error al eliminar historial de tratamientos' });
-            }
-
-            db.query(deleteHistorialProductos, [id], (err, result) => {
-                if (err) {
-                    console.error('Error al eliminar historial de productos:', err);
-                    return res.status(500).json({ error: 'Error al eliminar historial de productos' });
-                }
-
-                db.query(deleteControlBanos, [id], (err, result) => {
+    router.delete('/deleteAnimal/:id', (req, res) => {
+        const id = req.params.id;
+    
+        const queries = [
+            { sql: 'DELETE FROM Historial_Enfermedades WHERE idAnimal = ?', params: [id] },
+            { sql: 'DELETE FROM Historial_Tratamientos WHERE idAnimal = ?', params: [id] },
+            { sql: 'DELETE FROM Historial_Productos WHERE idAnimal = ?', params: [id] },
+            { sql: 'DELETE FROM Control_Banos WHERE idAnimal = ?', params: [id] },
+            { sql: 'DELETE FROM Produccion_Leche WHERE idAnimal = ?', params: [id] },
+            { sql: 'DELETE FROM Animales WHERE idAnimal = ?', params: [id] }
+        ];
+    
+        const executeQuery = ({ sql, params }) => {
+            return new Promise((resolve, reject) => {
+                db.query(sql, params, (err, result) => {
                     if (err) {
-                        console.error('Error al eliminar control de baños:', err);
-                        return res.status(500).json({ error: 'Error al eliminar control de baños' });
+                        reject(err);
+                    } else {
+                        resolve(result);
                     }
-
-                    db.query(deleteProduccionLeche, [id], (err, result) => {
-                        if (err) {
-                            console.error('Error al eliminar producción de leche:', err);
-                            return res.status(500).json({ error: 'Error al eliminar producción de leche' });
-                        }
-
-                        db.query(deleteAnimal, [id], (err, result) => {
-                            if (err) {
-                                console.error('Error al eliminar registro de animal:', err);
-                                return res.status(500).json({ error: 'Error al eliminar registro de animal' });
-                            }
-
-                            res.status(200).json({ message: 'Registro de animal eliminado con éxito' });
-                        });
-                    });
                 });
             });
-        });
+        };
+    
+        Promise.all(queries.map(executeQuery))
+            .then(results => {
+                res.status(200).json({ message: 'Registro de animal eliminado con éxito' });
+            })
+            .catch(err => {
+                console.error('Error al eliminar registros:', err);
+                res.status(500).json({ error: 'Error al eliminar registros' });
+            });
     });
-});
+    
 
 
 

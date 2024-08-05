@@ -105,6 +105,11 @@ function AnimalList() {
             control_banos: animal.fechas_bano ? animal.fechas_bano.split(', ').map((fecha, index) => ({
                 fecha: formatDate(fecha),
                 productos_utilizados: animal.productos_utilizados_bano.split(', ')[index]
+            })) : [],
+            produccion_leche: animal.fechas_produccion_leche ? animal.fechas_produccion_leche.split(', ').map((fecha, index) => ({
+                fecha: formatDate(fecha),
+                cantidad: animal.cantidades_produccion_leche.split(', ')[index],
+                calidad: animal.calidades_produccion_leche.split(', ')[index]
             })) : []
         });
         setShowEditModal(true);
@@ -290,10 +295,10 @@ function AnimalList() {
                                 <div className="detail-section">
                                     <h4>Historial de Enfermedades</h4>
                                     {selectedAnimal.enfermedades.split(', ').map((enfermedad, index) => (
-                                        <p key={index}><span className="attribute">Enfermedad:</span> <span className="value">{enfermedad}</span></p>
-                                    ))}
-                                    {selectedAnimal.fechas_enfermedad.split(', ').map((fecha, index) => (
-                                        <p key={index}><span className="attribute">Fecha Diagnóstico:</span> <span className="value">{formatDate(fecha)}</span></p>
+                                        <div key={index}>
+                                            <p><span className="attribute">Enfermedad:</span> <span className="value">{enfermedad}</span></p>
+                                            <p><span className="attribute">Fecha Diagnóstico:</span> <span className="value">{formatDate(selectedAnimal.fechas_enfermedad.split(', ')[index])}</span></p>
+                                        </div>
                                     ))}
                                 </div>
                             ) : (
@@ -302,21 +307,17 @@ function AnimalList() {
                                     <p>No hay enfermedades registradas.</p>
                                 </div>
                             )}
-    
+
                             {selectedAnimal.tratamientos && selectedAnimal.tratamientos.split(', ').length > 0 ? (
                                 <div className="detail-section">
                                     <h4>Tratamientos Aplicados</h4>
                                     {selectedAnimal.tratamientos.split(', ').map((tratamiento, index) => (
-                                        <p key={index}><span className="attribute">Tratamiento:</span> <span className="value">{tratamiento}</span></p>
-                                    ))}
-                                    {selectedAnimal.dosis_tratamiento.split(', ').map((dosis, index) => (
-                                        <p key={index}><span className="attribute">Dosis:</span> <span className="value">{dosis}</span></p>
-                                    ))}
-                                    {selectedAnimal.motivos_tratamiento.split(', ').map((motivo, index) => (
-                                        <p key={index}><span className="attribute">Motivo:</span> <span className="value">{motivo}</span></p>
-                                    ))}
-                                    {selectedAnimal.fechas_tratamiento.split(', ').map((fecha, index) => (
-                                        <p key={index}><span className="attribute">Fecha Tratamiento:</span> <span className="value">{formatDate(fecha)}</span></p>
+                                        <div key={index}>
+                                            <p><span className="attribute">Tratamiento:</span> <span className="value">{tratamiento}</span></p>
+                                            <p><span className="attribute">Dosis:</span> <span className="value">{selectedAnimal.dosis_tratamiento.split(', ')[index]}</span></p>
+                                            <p><span className="attribute">Motivo:</span> <span className="value">{selectedAnimal.motivos_tratamiento.split(', ')[index]}</span></p>
+                                            <p><span className="attribute">Fecha Tratamiento:</span> <span className="value">{formatDate(selectedAnimal.fechas_tratamiento.split(', ')[index])}</span></p>
+                                        </div>
                                     ))}
                                 </div>
                             ) : (
@@ -325,18 +326,16 @@ function AnimalList() {
                                     <p>No hay tratamientos aplicados.</p>
                                 </div>
                             )}
-    
+
                             {selectedAnimal.productos && selectedAnimal.productos.split(', ').length > 0 ? (
                                 <div className="detail-section">
                                     <h4>Productos Aplicados</h4>
                                     {selectedAnimal.productos.split(', ').map((producto, index) => (
-                                        <p key={index}><span className="attribute">Producto:</span> <span className="value">{producto}</span></p>
-                                    ))}
-                                    {selectedAnimal.dosis_producto.split(', ').map((dosis, index) => (
-                                        <p key={index}><span className="attribute">Dosis:</span> <span className="value">{dosis}</span></p>
-                                    ))}
-                                    {selectedAnimal.fechas_producto.split(', ').map((fecha, index) => (
-                                        <p key={index}><span className="attribute">Fecha Aplicación:</span> <span className="value">{formatDate(fecha)}</span></p>
+                                        <div key={index}>
+                                            <p><span className="attribute">Producto:</span> <span className="value">{producto}</span></p>
+                                            <p><span className="attribute">Dosis:</span> <span className="value">{selectedAnimal.dosis_producto.split(', ')[index]}</span></p>
+                                            <p><span className="attribute">Fecha Aplicación:</span> <span className="value">{formatDate(selectedAnimal.fechas_producto.split(', ')[index])}</span></p>
+                                        </div>
                                     ))}
                                 </div>
                             ) : (
@@ -351,10 +350,10 @@ function AnimalList() {
                                 <div className="detail-section">
                                     <h4>Control de Baños</h4>
                                     {selectedAnimal.fechas_bano.split(', ').map((fecha, index) => (
-                                        <p key={index}><span className="attribute">Fecha de Baño:</span> <span className="value">{formatDate(fecha)}</span></p>
-                                    ))}
-                                    {selectedAnimal.productos_utilizados_bano.split(', ').map((producto, index) => (
-                                        <p key={index}><span className="attribute">Productos Utilizados:</span> <span className="value">{producto}</span></p>
+                                        <div key={index}>
+                                            <p><span className="attribute">Fecha de Baño:</span> <span className="value">{formatDate(fecha)}</span></p>
+                                            <p><span className="attribute">Productos Utilizados:</span> <span className="value">{selectedAnimal.productos_utilizados_bano.split(', ')[index]}</span></p>
+                                        </div>
                                     ))}
                                 </div>
                             ) : (
@@ -364,7 +363,27 @@ function AnimalList() {
                                 </div>
                             )}
                         </div>
-    
+
+                        <div className="detail-column">
+                            {selectedAnimal.fechas_produccion_leche && selectedAnimal.fechas_produccion_leche.split(', ').length > 0 ? (
+                                <div className="detail-section">
+                                    <h4>Producción de Leche</h4>
+                                    {selectedAnimal.fechas_produccion_leche.split(', ').map((fecha, index) => (
+                                        <div key={index}>
+                                            <p><span className="attribute">Fecha de Producción:</span> <span className="value">{formatDate(fecha)}</span></p>
+                                            <p><span className="attribute">Cantidad:</span> <span className="value">{selectedAnimal.cantidades_produccion_leche.split(', ')[index]} L</span></p>
+                                            <p><span className="attribute">Calidad:</span> <span className="value">{selectedAnimal.calidades_produccion_leche.split(', ')[index]}</span></p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="detail-section">
+                                    <h4>Producción de Leche</h4>
+                                    <p>No hay registros de producción de leche.</p>
+                                </div>
+                            )}
+                        </div>
+
                         <div className="buttons-container">
                             <button onClick={() => handleEditClick(selectedAnimal)} className="edit-button-animal-list">
                                 <img src={EditIcon} alt="Editar" style={{ width: '30px', marginRight: '5px' }} />
@@ -376,7 +395,7 @@ function AnimalList() {
                     </div>
                 </div>
             )}
-    
+
             <Modal show={showEditModal} onHide={handleCloseEditModal} size="lg" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Editar Animal</Modal.Title>
@@ -504,7 +523,7 @@ function AnimalList() {
                                     />
                                 </FloatingLabel>
                             </Col>
-    
+
                             {/* Sección de Enfermedades */}
                             <Col sm="12">
                                 <h5>Historial de Enfermedades</h5>
@@ -538,10 +557,10 @@ function AnimalList() {
                                         </Col>
                                     </Row>
                                 ))}
-    
+
                                 <Button variant="link" onClick={() => handleAddField('enfermedades')}>Añadir Enfermedad</Button>
                             </Col>
-    
+
                             {/* Sección de Tratamientos */}
                             <Col sm="12">
                                 <h5>Tratamientos Aplicados</h5>
@@ -587,7 +606,7 @@ function AnimalList() {
                                 ))}
                                 <Button variant="link" onClick={() => handleAddField('tratamientos')}>Añadir Tratamiento</Button>
                             </Col>
-    
+
                             {/* Sección de Productos */}
                             <Col sm="12">
                                 <h5>Productos Aplicados</h5>
@@ -633,7 +652,7 @@ function AnimalList() {
                                 ))}
                                 <Button variant="link" onClick={() => handleAddField('productos')}>Añadir Producto</Button>
                             </Col>
-    
+
                             {/* Sección de Control de Baños */}
                             <Col sm="12">
                                 <h5>Control de Baños</h5>
@@ -662,6 +681,47 @@ function AnimalList() {
                                     </Row>
                                 ))}
                                 <Button variant="link" onClick={() => handleAddField('control_banos')}>Añadir Control de Baño</Button>
+                            </Col>
+
+                            {/* Sección de Producción de Leche */}
+                            <Col sm="12">
+                                <h5>Producción de Leche</h5>
+                                {editAnimal?.produccion_leche?.map((produccion, index) => (
+                                    <Row key={index} className="g-3">
+                                        <Col sm="4">
+                                            <FloatingLabel controlId={`produccion-leche-fecha-${index}`} label="Fecha de Producción">
+                                                <Form.Control
+                                                    type="date"
+                                                    name={`produccion_leche.${index}.fecha`}
+                                                    value={produccion.fecha}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                        <Col sm="4">
+                                            <FloatingLabel controlId={`produccion-leche-cantidad-${index}`} label="Cantidad (L)">
+                                                <Form.Control
+                                                    type="number"
+                                                    step="0.01"
+                                                    name={`produccion_leche.${index}.cantidad`}
+                                                    value={produccion.cantidad}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                        <Col sm="4">
+                                            <FloatingLabel controlId={`produccion-leche-calidad-${index}`} label="Calidad">
+                                                <Form.Control
+                                                    type="text"
+                                                    name={`produccion_leche.${index}.calidad`}
+                                                    value={produccion.calidad}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                    </Row>
+                                ))}
+                                <Button variant="link" onClick={() => handleAddField('produccion_leche')}>Añadir Producción de Leche</Button>
                             </Col>
                         </Row>
                         <Button variant="primary" type="submit" className="mt-3">

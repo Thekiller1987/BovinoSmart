@@ -19,6 +19,7 @@ function Animal() {
     const [tratamientos, setTratamientos] = useState([{ id: '', fecha: '' }]);
     const [productos, setProductos] = useState([{ id: '', dosis: '', fecha: '' }]);
     const [control_banos, setControl_banos] = useState([{ fecha: '', productos_utilizados: '' }]);
+    const [produccion_leche, setProduccion_leche] = useState([{ fecha: '', cantidad: '', calidad: '' }]);
     const [listaEnfermedades, setListaEnfermedades] = useState([]);
     const [listaTratamientos, setListaTratamientos] = useState([]);
     const [listaProductos, setListaProductos] = useState([]);
@@ -85,6 +86,16 @@ function Animal() {
         setControl_banos([...control_banos, { fecha: '', productos_utilizados: '' }]);
     };
 
+    const handleProduccionLecheChange = (index, field, value) => {
+        const updatedProduccionLeche = [...produccion_leche];
+        updatedProduccionLeche[index][field] = value;
+        setProduccion_leche(updatedProduccionLeche);
+    };
+
+    const addProduccionLeche = () => {
+        setProduccion_leche([...produccion_leche, { fecha: '', cantidad: '', calidad: '' }]);
+    };
+
     const handleImagenChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
@@ -114,7 +125,8 @@ function Animal() {
             enfermedades,
             tratamientos,
             productos,
-            control_banos
+            control_banos,
+            produccion_leche
         };
 
         try {
@@ -143,6 +155,7 @@ function Animal() {
                 setTratamientos([{ id: '', fecha: '' }]);
                 setProductos([{ id: '', dosis: '', fecha: '' }]);
                 setControl_banos([{ fecha: '', productos_utilizados: '' }]);
+                setProduccion_leche([{ fecha: '', cantidad: '', calidad: '' }]);
             } else {
                 alert('Error al registrar el animal');
             }
@@ -410,6 +423,44 @@ function Animal() {
                                         </Row>
                                     ))}
                                     <Button variant="link" onClick={addBano}>Añadir Control de Baño</Button>
+                                </Col>
+
+                                {/* Sección de Producción de Leche */}
+                                <Col sm="12">
+                                    <h5>Producción de Leche</h5>
+                                    {produccion_leche.map((produccion, index) => (
+                                        <Row key={index} className="g-3">
+                                            <Col sm="4">
+                                                <FloatingLabel controlId={`produccion-fecha-${index}`} label="Fecha">
+                                                    <Form.Control
+                                                        type="date"
+                                                        value={produccion.fecha}
+                                                        onChange={(e) => handleProduccionLecheChange(index, 'fecha', e.target.value)}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="4">
+                                                <FloatingLabel controlId={`produccion-cantidad-${index}`} label="Cantidad (L)">
+                                                    <Form.Control
+                                                        type="number"
+                                                        value={produccion.cantidad}
+                                                        onChange={(e) => handleProduccionLecheChange(index, 'cantidad', e.target.value)}
+                                                        step="0.01"
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="4">
+                                                <FloatingLabel controlId={`produccion-calidad-${index}`} label="Calidad">
+                                                    <Form.Control
+                                                        type="text"
+                                                        value={produccion.calidad}
+                                                        onChange={(e) => handleProduccionLecheChange(index, 'calidad', e.target.value)}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                    <Button variant="link" onClick={addProduccionLeche}>Añadir Producción de Leche</Button>
                                 </Col>
                             </Row>
                             <div className="center-button">
