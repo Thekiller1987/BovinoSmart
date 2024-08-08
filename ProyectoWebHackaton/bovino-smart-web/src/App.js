@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Animal from './pages/Animal';
 import AnimalList from './pages/AnimalList';
+import Enfermedades from './pages/Enfermedades';
+import EnfermedadList from './pages/EnfermedadList';
 
 
 
@@ -21,6 +23,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/Animales" element={<Animal />} />
         <Route path="/AnimalList" element={<AnimalList />} />
+        <Route path="/Enfermedades" element={<Enfermedades />} />
+        <Route path="/EnfermedadList" element={<EnfermedadList />} />
       </Routes>
     </Router>
   );

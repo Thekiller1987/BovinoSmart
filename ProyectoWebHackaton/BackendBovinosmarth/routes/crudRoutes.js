@@ -61,7 +61,7 @@ module.exports = (db) => {
 
 
 
-
+//Apartado de animales
 
     router.post('/createAnimal', (req, res) => {
         const {
@@ -465,7 +465,90 @@ module.exports = (db) => {
     });
     
 
+//Apartado de enfermedades
 
+
+  // Crear una nueva enfermedad
+  router.post('/enfermedades', (req, res) => {
+    const { nombre, descripcion } = req.body;
+    if (!nombre) {
+        return res.status(400).json({ error: 'El campo "nombre" es obligatorio' });
+    }
+
+    const sql = 'INSERT INTO Enfermedades (nombre, descripcion) VALUES (?, ?)';
+    db.query(sql, [nombre, descripcion], (err, result) => {
+        if (err) {
+            console.error('Error al crear enfermedad:', err);
+            return res.status(500).json({ error: 'Error al crear enfermedad' });
+        }
+        res.status(201).json({ message: 'Enfermedad creada con éxito', id: result.insertId });
+    });
+});
+
+// Leer todas las enfermedades
+router.get('/enfermedades', (req, res) => {
+    const sql = 'SELECT * FROM Enfermedades';
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error al obtener enfermedades:', err);
+            return res.status(500).json({ error: 'Error al obtener enfermedades' });
+        }
+        res.status(200).json(results);
+    });
+});
+
+// Leer una enfermedad por ID
+router.get('/enfermedades/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'SELECT * FROM Enfermedades WHERE idEnfermedades = ?';
+    db.query(sql, [id], (err, results) => {
+        if (err) {
+            console.error('Error al obtener la enfermedad:', err);
+            return res.status(500).json({ error: 'Error al obtener la enfermedad' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Enfermedad no encontrada' });
+        }
+        res.status(200).json(results[0]);
+    });
+});
+
+// Actualizar una enfermedad por ID
+router.put('/enfermedades/:id', (req, res) => {
+    const id = req.params.id;
+    const { nombre, descripcion } = req.body;
+    if (!nombre) {
+        return res.status(400).json({ error: 'El campo "nombre" es obligatorio' });
+    }
+
+    const sql = 'UPDATE Enfermedades SET nombre = ?, descripcion = ? WHERE idEnfermedades = ?';
+    db.query(sql, [nombre, descripcion, id], (err, result) => {
+        if (err) {
+            console.error('Error al actualizar enfermedad:', err);
+            return res.status(500).json({ error: 'Error al actualizar enfermedad' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Enfermedad no encontrada' });
+        }
+        res.status(200).json({ message: 'Enfermedad actualizada con éxito' });
+    });
+});
+
+// Borrar una enfermedad por ID
+router.delete('/enfermedades/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'DELETE FROM Enfermedades WHERE idEnfermedades = ?';
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error('Error al borrar enfermedad:', err);
+            return res.status(500).json({ error: 'Error al borrar enfermedad' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Enfermedad no encontrada' });
+        }
+        res.status(200).json({ message: 'Enfermedad borrada con éxito' });
+    });
+});
 
 return router;
 };

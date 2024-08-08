@@ -369,7 +369,7 @@ function AnimalList() {
                                 <div className="detail-section">
                                     <h4>Producción de Leche</h4>
                                     {selectedAnimal.fechas_produccion_leche.split(', ').map((fecha, index) => (
-                                        <div key={index}>
+                                        <div key={index} className="line">
                                             <p><span className="attribute">Fecha de Producción:</span> <span className="value">{formatDate(fecha)}</span></p>
                                             <p><span className="attribute">Cantidad:</span> <span className="value">{selectedAnimal.cantidades_produccion_leche.split(', ')[index]} L</span></p>
                                             <p><span className="attribute">Calidad:</span> <span className="value">{selectedAnimal.calidades_produccion_leche.split(', ')[index]}</span></p>

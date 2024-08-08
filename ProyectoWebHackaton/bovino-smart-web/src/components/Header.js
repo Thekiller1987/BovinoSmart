@@ -47,6 +47,19 @@ function Header() {
                                 </NavDropdown.Item>
                             </NavDropdown>
 
+
+
+
+                            <NavDropdown title="Enfermedades" id="enfermedades">
+                                <NavDropdown.Item>
+                                    <Link to="/Enfermedades" className="link-unstyled">Registrar Enfermedades</Link>
+                                </NavDropdown.Item>
+
+                                <NavDropdown.Item>
+                                    <Link to="/EnfermedadList" className="link-unstyled">Listar Enfermedades</Link>
+                                </NavDropdown.Item>
+                            </NavDropdown>
+
                         </Nav>
                     </Navbar.Collapse>
                     <Button
@@ -85,6 +98,18 @@ function Header() {
                                 <Link to="/actualizar-cliente" className="link-unstyled">Listar Clientes</Link>
                             </NavDropdown.Item>
                         </NavDropdown>
+
+
+
+                        <NavDropdown title="Enfermedades" id="enfermedades">
+                            <NavDropdown.Item>
+                                <Link to="/Enfermedades" className="link-unstyled">Registrar Enfermedades</Link>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <Link to="/actualizar-enfermedad" className="link-unstyled">Listar Enfermedades</Link>
+                            </NavDropdown.Item>
+                        </NavDropdown>
+
 
                     </Nav>
                 </Offcanvas.Body>
