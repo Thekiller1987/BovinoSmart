@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
+import '../styles/PreguntaForm.css';
+
+
 function PreguntaForm() {
     const [pregunta, setPregunta] = useState('');
     const [respuesta, setRespuesta] = useState('');
@@ -21,25 +24,26 @@ function PreguntaForm() {
             setRespuesta('Hubo un error al procesar la pregunta.');
         }
     };
-    
+
     return (
         
-        <div>
-              <Header />
-            <h2>Preguntar a la IA</h2>
-            <form onSubmit={handleSubmit}>
+        <div >
+            <Header />
+            <h2 className="title">Preguntar a la IA</h2>
+            <form onSubmit={handleSubmit} className="form">
                 <input
                     type="text"
                     value={pregunta}
                     onChange={(e) => setPregunta(e.target.value)}
                     placeholder="Escribe tu pregunta"
-                    style={{ width: '80%', padding: '10px', marginBottom: '10px' }}
+                    className="input"
                 />
-                <button type="submit" style={{ padding: '10px 20px' }}>Preguntar</button>
+                <button type="submit" className="button">Preguntar</button>
             </form>
             {respuesta && (
-                <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
-                    <strong>Respuesta:</strong> {respuesta}
+                <div className="response-container">
+                    <strong className="response-title">Respuesta:</strong> 
+                    <p className="response">{respuesta}</p>
                 </div>
             )}
         </div>
