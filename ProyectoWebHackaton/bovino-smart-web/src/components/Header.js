@@ -86,6 +86,16 @@ function Header() {
                                     <Link to="/TratamientoList" className="link-unstyled">Listar Tratamiento</Link>
                                 </NavDropdown.Item>
                             </NavDropdown>
+
+
+
+
+                            <NavDropdown title="IA" id="IA">
+                                <NavDropdown.Item>
+                                    <Link to="/PreguntaIA" className="link-unstyled">Manola</Link>
+                                </NavDropdown.Item>
+
+                            </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
                     <Button
@@ -157,6 +167,13 @@ function Header() {
                                 <Link to="/TratamientoList" className="link-unstyled">Listar Tratamiento</Link>
                             </NavDropdown.Item>
                         </NavDropdown>
+
+                        <NavDropdown title="IA" id="IA">
+                                <NavDropdown.Item>
+                                    <Link to="/PreguntaIA" className="link-unstyled">Manola</Link>
+                                </NavDropdown.Item>
+
+                            </NavDropdown>
                     </Nav>
                 </Offcanvas.Body>
             </Offcanvas>

@@ -16,15 +16,16 @@
 }
 
 .Primera_Imagen {
-  background-image: url('./path/to/your-background-image.jpg'); /* Ruta de tu imagen de fondo */
+  background-image: url('../imagenes/Ganao.jpg');
   background-position: center;
   width: 100%;
   height: 85vh;
-  position: absolute;
+  position: relative; /* Cambia de absolute a relative */
   top: 0;
   left: 0;
   background-size: cover;
 }
+
 
 h1 {
   position: absolute;
@@ -33,7 +34,7 @@ h1 {
   margin: 0;
   padding: 0;
   width: 100%;
-  color: #d4af36;
+  color: #3E7B31;
   font-size: 90px;
   font-weight: 700;
   text-align: center;
@@ -41,14 +42,12 @@ h1 {
 }
 
 h2 {
-  position: absolute;
-  top: 800px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   color: #d4af36;
+  padding-top: 30px;
 }
 
-.hotel-texto {
+.Bovino-texto {
   font-size: 40px;
   color: #d4af36;
   position: relative;
@@ -58,29 +57,49 @@ h2 {
   cursor: default;
 }
 
+
 .Descripcion {
-  text-align: center;
+  text-align: justify;
   max-width: 900px;
   padding: 20px;
-  color: white;
+  color: rgb(0, 0, 0);
   font-family: 'Lucida Sans', sans-serif;
   font-size: 17px;
-  margin: 0 auto;
+  margin: 0 auto; /* Ajusta el margin-top aquí */
 }
 
 .Franja_Enmedio {
   background-color: rgba(23, 23, 23, 255);
-  height: 900px;
+  height: 20px; /* Ajusta este valor según tus necesidades */
   width: 100%;
-  color: white;
-  margin-top: 900px;
+  color: rgb(255, 255, 255);
+  margin-top: 20px;
 }
 
-.image-slider {
-  position: relative;
-  max-width: 100%;
-  width: 100%;
-  height: 400px;
+.info-section {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.info-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  flex: 1;
+  margin: 10px;
+  max-width: 200px;
+}
+
+.info-box h3 {
+  color: #3E7B31;
+  margin-bottom: 10px;
+}
+
+.info-box p {
+  color: #333;
 }
 
 .image-slider img {
@@ -88,7 +107,7 @@ h2 {
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 1.5s ease-in-out;
+  transition: opacity 1s ease-in-out;
 }
 
 .image-slider img.active {
@@ -99,8 +118,8 @@ h2 {
   position: fixed;
   top: 300px;
   right: 0;
-  width: 60px;
-  height: 250px;
+  width: 75px;
+  height: 270px;
   background-color: #fff;
   border-left: 1px solid #ccc;
   border-radius: 10px 0px 0px 10px;
@@ -109,22 +128,26 @@ h2 {
   align-items: center;
 }
 
-a.ico1, a.ico2, a.ico3 {
+a.ico1, a.ico2, a.ico3,a.ico4 {
   text-decoration: none;
   color: #000000;
   margin-bottom: 20px;
 }
 
-a.ico1 i, a.ico2 i, a.ico3 i {
+a.ico1 i, a.ico2 i, a.ico3 i, a.ico4 i {
+  width: 40px; /* Ancho igualado */
+  height: 40px; /* Altura igualada */
+  line-height: 40px; /* Alineación vertical */
   font-size: 20px;
   font-weight: 700;
   text-align: center;
-  padding: 10px;
+  padding: 0; /* Quita el padding extra para asegurar el círculo perfecto */
   border-radius: 50%;
   box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.5);
   transition: 0.5s;
   margin-top: 10px;
 }
+
 
 a.ico1:hover i {
   color: #2992FB;
@@ -139,4 +162,9 @@ a.ico2:hover i {
 a.ico3:hover i {
   color: rgb(175, 39, 168);
   box-shadow: 0 0 10px rgb(175, 39, 168), 0 0 20px rgb(175, 39, 168);
+}
+
+a.ico4:hover i {
+  color: #69C9D0;
+  box-shadow: 0 0 10px #69C9D0, 0 0 20px #69C9D0;
 }
