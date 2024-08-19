@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Header from '../components/Header'; // Asegúrate de que este componente existe y está bien definido
+import Header from '../components/Header';
 import './About.css';
 import Typed from 'typed.js';
 
@@ -7,7 +7,7 @@ const About = () => {
 
   useEffect(() => {
     const typed = new Typed('.ityped', {
-      strings: ['Bienvenidos', 'Les Saluda', 'BoVinoSmarth'], // Puedes cambiar los textos
+      strings: ['Bienvenidos', 'Les Saluda', 'BoVinoSmarth'],
       typeSpeed: 100,
       backSpeed: 90,
       startDelay: 500,
@@ -43,10 +43,16 @@ const About = () => {
     <div className="About">
       <Header />
       <div className="Primera_Imagen"></div>
-      <h1><span className="ityped"></span></h1>
+      <h1 className='ityped'>Bienvenidos</h1>
       <h2>
         <span className="Bovino-texto">BoVinoSmarth</span>
         <p className="Descripcion">
+          {/* Hojas o Pasto en los lados */}
+          <div className="hojas izquierda"></div>
+          <div className="hojas derecha"></div>
+          <div className="hojas inferior-izquierda"></div>
+          <div className="hojas inferior-derecha"></div>
+
           Bienvenido a BoVinoSmarth, tu herramienta avanzada para la trazabilidad ganadera...
           {"BoVinoSmarth es una herramienta avanzada de trazabilidad ganadera diseñada para mejorar la gestión y el control de los rebaños. Esta aplicación permite a los productores rastrear la salud, los tratamientos, la producción y otros aspectos críticos de sus animales en tiempo real. Con BoVinoSmarth, se optimiza la toma de decisiones basada en datos, asegurando un manejo más eficiente y sostenible del ganado, lo que contribuye a una producción más saludable y rentable. Ideal para productores ganaderos que buscan modernizar y profesionalizar la gestión de sus operaciones diarias."}
         </p>
@@ -54,18 +60,35 @@ const About = () => {
 
       <div className="Franja_Enmedio"></div>
 
-      <div className="info-section">
-        <div className="info-box">
-          <h3>Monitoreo de Salud</h3>
-          <p>Controla la salud de tus animales en tiempo real.</p>
-        </div>
-        <div className="info-box">
-          <h3>Gestión de Tratamientos</h3>
-          <p>Administra y organiza los tratamientos de tus rebaños.</p>
-        </div>
-        <div className="info-box">
-          <h3>Control de Producción</h3>
-          <p>Monitorea la producción de leche y otros productos.</p>
+      <div className="franja-verde">
+        <div className="info-content">
+
+          <div className="image-container">
+            <img src={require('../imagenes/vacafo2.png')} alt="Descripción de la imagen" />
+          </div>
+
+          <div className="info-section">
+            <div className="info-box">
+              <img src={require('../Iconos/vaca.png')} alt="Monitoreo de Salud" className="icono-info" />
+              <h3>Monitoreo de Salud</h3>
+              <p>Controla la salud de tus animales en tiempo real.</p>
+            </div>
+            <div className="info-box">
+              <img src={require('../Iconos/historial-medico.png')} alt="Gestión de Tratamientos" className="icono-info" />
+              <h3>Gestión de Tratamientos</h3>
+              <p>Administra y organiza los tratamientos de tus rebaños.</p>
+            </div>
+            <div className="info-box">
+              <img src={require('../Iconos/ubre.png')} alt="Control de Producción" className="icono-info" />
+              <h3>Control de Producción</h3>
+              <p>Monitorea la producción de leche y otros productos.</p>
+            </div>
+          </div>
+
+          <div className="image-container flipped">
+            <img src={require('../imagenes/vacafo2.png')} alt="Descripción de la imagen" />
+          </div>
+
         </div>
       </div>
 
@@ -89,7 +112,6 @@ const About = () => {
           <i className="fab fa-tiktok"></i>
         </a>
       </div>
-
     </div>
   );
 };
