@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
+
 
 const app = express();
 const port = 5000;
@@ -29,11 +31,31 @@ db.connect((err) => {
 
 
 
+const db2 = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'Yamilg620',
+  database: 'trazabilidad_ganaderaIA',
+});
+
+db2.connect((err) => {
+  if (err) {
+    console.error('Error de conexión a la segunda base de datos:', err);
+  } else {
+    console.log('Conexión exitosa a la segunda base de datos trazabilidad_ganaderaIA');
+  }
+});
+
+
+
 // Importar y usar rutas para la primera base de datos
 const crudRoutes = require('./routes/crudRoutes')(db);
 app.use('/crud', crudRoutes);
 
 
+// Importar y usar rutas para la segunda base de datos
+const crudRoutesDb2 = require('./routes/crudRoutesDb2')(db2);
+app.use('/crudDb2', crudRoutesDb2);
 
 // Manejador de errores para errores de análisis JSON
 app.use((err, req, res, next) => {
