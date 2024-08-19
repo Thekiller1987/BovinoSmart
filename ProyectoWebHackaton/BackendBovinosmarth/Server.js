@@ -15,7 +15,7 @@ app.use(express.json({ limit: '50mb' }));
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'Yamilg620',
+  password: 'Mysql2023',
   database: 'BoVinoSmartBD',
 });
 
