@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edittext_nombre_animal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del Animal" />
+
+    <Spinner
+        android:id="@+id/spinner_sexo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/imageview_imagen_animal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/button_subir_imagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subir Imagen" />
+
+    <EditText
+        android:id="@+id/edittext_codigo_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Código ID" />
+
+    <EditText
+        android:id="@+id/edittext_fecha_nacimiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Fecha de Nacimiento" />
+
+    <Spinner
+        android:id="@+id/spinner_raza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edittext_observaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Observaciones" />
+
+    <EditText
+        android:id="@+id/edittext_peso_nacimiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Peso de Nacimiento" />
+
+    <EditText
+        android:id="@+id/edittext_peso_destete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Peso de Destete" />
+
+    <EditText
+        android:id="@+id/edittext_peso_actual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Peso Actual" />
+
+    <Button
+        android:id="@+id/button_guardar_animal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar Animal" />
+
+</RelativeLayout>

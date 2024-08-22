@@ -1,0 +1,35 @@
+<resources>
+    <!-- Otros recursos ya existentes -->
+
+    <!-- Array de opciones para sexo -->
+    <string-array name="sexo_options">
+        <item>Masculino</item>
+        <item>Femenino</item>
+    </string-array>
+
+    <!-- Array de opciones para raza -->
+    <string-array name="raza_options">
+        <item>Holstein</item>
+        <item>Jersey</item>
+        <item>Ayrshire</item>
+        <item>Guernsey</item>
+        <item>Hereford</item>
+        <item>Angus</item>
+        <item>Simmental</item>
+        <item>Charolais</item>
+        <item>Limousin</item>
+        <item>Shorthorn</item>
+        <item>Beef Shorthorn</item>
+        <item>British Blue</item>
+        <item>Dexter</item>
+        <item>Devon</item>
+        <item>Longhorn</item>
+        <item>Salers</item>
+        <item>Santa Gertrudis</item>
+        <item>Wagyu</item>
+        <item>White Park</item>
+        <item>Normande</item>
+        <item>Tarentaise</item>
+        <!-- Puedes agregar más razas según sea necesario -->
+    </string-array>
+</resources>
