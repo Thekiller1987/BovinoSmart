@@ -202,53 +202,68 @@ module.exports = (db) => {
     router.get('/listarAnimales', (req, res) => {
         const sql = `
             SELECT 
-                A.idAnimal,
-                A.nombre,
-                A.sexo,
-                A.imagen,
-                A.codigo_idVaca,
-                A.fecha_nacimiento,
-                A.raza,
-                A.observaciones,
-                A.peso_nacimiento,
-                A.peso_destete,
-                A.peso_actual,
-                A.estado,  -- Campo para el estado del animal
-                A.inseminacion,  -- Campo para indicar si ha sido inseminado
-                GROUP_CONCAT(DISTINCT E.nombre ORDER BY E.nombre ASC SEPARATOR ', ') AS enfermedades,
-                GROUP_CONCAT(DISTINCT HE.fecha ORDER BY HE.fecha ASC SEPARATOR ', ') AS fechas_enfermedad,
-                GROUP_CONCAT(DISTINCT P.nombre ORDER BY P.nombre ASC SEPARATOR ', ') AS productos,
-                GROUP_CONCAT(DISTINCT HP.dosis ORDER BY HP.dosis ASC SEPARATOR ', ') AS dosis_producto,
-                GROUP_CONCAT(DISTINCT HP.fecha ORDER BY HP.fecha ASC SEPARATOR ', ') AS fechas_producto,
-                GROUP_CONCAT(DISTINCT P.es_tratamiento ORDER BY P.es_tratamiento ASC SEPARATOR ', ') AS tratamientos,  -- Productos marcados como tratamientos
-                GROUP_CONCAT(DISTINCT P.motivo ORDER BY P.motivo ASC SEPARATOR ', ') AS motivos_tratamiento,  -- Motivos de los tratamientos
-                GROUP_CONCAT(DISTINCT CB.fecha ORDER BY CB.fecha ASC SEPARATOR ', ') AS fechas_bano,
-                GROUP_CONCAT(DISTINCT CB.productos_utilizados ORDER BY CB.productos_utilizados ASC SEPARATOR ', ') AS productos_utilizados_bano,
-                GROUP_CONCAT(DISTINCT PL.fecha ORDER BY PL.fecha ASC SEPARATOR ', ') AS fechas_produccion_leche,
-                GROUP_CONCAT(DISTINCT PL.cantidad ORDER BY PL.cantidad ASC SEPARATOR ', ') AS cantidades_produccion_leche,
-                GROUP_CONCAT(DISTINCT PL.calidad ORDER BY PL.calidad ASC SEPARATOR ', ') AS calidades_produccion_leche,
-                GROUP_CONCAT(DISTINCT I.fecha_inseminacion ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ') AS fechas_inseminacion,  -- Fechas de inseminación
-                GROUP_CONCAT(DISTINCT I.tipo_inseminacion ORDER BY I.tipo_inseminacion ASC SEPARATOR ', ') AS tipos_inseminacion,  -- Tipos de inseminación
-                GROUP_CONCAT(DISTINCT I.resultado ORDER BY I.resultado ASC SEPARATOR ', ') AS resultados_inseminacion,  -- Resultados de inseminación
-                GROUP_CONCAT(DISTINCT I.observaciones ORDER BY I.observaciones ASC SEPARATOR ', ') AS observaciones_inseminacion  -- Observaciones de inseminación
-            FROM 
-                Animales A
-            LEFT JOIN 
-                Historial_Enfermedades HE ON A.idAnimal = HE.idAnimal
-            LEFT JOIN 
-                Enfermedades E ON HE.idEnfermedades = E.idEnfermedades
-            LEFT JOIN 
-                Historial_Productos HP ON A.idAnimal = HP.idAnimal
-            LEFT JOIN 
-                Productos P ON HP.idProductos = P.idProductos
-            LEFT JOIN 
-                Control_Banos CB ON A.idAnimal = CB.idAnimal
-            LEFT JOIN
-                Produccion_Leche PL ON A.idAnimal = PL.idAnimal
-            LEFT JOIN
-                Inseminaciones I ON A.idAnimal = I.idAnimal  -- Unión con la tabla de inseminaciones
-            GROUP BY 
-                A.idAnimal
+    A.idAnimal,
+    A.nombre,
+    A.sexo,
+    A.imagen,
+    A.codigo_idVaca,
+    A.fecha_nacimiento,
+    A.raza,
+    A.observaciones,
+    A.peso_nacimiento,
+    A.peso_destete,
+    A.peso_actual,
+    A.estado,  
+    A.inseminacion, 
+    (SELECT GROUP_CONCAT(E.nombre ORDER BY HE.fecha ASC SEPARATOR ', ')
+     FROM Historial_Enfermedades HE
+     JOIN Enfermedades E ON HE.idEnfermedades = E.idEnfermedades
+     WHERE HE.idAnimal = A.idAnimal) AS enfermedades,
+    (SELECT GROUP_CONCAT(HE.fecha ORDER BY HE.fecha ASC SEPARATOR ', ')
+     FROM Historial_Enfermedades HE
+     WHERE HE.idAnimal = A.idAnimal) AS fechas_enfermedad,
+    (SELECT GROUP_CONCAT(P.nombre ORDER BY HP.fecha ASC SEPARATOR ', ')
+     FROM Historial_Productos HP
+     JOIN Productos P ON HP.idProductos = P.idProductos
+     WHERE HP.idAnimal = A.idAnimal) AS productos,
+    (SELECT GROUP_CONCAT(HP.dosis ORDER BY HP.fecha ASC SEPARATOR ', ')
+     FROM Historial_Productos HP
+     WHERE HP.idAnimal = A.idAnimal) AS dosis_producto,
+    (SELECT GROUP_CONCAT(HP.fecha ORDER BY HP.fecha ASC SEPARATOR ', ')
+     FROM Historial_Productos HP
+     WHERE HP.idAnimal = A.idAnimal) AS fechas_producto,
+    (SELECT GROUP_CONCAT(HP.es_tratamiento ORDER BY HP.fecha ASC SEPARATOR ', ')
+     FROM Historial_Productos HP
+     WHERE HP.idAnimal = A.idAnimal) AS tratamientos, 
+    (SELECT GROUP_CONCAT(CB.fecha ORDER BY CB.fecha ASC SEPARATOR ', ')
+     FROM Control_Banos CB
+     WHERE CB.idAnimal = A.idAnimal) AS fechas_bano,
+    (SELECT GROUP_CONCAT(CB.productos_utilizados ORDER BY CB.fecha ASC SEPARATOR ', ')
+     FROM Control_Banos CB
+     WHERE CB.idAnimal = A.idAnimal) AS productos_utilizados_bano,
+    (SELECT GROUP_CONCAT(PL.fecha ORDER BY PL.fecha ASC SEPARATOR ', ')
+     FROM Produccion_Leche PL
+     WHERE PL.idAnimal = A.idAnimal) AS fechas_produccion_leche,
+    (SELECT GROUP_CONCAT(PL.cantidad ORDER BY PL.fecha ASC SEPARATOR ', ')
+     FROM Produccion_Leche PL
+     WHERE PL.idAnimal = A.idAnimal) AS cantidades_produccion_leche,
+    (SELECT GROUP_CONCAT(PL.calidad ORDER BY PL.fecha ASC SEPARATOR ', ')
+     FROM Produccion_Leche PL
+     WHERE PL.idAnimal = A.idAnimal) AS calidades_produccion_leche,
+    (SELECT GROUP_CONCAT(I.fecha_inseminacion ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
+     FROM Inseminaciones I
+     WHERE I.idAnimal = A.idAnimal) AS fechas_inseminacion, 
+    (SELECT GROUP_CONCAT(I.tipo_inseminacion ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
+     FROM Inseminaciones I
+     WHERE I.idAnimal = A.idAnimal) AS tipos_inseminacion, 
+    (SELECT GROUP_CONCAT(I.resultado ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
+     FROM Inseminaciones I
+     WHERE I.idAnimal = A.idAnimal) AS resultados_inseminacion, 
+    (SELECT GROUP_CONCAT(I.observaciones ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
+     FROM Inseminaciones I
+     WHERE I.idAnimal = A.idAnimal) AS observaciones_inseminacion 
+FROM 
+    Animales A
         `;
 
         db.query(sql, (err, result) => {
@@ -260,7 +275,6 @@ module.exports = (db) => {
             }
         });
     });
-
 
     router.put('/updateAnimal/:id', (req, res) => {
         const id = req.params.id;
@@ -283,26 +297,26 @@ module.exports = (db) => {
             produccion_leche,
             inseminaciones
         } = req.body;
-
+    
         if (!nombre || !sexo || !codigo_idVaca || !fecha_nacimiento || !raza) {
             return res.status(400).json({ error: 'Los campos "nombre", "sexo", "codigo_idVaca", "fecha_nacimiento" y "raza" son obligatorios' });
         }
-
+    
         const sql = `
             UPDATE Animales
             SET nombre = ?, sexo = ?, imagen = ?, codigo_idVaca = ?, fecha_nacimiento = ?, raza = ?, observaciones = ?, peso_nacimiento = ?, peso_destete = ?, peso_actual = ?, estado = ?, inseminacion = ?
             WHERE idAnimal = ?
         `;
         const values = [nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual, estado, inseminacion, id];
-
+    
         db.query(sql, values, (err, result) => {
             if (err) {
                 console.error('Error al actualizar registro de Animal:', err);
                 return res.status(500).json({ error: 'Error al actualizar registro de Animal' });
             }
-
+    
             console.log('Datos de Animal actualizados correctamente.');
-
+    
             // Actualizar historial de enfermedades
             db.query('DELETE FROM Historial_Enfermedades WHERE idAnimal = ?', [id], (err) => {
                 if (err) {
@@ -315,7 +329,7 @@ module.exports = (db) => {
                                 VALUES (?, ?, ?)
                             `;
                             const valuesEnfermedad = [id, enfermedad.id, enfermedad.fecha];
-
+    
                             db.query(sqlEnfermedad, valuesEnfermedad, (err) => {
                                 if (err) {
                                     console.error('Error al insertar en Historial de Enfermedades:', err);
@@ -327,7 +341,7 @@ module.exports = (db) => {
                     }
                 }
             });
-
+    
             // Actualizar historial de productos
             db.query('DELETE FROM Historial_Productos WHERE idAnimal = ?', [id], (err) => {
                 if (err) {
@@ -340,7 +354,7 @@ module.exports = (db) => {
                                 VALUES (?, ?, ?, ?, ?)
                             `;
                             const valuesProducto = [id, producto.id, producto.dosis, producto.fecha, producto.es_tratamiento];
-
+    
                             db.query(sqlProducto, valuesProducto, (err) => {
                                 if (err) {
                                     console.error('Error al insertar en Historial de Productos:', err);
@@ -352,7 +366,7 @@ module.exports = (db) => {
                     }
                 }
             });
-
+    
             // Actualizar control de baños
             db.query('DELETE FROM Control_Banos WHERE idAnimal = ?', [id], (err) => {
                 if (err) {
@@ -365,7 +379,7 @@ module.exports = (db) => {
                                 VALUES (?, ?, ?)
                             `;
                             const valuesBano = [id, bano.fecha, bano.productos_utilizados];
-
+    
                             db.query(sqlBano, valuesBano, (err) => {
                                 if (err) {
                                     console.error('Error al insertar en Control de Baños:', err);
@@ -377,7 +391,7 @@ module.exports = (db) => {
                     }
                 }
             });
-
+    
             // Actualizar producción de leche
             db.query('DELETE FROM Produccion_Leche WHERE idAnimal = ?', [id], (err) => {
                 if (err) {
@@ -390,7 +404,7 @@ module.exports = (db) => {
                                 VALUES (?, ?, ?, ?)
                             `;
                             const valuesLeche = [id, leche.fecha, leche.cantidad, leche.calidad];
-
+    
                             db.query(sqlLeche, valuesLeche, (err) => {
                                 if (err) {
                                     console.error('Error al insertar en Producción de Leche:', err);
@@ -402,7 +416,7 @@ module.exports = (db) => {
                     }
                 }
             });
-
+    
             // Actualizar historial de inseminaciones
             db.query('DELETE FROM Inseminaciones WHERE idAnimal = ?', [id], (err) => {
                 if (err) {
@@ -415,7 +429,7 @@ module.exports = (db) => {
                                 VALUES (?, ?, ?, ?, ?)
                             `;
                             const valuesInseminacion = [id, inseminacion.fecha, inseminacion.tipo, inseminacion.resultado, inseminacion.observaciones];
-
+    
                             db.query(sqlInseminacion, valuesInseminacion, (err) => {
                                 if (err) {
                                     console.error('Error al insertar en Historial de Inseminaciones:', err);
@@ -427,11 +441,11 @@ module.exports = (db) => {
                     }
                 }
             });
-
+    
             res.status(200).json({ message: 'Animal actualizado correctamente' });
         });
     });
-
+    
 
 
 

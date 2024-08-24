@@ -91,7 +91,7 @@ function AnimalList() {
                 id: listaProductos.find(prod => prod.nombre === nombre)?.idProductos || '',
                 dosis: animal.dosis_producto?.split(', ')[index] || '',
                 fecha: formatDate(animal.fechas_producto?.split(', ')[index] || ''),
-                es_tratamiento: (animal.tratamientos?.split(', ')[index] || '') === '1'
+                es_tratamiento: (animal.tratamientos?.split(', ')[index] || '') === '1' // Convertir a booleano
             })) : [],
             control_banos: animal.fechas_bano ? animal.fechas_bano.split(', ').map((fecha, index) => ({
                 fecha: formatDate(fecha),
@@ -108,10 +108,11 @@ function AnimalList() {
                 resultado: animal.resultados_inseminacion?.split(', ')[index] || '',
                 observaciones: animal.observaciones_inseminacion?.split(', ')[index] || ''
             })) : [],
-            inseminacion: animal.inseminacion === 1, // Convertir a booleano para el checkbox
+            inseminacion: animal.inseminacion === 1 // Convertir a booleano para el checkbox
         });
         setShowEditModal(true);
     };
+
 
 
 
@@ -225,7 +226,7 @@ function AnimalList() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(editAnimal)
+                body: JSON.stringify(editAnimal) // Asegúrate de que es_tratamiento se envía correctamente
             });
             if (response.ok) {
                 const updatedAnimal = await response.json();
@@ -246,6 +247,7 @@ function AnimalList() {
             setError(error.message);
         }
     };
+
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -675,17 +677,20 @@ function AnimalList() {
                                             <Form.Check
                                                 type="checkbox"
                                                 label="¿Es un tratamiento?"
-                                                checked={producto.es_tratamiento}
-                                                onChange={(e) => handleInputChange({
-                                                    target: {
-                                                        name: `productos.${index}.es_tratamiento`,
-                                                        value: e.target.checked ? '1' : '0'
-                                                    }
-                                                })}
+                                                checked={producto.es_tratamiento} // Manejar estado desde editAnimal
+                                                onChange={(e) => {
+                                                    const newProductos = [...editAnimal.productos];
+                                                    newProductos[index].es_tratamiento = e.target.checked;
+                                                    setEditAnimal(prevAnimal => ({
+                                                        ...prevAnimal,
+                                                        productos: newProductos
+                                                    }));
+                                                }}
                                             />
                                         </Col>
                                     </Row>
                                 ))}
+
                                 <Button variant="link" onClick={() => handleAddField('productos')}>Añadir Producto</Button>
                             </Col>
 
