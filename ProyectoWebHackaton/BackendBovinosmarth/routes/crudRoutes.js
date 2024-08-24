@@ -17,17 +17,6 @@ module.exports = (db) => {
     });
 
 
-    router.get('/tratamientos', (req, res) => {
-        const sql = 'SELECT * FROM Tratamientos';
-
-        db.query(sql, (err, results) => {
-            if (err) {
-                console.error('Error al obtener tratamientos:', err);
-                return res.status(500).json({ error: 'Error al obtener tratamientos' });
-            }
-            res.status(200).json(results);
-        });
-    });
 
     router.get('/productos', (req, res) => {
         const sql = 'SELECT * FROM Productos';
@@ -62,7 +51,6 @@ module.exports = (db) => {
 
 
     //Apartado de animales
-
     router.post('/createAnimal', (req, res) => {
         const {
             nombre,
@@ -75,11 +63,14 @@ module.exports = (db) => {
             peso_nacimiento,
             peso_destete,
             peso_actual,
+            estado,  // Añadir el estado del animal
+            inseminacion,  // Añadir si ha sido inseminado
             enfermedades,
             tratamientos,
             productos,
             control_banos,
-            produccion_leche // Añadido para la producción de leche
+            produccion_leche,
+            inseminaciones  // Añadir inseminaciones
         } = req.body;
 
         if (!nombre || !sexo || !codigo_idVaca || !fecha_nacimiento || !raza) {
@@ -87,10 +78,10 @@ module.exports = (db) => {
         }
 
         const sqlAnimal = `
-            INSERT INTO Animales (nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO Animales (nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual, estado, inseminacion)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
-        const valuesAnimal = [nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual];
+        const valuesAnimal = [nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual, estado, inseminacion];
 
         db.query(sqlAnimal, valuesAnimal, (err, result) => {
             if (err) {
@@ -121,10 +112,10 @@ module.exports = (db) => {
             if (tratamientos && Array.isArray(tratamientos)) {
                 tratamientos.forEach(tratamiento => {
                     const sqlTratamiento = `
-                        INSERT INTO Historial_Tratamientos (idAnimal, idTratamientos, fecha)
-                        VALUES (?, ?, ?)
+                        INSERT INTO Historial_Productos (idAnimal, idProductos, dosis, fecha, es_tratamiento)
+                        VALUES (?, ?, ?, ?, TRUE)
                     `;
-                    const valuesTratamiento = [animalId, tratamiento.id, tratamiento.fecha];
+                    const valuesTratamiento = [animalId, tratamiento.id, tratamiento.dosis, tratamiento.fecha];
 
                     db.query(sqlTratamiento, valuesTratamiento, (err) => {
                         if (err) {
@@ -185,11 +176,26 @@ module.exports = (db) => {
                 });
             }
 
+            // Inserción en Inseminaciones
+            if (inseminaciones && Array.isArray(inseminaciones)) {
+                inseminaciones.forEach(inseminacion => {
+                    const sqlInseminacion = `
+                        INSERT INTO Inseminaciones (idAnimal, fecha_inseminacion, tipo_inseminacion, resultado, observaciones)
+                        VALUES (?, ?, ?, ?, ?)
+                    `;
+                    const valuesInseminacion = [animalId, inseminacion.fecha_inseminacion, inseminacion.tipo_inseminacion, inseminacion.resultado, inseminacion.observaciones];
+
+                    db.query(sqlInseminacion, valuesInseminacion, (err) => {
+                        if (err) {
+                            console.error('Error al insertar en Inseminaciones:', err);
+                        }
+                    });
+                });
+            }
+
             res.status(201).json({ idAnimal: animalId });
         });
     });
-
-
 
 
 
@@ -207,30 +213,30 @@ module.exports = (db) => {
                 A.peso_nacimiento,
                 A.peso_destete,
                 A.peso_actual,
+                A.estado,  -- Campo para el estado del animal
+                A.inseminacion,  -- Campo para indicar si ha sido inseminado
                 GROUP_CONCAT(DISTINCT E.nombre ORDER BY E.nombre ASC SEPARATOR ', ') AS enfermedades,
                 GROUP_CONCAT(DISTINCT HE.fecha ORDER BY HE.fecha ASC SEPARATOR ', ') AS fechas_enfermedad,
-                GROUP_CONCAT(DISTINCT T.tipo ORDER BY T.tipo ASC SEPARATOR ', ') AS tratamientos,
-                GROUP_CONCAT(DISTINCT HT.fecha ORDER BY HT.fecha ASC SEPARATOR ', ') AS fechas_tratamiento,
-                GROUP_CONCAT(DISTINCT T.dosis ORDER BY T.dosis ASC SEPARATOR ', ') AS dosis_tratamiento,
-                GROUP_CONCAT(DISTINCT T.motivo ORDER BY T.motivo ASC SEPARATOR ', ') AS motivos_tratamiento,
                 GROUP_CONCAT(DISTINCT P.nombre ORDER BY P.nombre ASC SEPARATOR ', ') AS productos,
                 GROUP_CONCAT(DISTINCT HP.dosis ORDER BY HP.dosis ASC SEPARATOR ', ') AS dosis_producto,
                 GROUP_CONCAT(DISTINCT HP.fecha ORDER BY HP.fecha ASC SEPARATOR ', ') AS fechas_producto,
+                GROUP_CONCAT(DISTINCT P.es_tratamiento ORDER BY P.es_tratamiento ASC SEPARATOR ', ') AS tratamientos,  -- Productos marcados como tratamientos
+                GROUP_CONCAT(DISTINCT P.motivo ORDER BY P.motivo ASC SEPARATOR ', ') AS motivos_tratamiento,  -- Motivos de los tratamientos
                 GROUP_CONCAT(DISTINCT CB.fecha ORDER BY CB.fecha ASC SEPARATOR ', ') AS fechas_bano,
                 GROUP_CONCAT(DISTINCT CB.productos_utilizados ORDER BY CB.productos_utilizados ASC SEPARATOR ', ') AS productos_utilizados_bano,
                 GROUP_CONCAT(DISTINCT PL.fecha ORDER BY PL.fecha ASC SEPARATOR ', ') AS fechas_produccion_leche,
                 GROUP_CONCAT(DISTINCT PL.cantidad ORDER BY PL.cantidad ASC SEPARATOR ', ') AS cantidades_produccion_leche,
-                GROUP_CONCAT(DISTINCT PL.calidad ORDER BY PL.calidad ASC SEPARATOR ', ') AS calidades_produccion_leche
+                GROUP_CONCAT(DISTINCT PL.calidad ORDER BY PL.calidad ASC SEPARATOR ', ') AS calidades_produccion_leche,
+                GROUP_CONCAT(DISTINCT I.fecha_inseminacion ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ') AS fechas_inseminacion,  -- Fechas de inseminación
+                GROUP_CONCAT(DISTINCT I.tipo_inseminacion ORDER BY I.tipo_inseminacion ASC SEPARATOR ', ') AS tipos_inseminacion,  -- Tipos de inseminación
+                GROUP_CONCAT(DISTINCT I.resultado ORDER BY I.resultado ASC SEPARATOR ', ') AS resultados_inseminacion,  -- Resultados de inseminación
+                GROUP_CONCAT(DISTINCT I.observaciones ORDER BY I.observaciones ASC SEPARATOR ', ') AS observaciones_inseminacion  -- Observaciones de inseminación
             FROM 
                 Animales A
             LEFT JOIN 
                 Historial_Enfermedades HE ON A.idAnimal = HE.idAnimal
             LEFT JOIN 
                 Enfermedades E ON HE.idEnfermedades = E.idEnfermedades
-            LEFT JOIN 
-                Historial_Tratamientos HT ON A.idAnimal = HT.idAnimal
-            LEFT JOIN 
-                Tratamientos T ON HT.idTratamientos = T.idTratamientos
             LEFT JOIN 
                 Historial_Productos HP ON A.idAnimal = HP.idAnimal
             LEFT JOIN 
@@ -239,6 +245,8 @@ module.exports = (db) => {
                 Control_Banos CB ON A.idAnimal = CB.idAnimal
             LEFT JOIN
                 Produccion_Leche PL ON A.idAnimal = PL.idAnimal
+            LEFT JOIN
+                Inseminaciones I ON A.idAnimal = I.idAnimal  -- Unión con la tabla de inseminaciones
             GROUP BY 
                 A.idAnimal
         `;
@@ -267,11 +275,13 @@ module.exports = (db) => {
             peso_nacimiento,
             peso_destete,
             peso_actual,
+            estado,
+            inseminacion,
             enfermedades,
-            tratamientos,
             productos,
             control_banos,
-            produccion_leche
+            produccion_leche,
+            inseminaciones
         } = req.body;
 
         if (!nombre || !sexo || !codigo_idVaca || !fecha_nacimiento || !raza) {
@@ -280,10 +290,10 @@ module.exports = (db) => {
 
         const sql = `
             UPDATE Animales
-            SET nombre = ?, sexo = ?, imagen = ?, codigo_idVaca = ?, fecha_nacimiento = ?, raza = ?, observaciones = ?, peso_nacimiento = ?, peso_destete = ?, peso_actual = ?
+            SET nombre = ?, sexo = ?, imagen = ?, codigo_idVaca = ?, fecha_nacimiento = ?, raza = ?, observaciones = ?, peso_nacimiento = ?, peso_destete = ?, peso_actual = ?, estado = ?, inseminacion = ?
             WHERE idAnimal = ?
         `;
-        const values = [nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual, id];
+        const values = [nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual, estado, inseminacion, id];
 
         db.query(sql, values, (err, result) => {
             if (err) {
@@ -293,12 +303,11 @@ module.exports = (db) => {
 
             console.log('Datos de Animal actualizados correctamente.');
 
-            // Eliminar registros existentes en Historial_Enfermedades
+            // Actualizar historial de enfermedades
             db.query('DELETE FROM Historial_Enfermedades WHERE idAnimal = ?', [id], (err) => {
                 if (err) {
                     console.error('Error al eliminar registros en Historial_Enfermedades:', err);
                 } else {
-                    // Insertar nuevos registros en Historial_Enfermedades
                     if (enfermedades && Array.isArray(enfermedades)) {
                         enfermedades.forEach(enfermedad => {
                             const sqlEnfermedad = `
@@ -319,45 +328,18 @@ module.exports = (db) => {
                 }
             });
 
-            // Eliminar registros existentes en Historial_Tratamientos
-            db.query('DELETE FROM Historial_Tratamientos WHERE idAnimal = ?', [id], (err) => {
-                if (err) {
-                    console.error('Error al eliminar registros en Historial_Tratamientos:', err);
-                } else {
-                    // Insertar nuevos registros en Historial_Tratamientos
-                    if (tratamientos && Array.isArray(tratamientos)) {
-                        tratamientos.forEach(tratamiento => {
-                            const sqlTratamiento = `
-                                INSERT INTO Historial_Tratamientos (idAnimal, idTratamientos, fecha)
-                                VALUES (?, ?, ?)
-                            `;
-                            const valuesTratamiento = [id, tratamiento.id, tratamiento.fecha];
-
-                            db.query(sqlTratamiento, valuesTratamiento, (err) => {
-                                if (err) {
-                                    console.error('Error al insertar en Historial de Tratamientos:', err);
-                                } else {
-                                    console.log('Historial de Tratamientos insertado:', valuesTratamiento);
-                                }
-                            });
-                        });
-                    }
-                }
-            });
-
-            // Eliminar registros existentes en Historial_Productos
+            // Actualizar historial de productos
             db.query('DELETE FROM Historial_Productos WHERE idAnimal = ?', [id], (err) => {
                 if (err) {
                     console.error('Error al eliminar registros en Historial_Productos:', err);
                 } else {
-                    // Insertar nuevos registros en Historial_Productos
                     if (productos && Array.isArray(productos)) {
                         productos.forEach(producto => {
                             const sqlProducto = `
-                                INSERT INTO Historial_Productos (idAnimal, idProductos, dosis, fecha)
-                                VALUES (?, ?, ?, ?)
+                                INSERT INTO Historial_Productos (idAnimal, idProductos, dosis, fecha, es_tratamiento)
+                                VALUES (?, ?, ?, ?, ?)
                             `;
-                            const valuesProducto = [id, producto.id, producto.dosis, producto.fecha];
+                            const valuesProducto = [id, producto.id, producto.dosis, producto.fecha, producto.es_tratamiento];
 
                             db.query(sqlProducto, valuesProducto, (err) => {
                                 if (err) {
@@ -371,12 +353,11 @@ module.exports = (db) => {
                 }
             });
 
-            // Eliminar registros existentes en Control_Banos
+            // Actualizar control de baños
             db.query('DELETE FROM Control_Banos WHERE idAnimal = ?', [id], (err) => {
                 if (err) {
                     console.error('Error al eliminar registros en Control_Banos:', err);
                 } else {
-                    // Insertar nuevos registros en Control_Banos
                     if (control_banos && Array.isArray(control_banos)) {
                         control_banos.forEach(bano => {
                             const sqlBano = `
@@ -397,25 +378,24 @@ module.exports = (db) => {
                 }
             });
 
-            // Eliminar registros existentes en Produccion_Leche
+            // Actualizar producción de leche
             db.query('DELETE FROM Produccion_Leche WHERE idAnimal = ?', [id], (err) => {
                 if (err) {
                     console.error('Error al eliminar registros en Produccion_Leche:', err);
                 } else {
-                    // Insertar nuevos registros en Produccion_Leche
                     if (produccion_leche && Array.isArray(produccion_leche)) {
-                        produccion_leche.forEach(produccion => {
-                            const sqlProduccionLeche = `
+                        produccion_leche.forEach(leche => {
+                            const sqlLeche = `
                                 INSERT INTO Produccion_Leche (idAnimal, fecha, cantidad, calidad)
                                 VALUES (?, ?, ?, ?)
                             `;
-                            const valuesProduccionLeche = [id, produccion.fecha, produccion.cantidad, produccion.calidad];
+                            const valuesLeche = [id, leche.fecha, leche.cantidad, leche.calidad];
 
-                            db.query(sqlProduccionLeche, valuesProduccionLeche, (err) => {
+                            db.query(sqlLeche, valuesLeche, (err) => {
                                 if (err) {
                                     console.error('Error al insertar en Producción de Leche:', err);
                                 } else {
-                                    console.log('Producción de Leche insertada:', valuesProduccionLeche);
+                                    console.log('Producción de Leche insertada:', valuesLeche);
                                 }
                             });
                         });
@@ -423,7 +403,32 @@ module.exports = (db) => {
                 }
             });
 
-            res.status(200).json({ message: 'Registro de Animal actualizado con éxito' });
+            // Actualizar historial de inseminaciones
+            db.query('DELETE FROM Inseminaciones WHERE idAnimal = ?', [id], (err) => {
+                if (err) {
+                    console.error('Error al eliminar registros en Inseminaciones:', err);
+                } else {
+                    if (inseminaciones && Array.isArray(inseminaciones)) {
+                        inseminaciones.forEach(inseminacion => {
+                            const sqlInseminacion = `
+                                INSERT INTO Inseminaciones (idAnimal, fecha_inseminacion, tipo_inseminacion, resultado, observaciones)
+                                VALUES (?, ?, ?, ?, ?)
+                            `;
+                            const valuesInseminacion = [id, inseminacion.fecha, inseminacion.tipo, inseminacion.resultado, inseminacion.observaciones];
+
+                            db.query(sqlInseminacion, valuesInseminacion, (err) => {
+                                if (err) {
+                                    console.error('Error al insertar en Historial de Inseminaciones:', err);
+                                } else {
+                                    console.log('Historial de Inseminaciones insertado:', valuesInseminacion);
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+
+            res.status(200).json({ message: 'Animal actualizado correctamente' });
         });
     });
 
@@ -435,10 +440,10 @@ module.exports = (db) => {
 
         const queries = [
             { sql: 'DELETE FROM Historial_Enfermedades WHERE idAnimal = ?', params: [id] },
-            { sql: 'DELETE FROM Historial_Tratamientos WHERE idAnimal = ?', params: [id] },
-            { sql: 'DELETE FROM Historial_Productos WHERE idAnimal = ?', params: [id] },
+            { sql: 'DELETE FROM Historial_Productos WHERE idAnimal = ?', params: [id] },  // Incluye tratamientos como parte de productos
             { sql: 'DELETE FROM Control_Banos WHERE idAnimal = ?', params: [id] },
             { sql: 'DELETE FROM Produccion_Leche WHERE idAnimal = ?', params: [id] },
+            { sql: 'DELETE FROM Inseminaciones WHERE idAnimal = ?', params: [id] }, // Agrega la eliminación del historial de inseminaciones
             { sql: 'DELETE FROM Animales WHERE idAnimal = ?', params: [id] }
         ];
 
@@ -463,6 +468,7 @@ module.exports = (db) => {
                 res.status(500).json({ error: 'Error al eliminar registros' });
             });
     });
+
 
 
     //Apartado de enfermedades
@@ -556,13 +562,21 @@ module.exports = (db) => {
 
     // Crear un nuevo producto
     router.post('/productos', (req, res) => {
-        const { nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas } = req.body;
+        const { nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento, motivo } = req.body;
+
+        // Validar los campos obligatorios
         if (!nombre) {
             return res.status(400).json({ error: 'El campo "nombre" es obligatorio' });
         }
 
-        const sql = 'INSERT INTO Productos (nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas) VALUES (?, ?, ?, ?, ?)';
-        db.query(sql, [nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas], (err, result) => {
+        const sql = `
+        INSERT INTO Productos (nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento, motivo) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+
+        const values = [nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento || false, motivo || null];
+
+        db.query(sql, values, (err, result) => {
             if (err) {
                 console.error('Error al crear producto:', err);
                 return res.status(500).json({ error: 'Error al crear producto' });
@@ -570,6 +584,7 @@ module.exports = (db) => {
             res.status(201).json({ message: 'Producto creado con éxito', id: result.insertId });
         });
     });
+
 
     // Leer todos los productos
     router.get('/productos', (req, res) => {
@@ -602,13 +617,22 @@ module.exports = (db) => {
     // Actualizar un producto por ID
     router.put('/productos/:id', (req, res) => {
         const id = req.params.id;
-        const { nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas } = req.body;
+        const { nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento, motivo } = req.body;
+
+        // Validar los campos obligatorios
         if (!nombre) {
             return res.status(400).json({ error: 'El campo "nombre" es obligatorio' });
         }
 
-        const sql = 'UPDATE Productos SET nombre = ?, tipo = ?, dosis_recomendada = ?, frecuencia_aplicacion = ?, notas = ? WHERE idProductos = ?';
-        db.query(sql, [nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, id], (err, result) => {
+        const sql = `
+        UPDATE Productos 
+        SET nombre = ?, tipo = ?, dosis_recomendada = ?, frecuencia_aplicacion = ?, notas = ?, es_tratamiento = ?, motivo = ? 
+        WHERE idProductos = ?
+    `;
+
+        const values = [nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento || false, motivo || null, id];
+
+        db.query(sql, values, (err, result) => {
             if (err) {
                 console.error('Error al actualizar producto:', err);
                 return res.status(500).json({ error: 'Error al actualizar producto' });
@@ -619,6 +643,7 @@ module.exports = (db) => {
             res.status(200).json({ message: 'Producto actualizado con éxito' });
         });
     });
+
 
     // Borrar un producto por ID
     router.delete('/productos/:id', (req, res) => {
@@ -637,89 +662,8 @@ module.exports = (db) => {
     });
 
 
-    //Tratamiento
 
-    // Crear un nuevo tratamiento
-    router.post('/tratamientos', (req, res) => {
-        const { tipo, dosis, motivo } = req.body;
-        if (!tipo || !dosis) {
-            return res.status(400).json({ error: 'Los campos "tipo" y "dosis" son obligatorios' });
-        }
 
-        const sql = 'INSERT INTO Tratamientos (tipo, dosis, motivo) VALUES (?, ?, ?)';
-        db.query(sql, [tipo, dosis, motivo], (err, result) => {
-            if (err) {
-                console.error('Error al crear tratamiento:', err);
-                return res.status(500).json({ error: 'Error al crear tratamiento' });
-            }
-            res.status(201).json({ message: 'Tratamiento creado con éxito', id: result.insertId });
-        });
-    });
-
-    // Leer todos los tratamientos
-    router.get('/tratamientos', (req, res) => {
-        const sql = 'SELECT * FROM Tratamientos';
-        db.query(sql, (err, results) => {
-            if (err) {
-                console.error('Error al obtener tratamientos:', err);
-                return res.status(500).json({ error: 'Error al obtener tratamientos' });
-            }
-            res.status(200).json(results);
-        });
-    });
-
-    // Leer un tratamiento por ID
-    router.get('/tratamientos/:id', (req, res) => {
-        const id = req.params.id;
-        const sql = 'SELECT * FROM Tratamientos WHERE idTratamientos = ?';
-        db.query(sql, [id], (err, results) => {
-            if (err) {
-                console.error('Error al obtener el tratamiento:', err);
-                return res.status(500).json({ error: 'Error al obtener el tratamiento' });
-            }
-            if (results.length === 0) {
-                return res.status(404).json({ error: 'Tratamiento no encontrado' });
-            }
-            res.status(200).json(results[0]);
-        });
-    });
-
-    // Actualizar un tratamiento por ID
-    router.put('/tratamientos/:id', (req, res) => {
-        const id = req.params.id;
-        const { tipo, dosis, motivo } = req.body;
-        if (!tipo || !dosis) {
-            return res.status(400).json({ error: 'Los campos "tipo" y "dosis" son obligatorios' });
-        }
-
-        const sql = 'UPDATE Tratamientos SET tipo = ?, dosis = ?, motivo = ? WHERE idTratamientos = ?';
-        db.query(sql, [tipo, dosis, motivo, id], (err, result) => {
-            if (err) {
-                console.error('Error al actualizar tratamiento:', err);
-                return res.status(500).json({ error: 'Error al actualizar tratamiento' });
-            }
-            if (result.affectedRows === 0) {
-                return res.status(404).json({ error: 'Tratamiento no encontrado' });
-            }
-            res.status(200).json({ message: 'Tratamiento actualizado con éxito' });
-        });
-    });
-
-    // Borrar un tratamiento por ID
-    router.delete('/tratamientos/:id', (req, res) => {
-        const id = req.params.id;
-        const sql = 'DELETE FROM Tratamientos WHERE idTratamientos = ?';
-        db.query(sql, [id], (err, result) => {
-            if (err) {
-                console.error('Error al borrar tratamiento:', err);
-                return res.status(500).json({ error: 'Error al borrar tratamiento' });
-            }
-            if (result.affectedRows === 0) {
-                return res.status(404).json({ error: 'Tratamiento no encontrado' });
-            }
-            res.status(200).json({ message: 'Tratamiento borrado con éxito' });
-        });
-    });
 
     return router;
 };

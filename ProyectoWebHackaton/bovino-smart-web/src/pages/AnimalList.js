@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form, Row, Col, FloatingLabel } from 'react-bootstrap';
-import '../styles/AnimalList.css'; // Importa tu archivo CSS
+import '../styles/AnimalList.css';
 import Header from '../components/Header';
-import deleteIcon from '../Iconos/trash3.svg'; // Importa el icono con la extensión correcta
-import EditIcon from '../Iconos/pencil.svg'; // Importa el icono con la extensión correcta
+import deleteIcon from '../Iconos/trash3.svg';
+import EditIcon from '../Iconos/pencil.svg';
 
 function AnimalList() {
     const [animales, setAnimales] = useState([]);
@@ -13,7 +13,6 @@ function AnimalList() {
     const [deleting, setDeleting] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [listaEnfermedades, setListaEnfermedades] = useState([]);
-    const [listaTratamientos, setListaTratamientos] = useState([]);
     const [listaProductos, setListaProductos] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -34,16 +33,13 @@ function AnimalList() {
     const fetchLists = async () => {
         try {
             const enfermedadesResponse = await fetch('http://localhost:5000/crud/enfermedades');
-            const tratamientosResponse = await fetch('http://localhost:5000/crud/tratamientos');
             const productosResponse = await fetch('http://localhost:5000/crud/productos');
 
-            if (enfermedadesResponse.ok && tratamientosResponse.ok && productosResponse.ok) {
+            if (enfermedadesResponse.ok && productosResponse.ok) {
                 const enfermedadesData = await enfermedadesResponse.json();
-                const tratamientosData = await tratamientosResponse.json();
                 const productosData = await productosResponse.json();
 
                 setListaEnfermedades(enfermedadesData);
-                setListaTratamientos(tratamientosData);
                 setListaProductos(productosData);
             } else {
                 throw new Error('Error al recuperar las listas');
@@ -89,31 +85,61 @@ function AnimalList() {
             fecha_nacimiento: formatDate(animal.fecha_nacimiento),
             enfermedades: animal.enfermedades ? animal.enfermedades.split(', ').map((nombre, index) => ({
                 id: listaEnfermedades.find(enf => enf.nombre === nombre)?.idEnfermedades || '',
-                fecha: formatDate(animal.fechas_enfermedad.split(', ')[index])
-            })) : [],
-            tratamientos: animal.tratamientos ? animal.tratamientos.split(', ').map((tipo, index) => ({
-                id: listaTratamientos.find(trat => trat.tipo === tipo)?.idTratamientos || '',
-                dosis: animal.dosis_tratamiento.split(', ')[index],
-                motivo: animal.motivos_tratamiento.split(', ')[index],
-                fecha: formatDate(animal.fechas_tratamiento.split(', ')[index])
+                fecha: formatDate(animal.fechas_enfermedad?.split(', ')[index] || '')
             })) : [],
             productos: animal.productos ? animal.productos.split(', ').map((nombre, index) => ({
                 id: listaProductos.find(prod => prod.nombre === nombre)?.idProductos || '',
-                dosis: animal.dosis_producto.split(', ')[index],
-                fecha: formatDate(animal.fechas_producto.split(', ')[index])
+                dosis: animal.dosis_producto?.split(', ')[index] || '',
+                fecha: formatDate(animal.fechas_producto?.split(', ')[index] || ''),
+                es_tratamiento: (animal.tratamientos?.split(', ')[index] || '') === '1'
             })) : [],
             control_banos: animal.fechas_bano ? animal.fechas_bano.split(', ').map((fecha, index) => ({
                 fecha: formatDate(fecha),
-                productos_utilizados: animal.productos_utilizados_bano.split(', ')[index]
+                productos_utilizados: animal.productos_utilizados_bano?.split(', ')[index] || ''
             })) : [],
             produccion_leche: animal.fechas_produccion_leche ? animal.fechas_produccion_leche.split(', ').map((fecha, index) => ({
                 fecha: formatDate(fecha),
-                cantidad: animal.cantidades_produccion_leche.split(', ')[index],
-                calidad: animal.calidades_produccion_leche.split(', ')[index]
-            })) : []
+                cantidad: animal.cantidades_produccion_leche?.split(', ')[index] || '',
+                calidad: animal.calidades_produccion_leche?.split(', ')[index] || ''
+            })) : [],
+            inseminaciones: animal.fechas_inseminacion ? animal.fechas_inseminacion.split(', ').map((fecha, index) => ({
+                fecha: formatDate(fecha),
+                tipo: animal.tipos_inseminacion?.split(', ')[index] || '',
+                resultado: animal.resultados_inseminacion?.split(', ')[index] || '',
+                observaciones: animal.observaciones_inseminacion?.split(', ')[index] || ''
+            })) : [],
+            inseminacion: animal.inseminacion === 1, // Convertir a booleano para el checkbox
         });
         setShowEditModal(true);
     };
+
+
+
+
+
+
+    const getCardClass = (estado) => {
+        switch (estado) {
+            case 'Muerto':
+                return 'card-animal-list dead-animal';
+            case 'Enfermo':
+                return 'card-animal-list sick-animal';
+            default:
+                return 'card-animal-list';
+        }
+    };
+
+    const getIconForState = (estado) => {
+        switch (estado) {
+            case 'Muerto':
+                return '❌'; // Cruz roja para estado "Muerto"
+            case 'Enfermo':
+                return '⚠️'; // Signo de exclamación amarillo para estado "Enfermo"
+            default:
+                return '';
+        }
+    };
+
 
     const handleClosePanel = () => {
         setSelectedAnimal(null);
@@ -211,7 +237,7 @@ function AnimalList() {
                 await fetchData();
 
                 // Cerrar el modal después de actualizar
-                handleCloseEditModal(); // <- Añadir esta línea para cerrar el modal
+                handleCloseEditModal();
                 handleClosePanel();
             } else {
                 throw new Error('Error al actualizar el animal');
@@ -257,7 +283,14 @@ function AnimalList() {
                     <div className="alert alert-danger">{error}</div>
                 ) : (
                     filteredAnimales.map((animal) => (
-                        <div key={animal.idAnimal} className="card-animal-list" onClick={() => handleCardClick(animal)}>
+                        <div
+                            key={animal.idAnimal}
+                            className={getCardClass(animal.estado)}
+                            onClick={() => handleCardClick(animal)}
+                        >
+                            <div className="state-icon">
+                                {getIconForState(animal.estado)}
+                            </div>
                             <img src={animal.imagen} alt={animal.nombre} />
                             <div className="card-content-animal-list">
                                 <h3>{animal.nombre}</h3>
@@ -288,6 +321,8 @@ function AnimalList() {
                                 <p><span className="attribute">Peso Nacimiento:</span> <span className="value">{selectedAnimal.peso_nacimiento} kg</span></p>
                                 <p><span className="attribute">Peso Destete:</span> <span className="value">{selectedAnimal.peso_destete} kg</span></p>
                                 <p><span className="attribute">Peso Actual:</span> <span className="value">{selectedAnimal.peso_actual} kg</span></p>
+                                <p><span className="attribute">Estado:</span> <span className="value">{selectedAnimal.estado}</span></p>
+                                <p><span className="attribute">Inseminación:</span> <span className="value">{selectedAnimal.inseminacion ? 'Sí' : 'No'}</span></p>
                             </div>
                         </div>
                         <div className="detail-column">
@@ -308,25 +343,6 @@ function AnimalList() {
                                 </div>
                             )}
 
-                            {selectedAnimal.tratamientos && selectedAnimal.tratamientos.split(', ').length > 0 ? (
-                                <div className="detail-section">
-                                    <h4>Tratamientos Aplicados</h4>
-                                    {selectedAnimal.tratamientos.split(', ').map((tratamiento, index) => (
-                                        <div key={index}>
-                                            <p><span className="attribute">Tratamiento:</span> <span className="value">{tratamiento}</span></p>
-                                            <p><span className="attribute">Dosis:</span> <span className="value">{selectedAnimal.dosis_tratamiento.split(', ')[index]}</span></p>
-                                            <p><span className="attribute">Motivo:</span> <span className="value">{selectedAnimal.motivos_tratamiento.split(', ')[index]}</span></p>
-                                            <p><span className="attribute">Fecha Tratamiento:</span> <span className="value">{formatDate(selectedAnimal.fechas_tratamiento.split(', ')[index])}</span></p>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="detail-section">
-                                    <h4>Tratamientos Aplicados</h4>
-                                    <p>No hay tratamientos aplicados.</p>
-                                </div>
-                            )}
-
                             {selectedAnimal.productos && selectedAnimal.productos.split(', ').length > 0 ? (
                                 <div className="detail-section">
                                     <h4>Productos Aplicados</h4>
@@ -335,6 +351,7 @@ function AnimalList() {
                                             <p><span className="attribute">Producto:</span> <span className="value">{producto}</span></p>
                                             <p><span className="attribute">Dosis:</span> <span className="value">{selectedAnimal.dosis_producto.split(', ')[index]}</span></p>
                                             <p><span className="attribute">Fecha Aplicación:</span> <span className="value">{formatDate(selectedAnimal.fechas_producto.split(', ')[index])}</span></p>
+                                            <p><span className="attribute">¿Es Tratamiento?:</span> <span className="value">{selectedAnimal.tratamientos.split(', ')[index] === '1' ? 'Sí' : 'No'}</span></p>
                                         </div>
                                     ))}
                                 </div>
@@ -392,6 +409,29 @@ function AnimalList() {
                                 <img src={deleteIcon} alt="Eliminar" style={{ width: '30px', marginRight: '5px' }} />
                             </button>
                         </div>
+
+
+                        <div className="detail-column">
+                            {selectedAnimal.fechas_inseminacion && selectedAnimal.fechas_inseminacion.split(', ').length > 0 ? (
+                                <div className="detail-section">
+                                    <h4>Historial de Inseminaciones</h4>
+                                    {selectedAnimal.fechas_inseminacion.split(', ').map((fecha, index) => (
+                                        <div key={index}>
+                                            <p><span className="attribute">Fecha de Inseminación:</span> <span className="value">{formatDate(fecha)}</span></p>
+                                            <p><span className="attribute">Tipo de Inseminación:</span> <span className="value">{selectedAnimal.tipos_inseminacion.split(', ')[index]}</span></p>
+                                            <p><span className="attribute">Resultado:</span> <span className="value">{selectedAnimal.resultados_inseminacion.split(', ')[index]}</span></p>
+                                            <p><span className="attribute">Observaciones:</span> <span className="value">{selectedAnimal.observaciones_inseminacion.split(', ')[index]}</span></p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="detail-section">
+                                    <h4>Historial de Inseminaciones</h4>
+                                    <p>No hay registros de inseminaciones.</p>
+                                </div>
+                            )}
+                        </div>
+
                     </div>
                 </div>
             )}
@@ -524,6 +564,35 @@ function AnimalList() {
                                 </FloatingLabel>
                             </Col>
 
+                            {/* Sección de Estado */}
+                            <Col sm="12" md="6" lg="6">
+                                <FloatingLabel controlId="estado" label="Estado">
+                                    <Form.Select
+                                        name="estado"
+                                        value={editAnimal?.estado || ''}
+                                        onChange={handleInputChange}
+                                        required
+                                    >
+                                        <option value="">Seleccione el estado</option>
+                                        <option value="Activo">Activo</option>
+                                        <option value="Enfermo">Enfermo</option>
+                                        <option value="Vendido">Vendido</option>
+                                        <option value="Muerto">Muerto</option>
+                                    </Form.Select>
+                                </FloatingLabel>
+                            </Col>
+
+                            {/* Sección de Inseminación */}
+                            <Col sm="12" md="6" lg="6">
+                                <Form.Check
+                                    type="checkbox"
+                                    id="inseminacion"
+                                    label="¿Ha sido inseminado?"
+                                    checked={editAnimal?.inseminacion || false}
+                                    onChange={(e) => setEditAnimal({ ...editAnimal, inseminacion: e.target.checked })}
+                                />
+                            </Col>
+
                             {/* Sección de Enfermedades */}
                             <Col sm="12">
                                 <h5>Historial de Enfermedades</h5>
@@ -559,52 +628,6 @@ function AnimalList() {
                                 ))}
 
                                 <Button variant="link" onClick={() => handleAddField('enfermedades')}>Añadir Enfermedad</Button>
-                            </Col>
-
-                            {/* Sección de Tratamientos */}
-                            <Col sm="12">
-                                <h5>Tratamientos Aplicados</h5>
-                                {editAnimal?.tratamientos?.map((tratamiento, index) => (
-                                    <Row key={index} className="g-3">
-                                        <Col sm="4">
-                                            <FloatingLabel controlId={`tratamiento-id-${index}`} label="ID Tratamiento">
-                                                <Form.Select
-                                                    name={`tratamientos.${index}.id`}
-                                                    value={tratamiento.id}
-                                                    onChange={handleInputChange}
-                                                >
-                                                    <option value="">Seleccione un tratamiento</option>
-                                                    {listaTratamientos.map((trat) => (
-                                                        <option key={trat.idTratamientos} value={trat.idTratamientos}>
-                                                            {trat.tipo}
-                                                        </option>
-                                                    ))}
-                                                </Form.Select>
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="4">
-                                            <FloatingLabel controlId={`tratamiento-dosis-${index}`} label="Dosis">
-                                                <Form.Control
-                                                    type="text"
-                                                    name={`tratamientos.${index}.dosis`}
-                                                    value={tratamiento.dosis}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="4">
-                                            <FloatingLabel controlId={`tratamiento-fecha-${index}`} label="Fecha Tratamiento">
-                                                <Form.Control
-                                                    type="date"
-                                                    name={`tratamientos.${index}.fecha`}
-                                                    value={tratamiento.fecha}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                    </Row>
-                                ))}
-                                <Button variant="link" onClick={() => handleAddField('tratamientos')}>Añadir Tratamiento</Button>
                             </Col>
 
                             {/* Sección de Productos */}
@@ -647,6 +670,19 @@ function AnimalList() {
                                                     onChange={handleInputChange}
                                                 />
                                             </FloatingLabel>
+                                        </Col>
+                                        <Col sm="12">
+                                            <Form.Check
+                                                type="checkbox"
+                                                label="¿Es un tratamiento?"
+                                                checked={producto.es_tratamiento}
+                                                onChange={(e) => handleInputChange({
+                                                    target: {
+                                                        name: `productos.${index}.es_tratamiento`,
+                                                        value: e.target.checked ? '1' : '0'
+                                                    }
+                                                })}
+                                            />
                                         </Col>
                                     </Row>
                                 ))}
@@ -719,10 +755,63 @@ function AnimalList() {
                                                 />
                                             </FloatingLabel>
                                         </Col>
+
                                     </Row>
                                 ))}
                                 <Button variant="link" onClick={() => handleAddField('produccion_leche')}>Añadir Producción de Leche</Button>
                             </Col>
+
+
+                            {/* Sección de Inseminaciones */}
+                            <Col sm="12">
+                                <h5>Historial de Inseminaciones</h5>
+                                {editAnimal?.inseminaciones?.map((inseminacion, index) => (
+                                    <Row key={index} className="g-3">
+                                        <Col sm="3">
+                                            <FloatingLabel controlId={`inseminacion-fecha-${index}`} label="Fecha de Inseminación">
+                                                <Form.Control
+                                                    type="date"
+                                                    name={`inseminaciones.${index}.fecha`}
+                                                    value={inseminacion.fecha}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                        <Col sm="3">
+                                            <FloatingLabel controlId={`inseminacion-tipo-${index}`} label="Tipo de Inseminación">
+                                                <Form.Control
+                                                    type="text"
+                                                    name={`inseminaciones.${index}.tipo`}
+                                                    value={inseminacion.tipo}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                        <Col sm="3">
+                                            <FloatingLabel controlId={`inseminacion-resultado-${index}`} label="Resultado">
+                                                <Form.Control
+                                                    type="text"
+                                                    name={`inseminaciones.${index}.resultado`}
+                                                    value={inseminacion.resultado}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                        <Col sm="3">
+                                            <FloatingLabel controlId={`inseminacion-observaciones-${index}`} label="Observaciones">
+                                                <Form.Control
+                                                    type="text"
+                                                    name={`inseminaciones.${index}.observaciones`}
+                                                    value={inseminacion.observaciones}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </FloatingLabel>
+                                        </Col>
+                                    </Row>
+                                ))}
+                                <Button variant="link" onClick={() => handleAddField('inseminaciones')}>Añadir Inseminación</Button>
+                            </Col>
+
                         </Row>
                         <Button variant="primary" type="submit" className="mt-3">
                             Actualizar
@@ -734,4 +823,5 @@ function AnimalList() {
     );
 }
 
+//xdddddddddddddddddddddddddddddddddd
 export default AnimalList;

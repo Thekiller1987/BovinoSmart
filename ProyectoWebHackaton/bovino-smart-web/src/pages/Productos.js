@@ -9,6 +9,8 @@ function Productos() {
     const [dosisRecomendada, setDosisRecomendada] = useState('');
     const [frecuenciaAplicacion, setFrecuenciaAplicacion] = useState('');
     const [notas, setNotas] = useState('');
+    const [esTratamiento, setEsTratamiento] = useState(false);
+    const [motivo, setMotivo] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +19,9 @@ function Productos() {
             tipo,
             dosis_recomendada: dosisRecomendada,
             frecuencia_aplicacion: frecuenciaAplicacion,
-            notas
+            notas,
+            es_tratamiento: esTratamiento,
+            motivo
         };
 
         try {
@@ -36,6 +40,8 @@ function Productos() {
                 setDosisRecomendada('');
                 setFrecuenciaAplicacion('');
                 setNotas('');
+                setEsTratamiento(false);
+                setMotivo('');
             } else {
                 alert('Error al registrar el producto');
             }
@@ -106,6 +112,27 @@ function Productos() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+                                <Col sm="12" md="6">
+                                    <Form.Check
+                                        type="checkbox"
+                                        id="esTratamiento"
+                                        label="¿Es un tratamiento?"
+                                        checked={esTratamiento}
+                                        onChange={(e) => setEsTratamiento(e.target.checked)}
+                                    />
+                                </Col>
+                                {esTratamiento && (
+                                    <Col sm="12" md="6">
+                                        <FloatingLabel controlId="motivo" label="Para que es el tratamiento">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Ingrese el motivo del tratamiento"
+                                                value={motivo}
+                                                onChange={(e) => setMotivo(e.target.value)}
+                                            />
+                                        </FloatingLabel>
+                                    </Col>
+                                )}
                             </Row>
                             <div className="center-button">
                                 <Button variant="primary" type="submit" className="mt-3 custom-button" size="lg">

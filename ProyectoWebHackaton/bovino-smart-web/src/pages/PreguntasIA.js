@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import '../styles/PreguntaForm.css';
 import '../styles/style.css';  // Importa los estilos adicionales
+import machineRings from '../machinesvg/machinering.png';
+import machineligth from '../machinesvg/machine-lights.png';
+
 
 function PreguntaForm() {
     const [pregunta, setPregunta] = useState('');
@@ -35,17 +38,15 @@ function PreguntaForm() {
         <div>
             <Header />
             <div className='banner'>
-                <div className="robot">
-                    <img src="https://www.yudiz.com/codepen/artificial-intelligence/images/robot.png" alt="robot" />
-                </div>
+                
                 <div className="circuit-art">
                     <img src="https://www.yudiz.com/codepen/artificial-intelligence/images/GoodArtwork.svg" alt="GoodArtwork" />
                 </div>
                 <div className="machine-art">
                     <div className={`machine-art-container ${efectosActivos ? 'active' : ''}`}>
-                        <img src="https://www.yudiz.com/codepen/artificial-intelligence/images/machin-rings.svg" alt="Machine Art" />
+                    <img src={machineRings} alt="Machine Art" />
                         <div className={`machine-lights-container ${efectosActivos ? 'active' : ''}`}>
-                            <img src="https://www.yudiz.com/codepen/artificial-intelligence/images/machine-lights.svg" alt="Machine Lights" />
+                            <img src={machineligth} alt="Machine Lights" />
                         </div>
                     </div>
                 </div>
@@ -55,7 +56,7 @@ function PreguntaForm() {
                 <div className="banner-content">
                     <div className="container">
                         <div className="banner-title">
-                            <h1>MANOLIA</h1>
+                            <h1>MANOLA</h1>
                         </div>
                         <div className="row">
                             <div className="col-md-3">

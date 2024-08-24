@@ -8,8 +8,7 @@ import Enfermedades from './pages/Enfermedades';
 import EnfermedadList from './pages/EnfermedadList';
 import Productos from './pages/Productos';
 import ProductoList from './pages/ProductoList';
-import Tratamiento from './pages/Tratamiento';
-import TratamientoList from './pages/TratamientoList';
+
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import PreguntaForm from './pages/PreguntasIA';
 
@@ -32,8 +31,7 @@ function App() {
         <Route path="/EnfermedadList" element={<EnfermedadList />} />
         <Route path="/Productos" element={<Productos />} />
         <Route path="/ProductoList" element={<ProductoList />} />
-        <Route path="/Tratamiento" element={<Tratamiento />} />
-        <Route path="/TratamientoList" element={<TratamientoList />} />
+
         <Route path="/PreguntaIA" element={<PreguntaForm />} />
       </Routes>
     </Router>

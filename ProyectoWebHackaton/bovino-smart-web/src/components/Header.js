@@ -77,15 +77,7 @@ function Header() {
 
 
 
-                            <NavDropdown title="Tratamiento" id="tratamiento">
-                                <NavDropdown.Item>
-                                    <Link to="/Tratamiento" className="link-unstyled">Registrar Tratamiento</Link>
-                                </NavDropdown.Item>
 
-                                <NavDropdown.Item>
-                                    <Link to="/TratamientoList" className="link-unstyled">Listar Tratamiento</Link>
-                                </NavDropdown.Item>
-                            </NavDropdown>
 
 
 
@@ -159,21 +151,13 @@ function Header() {
 
 
 
-                        <NavDropdown title="Tratamiento" id="Tratamiento">
-                            <NavDropdown.Item>
-                                <Link to="/Tratamiento" className="link-unstyled">Registrar Tratamiento</Link>
-                            </NavDropdown.Item>
-                            <NavDropdown.Item>
-                                <Link to="/TratamientoList" className="link-unstyled">Listar Tratamiento</Link>
-                            </NavDropdown.Item>
-                        </NavDropdown>
 
                         <NavDropdown title="IA" id="IA">
-                                <NavDropdown.Item>
-                                    <Link to="/PreguntaIA" className="link-unstyled">Manola</Link>
-                                </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <Link to="/PreguntaIA" className="link-unstyled">Manola</Link>
+                            </NavDropdown.Item>
 
-                            </NavDropdown>
+                        </NavDropdown>
                     </Nav>
                 </Offcanvas.Body>
             </Offcanvas>

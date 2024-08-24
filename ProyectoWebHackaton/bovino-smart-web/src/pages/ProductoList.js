@@ -29,7 +29,10 @@ function ProductoList() {
     }, []);
 
     const handleEditClick = (producto) => {
-        setEditProducto(producto);
+        setEditProducto({
+            ...producto,
+            es_tratamiento: producto.es_tratamiento === 1 || producto.es_tratamiento === true // Convertir a booleano
+        });
         setShowEditModal(true);
     };
 
@@ -78,10 +81,10 @@ function ProductoList() {
     };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setEditProducto(prev => ({
             ...prev,
-            [name]: value,
+            [name]: type === 'checkbox' ? checked : value,
         }));
     };
 
@@ -118,6 +121,8 @@ function ProductoList() {
                                         <th>Tipo</th>
                                         <th>Dosis Recomendada</th>
                                         <th>Frecuencia de Aplicación</th>
+                                        <th>Es Tratamiento</th>
+                                        <th>Motivo</th>
                                         <th>Notas</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -130,6 +135,8 @@ function ProductoList() {
                                             <td>{producto.tipo}</td>
                                             <td>{producto.dosis_recomendada}</td>
                                             <td>{producto.frecuencia_aplicacion}</td>
+                                            <td>{producto.es_tratamiento ? 'Sí' : 'No'}</td> {/* Mostrar "Sí" en lugar de 1 */}
+                                            <td>{producto.motivo}</td>
                                             <td>{producto.notas}</td>
                                             <td className="button-container">
                                                 <Button variant="warning" onClick={() => handleEditClick(producto)}>Editar</Button>
@@ -198,6 +205,29 @@ function ProductoList() {
                                     />
                                 </FloatingLabel>
                             </Col>
+                            <Col sm="12">
+                                <Form.Check
+                                    type="checkbox"
+                                    id="es_tratamiento"
+                                    label="¿Es un tratamiento?"
+                                    name="es_tratamiento"
+                                    checked={editProducto?.es_tratamiento || false}
+                                    onChange={handleInputChange}
+                                />
+                            </Col>
+                            {editProducto?.es_tratamiento && (
+                                <Col sm="12">
+                                    <FloatingLabel controlId="motivo" label="Motivo del Tratamiento">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Ingrese el motivo del tratamiento"
+                                            name="motivo"
+                                            value={editProducto?.motivo || ''}
+                                            onChange={handleInputChange}
+                                        />
+                                    </FloatingLabel>
+                                </Col>
+                            )}
                             <Col sm="12">
                                 <FloatingLabel controlId="notas" label="Notas">
                                     <Form.Control

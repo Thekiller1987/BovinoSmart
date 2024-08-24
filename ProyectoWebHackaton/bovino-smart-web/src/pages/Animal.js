@@ -15,28 +15,23 @@ function Animal() {
     const [peso_nacimiento, setPeso_nacimiento] = useState('');
     const [peso_destete, setPeso_destete] = useState('');
     const [peso_actual, setPeso_actual] = useState('');
+    const [estado, setEstado] = useState(''); // Nuevo estado para el campo estado
+    const [inseminacion, setInseminacion] = useState(false); // Nuevo estado para inseminacion
     const [enfermedades, setEnfermedades] = useState([{ id: '', fecha: '' }]);
-    const [tratamientos, setTratamientos] = useState([{ id: '', fecha: '' }]);
-    const [productos, setProductos] = useState([{ id: '', dosis: '', fecha: '' }]);
+    const [productos, setProductos] = useState([{ id: '', dosis: '', fecha: '', es_tratamiento: false }]);
     const [control_banos, setControl_banos] = useState([{ fecha: '', productos_utilizados: '' }]);
     const [produccion_leche, setProduccion_leche] = useState([{ fecha: '', cantidad: '', calidad: '' }]);
-    const [listaEnfermedades, setListaEnfermedades] = useState([]);
-    const [listaTratamientos, setListaTratamientos] = useState([]);
+    const [inseminaciones, setInseminaciones] = useState([{ fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]);
     const [listaProductos, setListaProductos] = useState([]);
+    const [listaEnfermedades, setListaEnfermedades] = useState([]);
 
-    // Efectos para cargar datos desde el backend
+
     useEffect(() => {
         // Cargar lista de enfermedades
         fetch('http://localhost:5000/crud/enfermedades')
             .then(res => res.json())
             .then(data => setListaEnfermedades(data))
             .catch(err => console.error('Error al cargar enfermedades:', err));
-
-        // Cargar lista de tratamientos
-        fetch('http://localhost:5000/crud/tratamientos')
-            .then(res => res.json())
-            .then(data => setListaTratamientos(data))
-            .catch(err => console.error('Error al cargar tratamientos:', err));
 
         // Cargar lista de productos
         fetch('http://localhost:5000/crud/productos')
@@ -56,16 +51,6 @@ function Animal() {
         setEnfermedades([...enfermedades, { id: '', fecha: '' }]);
     };
 
-    const handleTratamientoChange = (index, field, value) => {
-        const updatedTratamientos = [...tratamientos];
-        updatedTratamientos[index][field] = value;
-        setTratamientos(updatedTratamientos);
-    };
-
-    const addTratamiento = () => {
-        setTratamientos([...tratamientos, { id: '', fecha: '' }]);
-    };
-
     const handleProductoChange = (index, field, value) => {
         const updatedProductos = [...productos];
         updatedProductos[index][field] = value;
@@ -73,7 +58,7 @@ function Animal() {
     };
 
     const addProducto = () => {
-        setProductos([...productos, { id: '', dosis: '', fecha: '' }]);
+        setProductos([...productos, { id: '', dosis: '', fecha: '', es_tratamiento: false }]);
     };
 
     const handleBanoChange = (index, field, value) => {
@@ -94,6 +79,16 @@ function Animal() {
 
     const addProduccionLeche = () => {
         setProduccion_leche([...produccion_leche, { fecha: '', cantidad: '', calidad: '' }]);
+    };
+
+    const handleInseminacionChange = (index, field, value) => {
+        const updatedInseminaciones = [...inseminaciones];
+        updatedInseminaciones[index][field] = value;
+        setInseminaciones(updatedInseminaciones);
+    };
+
+    const addInseminacion = () => {
+        setInseminaciones([...inseminaciones, { fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]);
     };
 
     const handleImagenChange = (event) => {
@@ -122,11 +117,13 @@ function Animal() {
             peso_nacimiento,
             peso_destete,
             peso_actual,
+            estado,  // Añadir estado al formData
+            inseminacion,  // Añadir inseminacion al formData
             enfermedades,
-            tratamientos,
             productos,
             control_banos,
-            produccion_leche
+            produccion_leche,
+            inseminaciones  // Añadir inseminaciones al formData
         };
 
         try {
@@ -151,11 +148,13 @@ function Animal() {
                 setPeso_nacimiento('');
                 setPeso_destete('');
                 setPeso_actual('');
+                setEstado('');  // Reset estado
+                setInseminacion(false);  // Reset inseminacion
                 setEnfermedades([{ id: '', fecha: '' }]);
-                setTratamientos([{ id: '', fecha: '' }]);
-                setProductos([{ id: '', dosis: '', fecha: '' }]);
+                setProductos([{ id: '', dosis: '', fecha: '', es_tratamiento: false }]);
                 setControl_banos([{ fecha: '', productos_utilizados: '' }]);
                 setProduccion_leche([{ fecha: '', cantidad: '', calidad: '' }]);
+                setInseminaciones([{ fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]);  // Reset inseminaciones
             } else {
                 alert('Error al registrar el animal');
             }
@@ -286,6 +285,34 @@ function Animal() {
                                     </FloatingLabel>
                                 </Col>
 
+                                {/* Sección de Estado */}
+                                <Col sm="12" md="6" lg="6">
+                                    <FloatingLabel controlId="estado" label="Estado">
+                                        <Form.Select
+                                            value={estado}
+                                            onChange={(e) => setEstado(e.target.value)}
+                                            required
+                                        >
+                                            <option value="">Seleccione el estado</option>
+                                            <option value="Activo">Activo</option>
+                                            <option value="Enfermo">Enfermo</option>
+                                            <option value="Vendido">Vendido</option>
+                                            <option value="Muerto">Muerto</option>
+                                        </Form.Select>
+                                    </FloatingLabel>
+                                </Col>
+
+                                {/* Sección de Inseminación */}
+                                <Col sm="12" md="6" lg="6">
+                                    <Form.Check
+                                        type="checkbox"
+                                        id="inseminacion"
+                                        label="¿Ha sido inseminado?"
+                                        checked={inseminacion}
+                                        onChange={(e) => setInseminacion(e.target.checked)}
+                                    />
+                                </Col>
+
                                 {/* Sección de Enfermedades */}
                                 <Col sm="12">
                                     <h5>Historial de Enfermedades</h5>
@@ -320,41 +347,7 @@ function Animal() {
                                     <Button variant="link" onClick={addEnfermedad}>Añadir Enfermedad</Button>
                                 </Col>
 
-                                {/* Sección de Tratamientos */}
-                                <Col sm="12">
-                                    <h5>Tratamientos Aplicados</h5>
-                                    {tratamientos.map((tratamiento, index) => (
-                                        <Row key={index} className="g-3">
-                                            <Col sm="6">
-                                                <FloatingLabel controlId={`tratamiento-id-${index}`} label="ID Tratamiento">
-                                                    <Form.Select
-                                                        value={tratamiento.id}
-                                                        onChange={(e) => handleTratamientoChange(index, 'id', e.target.value)}
-                                                    >
-                                                        <option value="">Seleccione un tratamiento</option>
-                                                        {listaTratamientos.map((trat) => (
-                                                            <option key={trat.idTratamientos} value={trat.idTratamientos}>
-                                                                {trat.tipo}
-                                                            </option>
-                                                        ))}
-                                                    </Form.Select>
-                                                </FloatingLabel>
-                                            </Col>
-                                            <Col sm="6">
-                                                <FloatingLabel controlId={`tratamiento-fecha-${index}`} label="Fecha Tratamiento">
-                                                    <Form.Control
-                                                        type="date"
-                                                        value={tratamiento.fecha}
-                                                        onChange={(e) => handleTratamientoChange(index, 'fecha', e.target.value)}
-                                                    />
-                                                </FloatingLabel>
-                                            </Col>
-                                        </Row>
-                                    ))}
-                                    <Button variant="link" onClick={addTratamiento}>Añadir Tratamiento</Button>
-                                </Col>
-
-                                {/* Sección de Productos */}
+                                {/* Sección de Productos (incluyendo tratamientos) */}
                                 <Col sm="12">
                                     <h5>Productos Aplicados</h5>
                                     {productos.map((producto, index) => (
@@ -391,6 +384,14 @@ function Animal() {
                                                         onChange={(e) => handleProductoChange(index, 'fecha', e.target.value)}
                                                     />
                                                 </FloatingLabel>
+                                            </Col>
+                                            <Col sm="12">
+                                                <Form.Check
+                                                    type="checkbox"
+                                                    label="¿Es un tratamiento?"
+                                                    checked={producto.es_tratamiento}
+                                                    onChange={(e) => handleProductoChange(index, 'es_tratamiento', e.target.checked)}
+                                                />
                                             </Col>
                                         </Row>
                                     ))}
@@ -462,6 +463,61 @@ function Animal() {
                                     ))}
                                     <Button variant="link" onClick={addProduccionLeche}>Añadir Producción de Leche</Button>
                                 </Col>
+
+                                {/* Sección de Inseminaciones */}
+                                <Col sm="12">
+                                    <h5>Historial de Inseminaciones</h5>
+                                    {inseminaciones.map((inseminacion, index) => (
+                                        <Row key={index} className="g-3">
+                                            <Col sm="3">
+                                                <FloatingLabel controlId={`inseminacion-fecha-${index}`} label="Fecha de Inseminación">
+                                                    <Form.Control
+                                                        type="date"
+                                                        value={inseminacion.fecha_inseminacion}
+                                                        onChange={(e) => handleInseminacionChange(index, 'fecha_inseminacion', e.target.value)}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+
+                                            <Col sm="3">
+                                                <FloatingLabel controlId={`inseminacion-tipo-${index}`} label="Tipo de Inseminación">
+                                                    <Form.Select
+                                                        value={inseminacion.tipo_inseminacion}
+                                                        onChange={(e) => handleInseminacionChange(index, 'tipo_inseminacion', e.target.value)}
+                                                    >
+                                                        <option value="">Seleccione el tipo de inseminación</option>
+                                                        <option value="Inseminación Natural">Inseminación Natural</option>
+                                                        <option value="Inseminación Artificial">Inseminación Artificial</option>
+                                                        <option value="Inseminación por Transferencia de Embriones (TE)">Inseminación por Transferencia de Embriones (TE)</option>
+                                                    </Form.Select>
+                                                </FloatingLabel>
+                                            </Col>
+
+                                            <Col sm="3">
+                                                <FloatingLabel controlId={`inseminacion-resultado-${index}`} label="Resultado">
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Resultado"
+                                                        value={inseminacion.resultado}
+                                                        onChange={(e) => handleInseminacionChange(index, 'resultado', e.target.value)}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="3">
+                                                <FloatingLabel controlId={`inseminacion-observaciones-${index}`} label="Observaciones">
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Observaciones"
+                                                        value={inseminacion.observaciones}
+                                                        onChange={(e) => handleInseminacionChange(index, 'observaciones', e.target.value)}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                    <Button variant="link" onClick={addInseminacion}>Añadir Inseminación</Button>
+                                </Col>
+
                             </Row>
                             <div className="center-button">
                                 <Button variant="primary" type="submit" className="mt-3 custom-button" size="lg">

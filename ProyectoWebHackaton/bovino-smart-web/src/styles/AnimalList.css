@@ -411,3 +411,75 @@
     color: #999999;
     font-style: italic;
 }
+ /*--------------------------------------------------------------------------------------------------*/
+
+ .card-animal-list {
+    border: 2px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+.card-animal-list:hover {
+    transform: scale(1.05);
+}
+
+.dead-animal {
+    background-color: #f7d6d9; /* Rojo claro para indicar que el animal está muerto */
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.sick-animal {
+    background-color: #fff3cd; /* Amarillo claro para indicar que el animal está enfermo */
+    border-color: #ffeeba;
+    color: #856404;
+}
+
+
+.state-icon {
+    font-size: 2rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.state-label {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 3px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+.card-animal-list.dead-animal {
+    box-shadow: 0 0 15px red;
+}
+
+.card-animal-list.sick-animal {
+    box-shadow: 0 0 15px yellow;
+}
+
+
+.card-animal-list.dead-animal img {
+    opacity: 0.5;
+}
+
+.card-animal-list.sick-animal img {
+    opacity: 0.75;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+ /*Animacion de parpadeo enfermo*/
+.card-animal-list.sick-animal {
+    animation: blink 2s infinite;
+}
