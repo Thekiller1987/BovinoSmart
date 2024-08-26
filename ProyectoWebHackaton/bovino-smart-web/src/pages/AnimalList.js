@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form, Row, Col, FloatingLabel } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, FloatingLabel, Accordion } from 'react-bootstrap';
 import '../styles/AnimalList.css';
 import Header from '../components/Header';
 import deleteIcon from '../Iconos/trash3.svg';
 import EditIcon from '../Iconos/pencil.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStethoscope, faSyringe, faShower, faTint, faSeedling } from '@fortawesome/free-solid-svg-icons';
 
 function AnimalList() {
     const [animales, setAnimales] = useState([]);
@@ -113,12 +115,6 @@ function AnimalList() {
         setShowEditModal(true);
     };
 
-
-
-
-
-
-
     const getCardClass = (estado) => {
         switch (estado) {
             case 'Muerto':
@@ -140,7 +136,6 @@ function AnimalList() {
                 return '';
         }
     };
-
 
     const handleClosePanel = () => {
         setSelectedAnimal(null);
@@ -233,11 +228,8 @@ function AnimalList() {
                 setAnimales(animales.map(animal => animal.idAnimal === updatedAnimal.idAnimal ? updatedAnimal : animal));
                 setSelectedAnimal(updatedAnimal);
                 setEditAnimal(null); // Limpiar el estado de editAnimal después de actualizar
-                // Llama a fetchData y fetchLists después de la actualización exitosa
                 await fetchLists();
                 await fetchData();
-
-                // Cerrar el modal después de actualizar
                 handleCloseEditModal();
                 handleClosePanel();
             } else {
@@ -247,7 +239,6 @@ function AnimalList() {
             setError(error.message);
         }
     };
-
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -307,7 +298,7 @@ function AnimalList() {
             {selectedAnimal && (
                 <div className={`detail-panel-animal-list ${deleting ? 'moving-out' : ''}`}>
                     <div className="detail-header-animal-list">
-                        <h2>Detalle del Animal</h2>
+                        <h2><FontAwesomeIcon icon={faSeedling} /> Detalle del Animal</h2>
                         <button onClick={handleClosePanel} className="close-button-animal-list">X</button>
                     </div>
                     <div className="detail-content-animal-list">
@@ -328,79 +319,98 @@ function AnimalList() {
                             </div>
                         </div>
                         <div className="detail-column">
-                            {selectedAnimal.enfermedades && selectedAnimal.enfermedades.split(', ').length > 0 ? (
-                                <div className="detail-section">
-                                    <h4>Historial de Enfermedades</h4>
-                                    {selectedAnimal.enfermedades.split(', ').map((enfermedad, index) => (
-                                        <div key={index}>
-                                            <p><span className="attribute">Enfermedad:</span> <span className="value">{enfermedad}</span></p>
-                                            <p><span className="attribute">Fecha Diagnóstico:</span> <span className="value">{formatDate(selectedAnimal.fechas_enfermedad.split(', ')[index])}</span></p>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="detail-section">
-                                    <h4>Historial de Enfermedades</h4>
-                                    <p>No hay enfermedades registradas.</p>
-                                </div>
-                            )}
+                            <Accordion defaultActiveKey="0">
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header><FontAwesomeIcon icon={faStethoscope} /> Historial de Enfermedades</Accordion.Header>
+                                    <Accordion.Body className="background-enfermedades">
+                                        {selectedAnimal.enfermedades && selectedAnimal.enfermedades.split(', ').length > 0 ? (
+                                            selectedAnimal.enfermedades.split(', ').map((enfermedad, index) => (
+                                                <div key={index}>
+                                                    <p><span className="attribute">Enfermedad:</span> <span className="value">{enfermedad}</span></p>
+                                                    <p><span className="attribute">Fecha Diagnóstico:</span> <span className="value">{formatDate(selectedAnimal.fechas_enfermedad.split(', ')[index])}</span></p>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p>No hay enfermedades registradas.</p>
+                                        )}
+                                    </Accordion.Body>
+                                </Accordion.Item>
 
-                            {selectedAnimal.productos && selectedAnimal.productos.split(', ').length > 0 ? (
-                                <div className="detail-section">
-                                    <h4>Productos Aplicados</h4>
-                                    {selectedAnimal.productos.split(', ').map((producto, index) => (
-                                        <div key={index}>
-                                            <p><span className="attribute">Producto:</span> <span className="value">{producto}</span></p>
-                                            <p><span className="attribute">Dosis:</span> <span className="value">{selectedAnimal.dosis_producto.split(', ')[index]}</span></p>
-                                            <p><span className="attribute">Fecha Aplicación:</span> <span className="value">{formatDate(selectedAnimal.fechas_producto.split(', ')[index])}</span></p>
-                                            <p><span className="attribute">¿Es Tratamiento?:</span> <span className="value">{selectedAnimal.tratamientos.split(', ')[index] === '1' ? 'Sí' : 'No'}</span></p>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="detail-section">
-                                    <h4>Productos Aplicados</h4>
-                                    <p>No hay productos aplicados.</p>
-                                </div>
-                            )}
-                        </div>
-                        <div className="detail-column-control-bano">
-                            {selectedAnimal.fechas_bano && selectedAnimal.fechas_bano.split(', ').length > 0 ? (
-                                <div className="detail-section">
-                                    <h4>Control de Baños</h4>
-                                    {selectedAnimal.fechas_bano.split(', ').map((fecha, index) => (
-                                        <div key={index}>
-                                            <p><span className="attribute">Fecha de Baño:</span> <span className="value">{formatDate(fecha)}</span></p>
-                                            <p><span className="attribute">Productos Utilizados:</span> <span className="value">{selectedAnimal.productos_utilizados_bano.split(', ')[index]}</span></p>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="detail-section">
-                                    <h4>Control de Baños</h4>
-                                    <p>No hay registros de baños.</p>
-                                </div>
-                            )}
-                        </div>
+                                <Accordion.Item eventKey="1">
+                                    <Accordion.Header><FontAwesomeIcon icon={faSyringe} /> Productos Aplicados</Accordion.Header>
+                                    <Accordion.Body className="background-productos">
+                                        {selectedAnimal.productos && selectedAnimal.productos.split(', ').length > 0 ? (
+                                            <div className="detail-section">
+                                                <h4>Productos Aplicados</h4>
+                                                {selectedAnimal.productos.split(', ').map((producto, index) => (
+                                                    <div key={index} className="product-item">
+                                                        <p><span className="attribute">Producto:</span> <span className="value">{producto}</span></p>
+                                                        <p><span className="attribute">Dosis:</span> <span className="value">{selectedAnimal.dosis_producto.split(', ')[index]}</span></p>
+                                                        <p><span className="attribute">Fecha Aplicación:</span> <span className="value">{formatDate(selectedAnimal.fechas_producto.split(', ')[index])}</span></p>
+                                                        <p><span className="attribute">¿Es Tratamiento?:</span> <span className="value">{selectedAnimal.tratamientos.split(', ')[index] === '1' ? 'Sí' : 'No'}</span></p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="detail-section">
+                                                <h4>Productos Aplicados</h4>
+                                                <p>No hay productos aplicados.</p>
+                                            </div>
+                                        )}
+                                    </Accordion.Body>
+                                </Accordion.Item>
 
-                        <div className="detail-column">
-                            {selectedAnimal.fechas_produccion_leche && selectedAnimal.fechas_produccion_leche.split(', ').length > 0 ? (
-                                <div className="detail-section">
-                                    <h4>Producción de Leche</h4>
-                                    {selectedAnimal.fechas_produccion_leche.split(', ').map((fecha, index) => (
-                                        <div key={index} className="line">
-                                            <p><span className="attribute">Fecha de Producción:</span> <span className="value">{formatDate(fecha)}</span></p>
-                                            <p><span className="attribute">Cantidad:</span> <span className="value">{selectedAnimal.cantidades_produccion_leche.split(', ')[index]} L</span></p>
-                                            <p><span className="attribute">Calidad:</span> <span className="value">{selectedAnimal.calidades_produccion_leche.split(', ')[index]}</span></p>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="detail-section">
-                                    <h4>Producción de Leche</h4>
-                                    <p>No hay registros de producción de leche.</p>
-                                </div>
-                            )}
+                                <Accordion.Item eventKey="2">
+                                    <Accordion.Header><FontAwesomeIcon icon={faShower} /> Control de Baños</Accordion.Header>
+                                    <Accordion.Body className="background-banos">
+                                        {selectedAnimal.fechas_bano && selectedAnimal.fechas_bano.split(', ').length > 0 ? (
+                                            selectedAnimal.fechas_bano.split(', ').map((fecha, index) => (
+                                                <div key={index}>
+                                                    <p><span className="attribute">Fecha de Baño:</span> <span className="value">{formatDate(fecha)}</span></p>
+                                                    <p><span className="attribute">Productos Utilizados:</span> <span className="value">{selectedAnimal.productos_utilizados_bano.split(', ')[index]}</span></p>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p>No hay registros de baños.</p>
+                                        )}
+                                    </Accordion.Body>
+                                </Accordion.Item>
+
+                                <Accordion.Item eventKey="3">
+                                    <Accordion.Header><FontAwesomeIcon icon={faTint} /> Producción de Leche</Accordion.Header>
+                                    <Accordion.Body className="background-leche">
+                                        {selectedAnimal.fechas_produccion_leche && selectedAnimal.fechas_produccion_leche.split(', ').length > 0 ? (
+                                            selectedAnimal.fechas_produccion_leche.split(', ').map((fecha, index) => (
+                                                <div key={index} className="line">
+                                                    <p><span className="attribute">Fecha de Producción:</span> <span className="value">{formatDate(fecha)}</span></p>
+                                                    <p><span className="attribute">Cantidad:</span> <span className="value">{selectedAnimal.cantidades_produccion_leche.split(', ')[index]} L</span></p>
+                                                    <p><span className="attribute">Calidad:</span> <span className="value">{selectedAnimal.calidades_produccion_leche.split(', ')[index]}</span></p>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p>No hay registros de producción de leche.</p>
+                                        )}
+                                    </Accordion.Body>
+                                </Accordion.Item>
+
+                                <Accordion.Item eventKey="4">
+                                    <Accordion.Header><FontAwesomeIcon icon={faSeedling} /> Historial de Inseminaciones</Accordion.Header>
+                                    <Accordion.Body className="background-inseminaciones">
+                                        {selectedAnimal.fechas_inseminacion && selectedAnimal.fechas_inseminacion.split(', ').length > 0 ? (
+                                            selectedAnimal.fechas_inseminacion.split(', ').map((fecha, index) => (
+                                                <div key={index}>
+                                                    <p><span className="attribute">Fecha de Inseminación:</span> <span className="value">{formatDate(fecha)}</span></p>
+                                                    <p><span className="attribute">Tipo de Inseminación:</span> <span className="value">{selectedAnimal.tipos_inseminacion.split(', ')[index]}</span></p>
+                                                    <p><span className="attribute">Resultado:</span> <span className="value">{selectedAnimal.resultados_inseminacion.split(', ')[index]}</span></p>
+                                                    <p><span className="attribute">Observaciones:</span> <span className="value">{selectedAnimal.observaciones_inseminacion.split(', ')[index]}</span></p>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p>No hay registros de inseminaciones.</p>
+                                        )}
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
                         </div>
 
                         <div className="buttons-container">
@@ -411,29 +421,6 @@ function AnimalList() {
                                 <img src={deleteIcon} alt="Eliminar" style={{ width: '30px', marginRight: '5px' }} />
                             </button>
                         </div>
-
-
-                        <div className="detail-column">
-                            {selectedAnimal.fechas_inseminacion && selectedAnimal.fechas_inseminacion.split(', ').length > 0 ? (
-                                <div className="detail-section">
-                                    <h4>Historial de Inseminaciones</h4>
-                                    {selectedAnimal.fechas_inseminacion.split(', ').map((fecha, index) => (
-                                        <div key={index}>
-                                            <p><span className="attribute">Fecha de Inseminación:</span> <span className="value">{formatDate(fecha)}</span></p>
-                                            <p><span className="attribute">Tipo de Inseminación:</span> <span className="value">{selectedAnimal.tipos_inseminacion.split(', ')[index]}</span></p>
-                                            <p><span className="attribute">Resultado:</span> <span className="value">{selectedAnimal.resultados_inseminacion.split(', ')[index]}</span></p>
-                                            <p><span className="attribute">Observaciones:</span> <span className="value">{selectedAnimal.observaciones_inseminacion.split(', ')[index]}</span></p>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="detail-section">
-                                    <h4>Historial de Inseminaciones</h4>
-                                    <p>No hay registros de inseminaciones.</p>
-                                </div>
-                            )}
-                        </div>
-
                     </div>
                 </div>
             )}
@@ -566,7 +553,6 @@ function AnimalList() {
                                 </FloatingLabel>
                             </Col>
 
-                            {/* Sección de Estado */}
                             <Col sm="12" md="6" lg="6">
                                 <FloatingLabel controlId="estado" label="Estado">
                                     <Form.Select
@@ -584,7 +570,6 @@ function AnimalList() {
                                 </FloatingLabel>
                             </Col>
 
-                            {/* Sección de Inseminación */}
                             <Col sm="12" md="6" lg="6">
                                 <Form.Check
                                     type="checkbox"
@@ -595,7 +580,6 @@ function AnimalList() {
                                 />
                             </Col>
 
-                            {/* Sección de Enfermedades */}
                             <Col sm="12">
                                 <h5>Historial de Enfermedades</h5>
                                 {editAnimal?.enfermedades?.map((enfermedad, index) => (
@@ -632,7 +616,6 @@ function AnimalList() {
                                 <Button variant="link" onClick={() => handleAddField('enfermedades')}>Añadir Enfermedad</Button>
                             </Col>
 
-                            {/* Sección de Productos */}
                             <Col sm="12">
                                 <h5>Productos Aplicados</h5>
                                 {editAnimal?.productos?.map((producto, index) => (
@@ -677,7 +660,7 @@ function AnimalList() {
                                             <Form.Check
                                                 type="checkbox"
                                                 label="¿Es un tratamiento?"
-                                                checked={producto.es_tratamiento} // Manejar estado desde editAnimal
+                                                checked={producto.es_tratamiento}
                                                 onChange={(e) => {
                                                     const newProductos = [...editAnimal.productos];
                                                     newProductos[index].es_tratamiento = e.target.checked;
@@ -690,11 +673,9 @@ function AnimalList() {
                                         </Col>
                                     </Row>
                                 ))}
-
                                 <Button variant="link" onClick={() => handleAddField('productos')}>Añadir Producto</Button>
                             </Col>
 
-                            {/* Sección de Control de Baños */}
                             <Col sm="12">
                                 <h5>Control de Baños</h5>
                                 {editAnimal?.control_banos?.map((bano, index) => (
@@ -724,7 +705,6 @@ function AnimalList() {
                                 <Button variant="link" onClick={() => handleAddField('control_banos')}>Añadir Control de Baño</Button>
                             </Col>
 
-                            {/* Sección de Producción de Leche */}
                             <Col sm="12">
                                 <h5>Producción de Leche</h5>
                                 {editAnimal?.produccion_leche?.map((produccion, index) => (
@@ -760,14 +740,11 @@ function AnimalList() {
                                                 />
                                             </FloatingLabel>
                                         </Col>
-
                                     </Row>
                                 ))}
                                 <Button variant="link" onClick={() => handleAddField('produccion_leche')}>Añadir Producción de Leche</Button>
                             </Col>
 
-
-                            {/* Sección de Inseminaciones */}
                             <Col sm="12">
                                 <h5>Historial de Inseminaciones</h5>
                                 {editAnimal?.inseminaciones?.map((inseminacion, index) => (
@@ -816,7 +793,6 @@ function AnimalList() {
                                 ))}
                                 <Button variant="link" onClick={() => handleAddField('inseminaciones')}>Añadir Inseminación</Button>
                             </Col>
-
                         </Row>
                         <Button variant="primary" type="submit" className="mt-3">
                             Actualizar
@@ -828,5 +804,4 @@ function AnimalList() {
     );
 }
 
-//xdddddddddddddddddddddddddddddddddd
 export default AnimalList;
