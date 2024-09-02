@@ -8,31 +8,31 @@ import Enfermedades from './pages/Enfermedades';
 import EnfermedadList from './pages/EnfermedadList';
 import Productos from './pages/Productos';
 import ProductoList from './pages/ProductoList';
+import Login from './pages/login';
+import PreguntaForm from './pages/PreguntasIA';
+import PrivateRoute from './pages/PrivateRoute'; // Importa el componente de rutas privadas
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import PreguntaForm from './pages/PreguntasIA';
-
-
 
 function App() {
   return (
     <Router>
       <Routes>
         {/* Ruta de inicio de sesión como ruta predeterminada */}
-        <Route path="/" element={<Home />} />
-
-        {/* Otras rutas de la aplicación */}
-        <Route path="/Home" element={<Home />} />
-        
+        <Route path="/Login" element={<Login />} />
+        {/* Rutas públicas */}
+        <Route path="/" element={<About />} />
         <Route path="/about" element={<About />} />
-        <Route path="/Animales" element={<Animal />} />
-        <Route path="/AnimalList" element={<AnimalList />} />
-        <Route path="/Enfermedades" element={<Enfermedades />} />
-        <Route path="/EnfermedadList" element={<EnfermedadList />} />
-        <Route path="/Productos" element={<Productos />} />
-        <Route path="/ProductoList" element={<ProductoList />} />
 
-        <Route path="/PreguntaIA" element={<PreguntaForm />} />
+        {/* Rutas protegidas */}
+        <Route path="/Home" element={<PrivateRoute element={Home} />} />
+        <Route path="/Animales" element={<PrivateRoute element={Animal} />} />
+        <Route path="/AnimalList" element={<PrivateRoute element={AnimalList} />} />
+        <Route path="/Enfermedades" element={<PrivateRoute element={Enfermedades} />} />
+        <Route path="/EnfermedadList" element={<PrivateRoute element={EnfermedadList} />} />
+        <Route path="/Productos" element={<PrivateRoute element={Productos} />} />
+        <Route path="/ProductoList" element={<PrivateRoute element={ProductoList} />} />
+        <Route path="/PreguntaIA" element={<PrivateRoute element={PreguntaForm} />} />
       </Routes>
     </Router>
   );

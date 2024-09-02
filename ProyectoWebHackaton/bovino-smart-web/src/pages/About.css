@@ -1,13 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Junge&family=Kaisei+Decol&display=swap');
+
 .About {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Junge'; /* Aplica la fuente Junge */
   color: #333;
   overflow-x: hidden;
   background-color: #f4f4f4; /* Fondo claro para un mejor contraste */
 }
 
 .cabecera {
+  
   background-color: #212121;
   height: 80px;
   width: 100%;
@@ -17,6 +20,10 @@
   z-index: 1000;
   border-bottom: 1.5px solid #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-family: 'Kaisei Decol'; /* Aplica la fuente Kaisei Decol */
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 36.2px;
 }
 
 .Primera_Imagen {
@@ -53,7 +60,8 @@ h1 {
   font-weight: 900;
   text-align: center;
   text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
-  animation: fadeInDown 1.5s ease-in-out, bounce 2s infinite alternate;
+ 
+  font-family: 'Junge'; /* Aplica la fuente Junge */
 }
 
 h2 {
@@ -64,7 +72,7 @@ h2 {
   margin-top: 30px;
   font-weight: 700;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
-  animation: fadeIn 1s ease-in-out;
+  font-family: 'Junge'; /* Aplica la fuente Junge */
 }
 
 .Bovino-texto {
@@ -72,7 +80,7 @@ h2 {
   color: #3E7B31;
   position: relative;
   -webkit-text-stroke: 0.5px rgba(53, 129, 43, 0.7);
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Junge'; /* Cambia a fuente Junge */
   white-space: nowrap;
   cursor: default;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
@@ -83,7 +91,7 @@ h2 {
   max-width: 900px;
   padding: 40px; /* Incrementa el padding para mayor espacio */
   color: #3E7B31; /* Color del texto más oscuro */
-  font-family: 'Lucida Sans', sans-serif;
+  font-family: 'Kaisei Decol'; /* Aplica la fuente Kaisei Decol */
   font-size: 18px;
   margin: 0 auto;
   line-height: 1.8;
@@ -201,11 +209,6 @@ h2 {
 
 
 
-
-
-
-
-
 h3 {
   color: #3E7B31;
   font-weight: bold;
@@ -306,6 +309,7 @@ h3 {
 .info-box p {
   color: #333;
   font-size: 16px;
+  font-family: 'Kaisei Decol';
 }
 
 .info-box:hover {

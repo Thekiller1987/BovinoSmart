@@ -1,8 +1,31 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports = (db) => {
 
+
+    
+
+      // Middleware de autenticación
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+  
+    if (!token) return res.status(401).json({ message: 'Token no proporcionado' });
+  
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) return res.status(403).json({ message: 'Token no válido' });
+      req.user = user;
+      next();
+    });
+  };
+  
+  // Asegurar rutas con el middleware
+  router.get('/ruta-protegida', authenticateToken, (req, res) => {
+    res.json({ message: 'Acceso permitido porque estás autenticado' });
+  });
 
     router.get('/enfermedades', (req, res) => {
         const sql = 'SELECT * FROM Enfermedades';
@@ -199,7 +222,7 @@ module.exports = (db) => {
 
 
 
-    router.get('/listarAnimales', (req, res) => {
+    router.get('/listarAnimales' ,(req, res) => {
         const sql = `
             SELECT 
     A.idAnimal,
@@ -675,6 +698,58 @@ FROM
         });
     });
 
+
+
+
+
+
+
+// Ruta para registrar un nuevo usuario
+router.post('/register', (req, res) => {
+    const { nombre_usuario, contrasena } = req.body;
+
+    // Encriptar la contraseña
+    const hashedPassword = bcrypt.hashSync(contrasena, 10);
+
+    const query = 'INSERT INTO Usuarios (nombre_usuario, contrasena) VALUES (?, ?)';
+    db.query(query, [nombre_usuario, hashedPassword], (err, result) => {
+      if (err) {
+        console.error('Error al registrar usuario:', err);
+        return res.status(500).json({ error: 'Error al registrar usuario' });
+      }
+      res.json({ message: 'Usuario registrado correctamente' });
+    });
+  });
+  
+    // Ruta para iniciar sesión
+    router.post('/login', (req, res) => {
+        const { nombre_usuario, contrasena } = req.body;
+    
+        const query = 'SELECT * FROM Usuarios WHERE nombre_usuario = ?';
+        db.query(query, [nombre_usuario], (err, results) => {
+          if (err) {
+            console.error('Error al buscar usuario:', err);
+            return res.status(500).json({ error: 'Error al iniciar sesión' });
+          }
+    
+          if (results.length === 0) {
+            return res.status(400).json({ error: 'Usuario no encontrado' });
+          }
+    
+          const user = results[0];
+    
+          // Verificar la contraseña
+          const validPassword = bcrypt.compareSync(contrasena, user.contrasena);
+          if (!validPassword) {
+            return res.status(400).json({ error: 'Contraseña incorrecta' });
+          }
+    
+          // Generar un token JWT
+          const token = jwt.sign({ id: user.idUsuario }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    
+          res.json({ message: 'Inicio de sesión exitoso', token });
+        });
+      });
 
 
 

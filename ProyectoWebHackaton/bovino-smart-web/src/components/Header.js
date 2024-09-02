@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Offcanvas, Button, NavDropdown, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Header() {
     const [showMenu, setShowMenu] = useState(false);
+    const navigate = useNavigate(); // Hook para redirigir a otras páginas
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
     };
 
+    // Función de cierre de sesión
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // Elimina el token del almacenamiento local
+        navigate('/Login'); // Redirige al usuario a la página de inicio de sesión
+    };
 
     return (
-
         <div>
             {/* Navbar principal */}
             <Navbar className="navbar-color" variant="dark" expand="md">
@@ -35,8 +40,6 @@ function Header() {
                                 <Link to="/about" className="link-unstyled">Información</Link>
                             </Nav.Link>
 
-
-
                             <NavDropdown title="Animales" id="animales">
                                 <NavDropdown.Item>
                                     <Link to="/Animales" className="link-unstyled">Registrar Animales</Link>
@@ -46,9 +49,6 @@ function Header() {
                                     <Link to="/AnimalList" className="link-unstyled">Listar Animales</Link>
                                 </NavDropdown.Item>
                             </NavDropdown>
-
-
-
 
                             <NavDropdown title="Enfermedades" id="enfermedades">
                                 <NavDropdown.Item>
@@ -60,10 +60,6 @@ function Header() {
                                 </NavDropdown.Item>
                             </NavDropdown>
 
-
-
-
-
                             <NavDropdown title="Productos" id="productos">
                                 <NavDropdown.Item>
                                     <Link to="/Productos" className="link-unstyled">Registrar Productos</Link>
@@ -74,20 +70,16 @@ function Header() {
                                 </NavDropdown.Item>
                             </NavDropdown>
 
-
-
-
-
-
-
-
-
                             <NavDropdown title="IA" id="IA">
                                 <NavDropdown.Item>
                                     <Link to="/PreguntaIA" className="link-unstyled">Manola</Link>
                                 </NavDropdown.Item>
-
                             </NavDropdown>
+
+                            {/* Botón de cierre de sesión */}
+                            <Button variant="outline-light" onClick={handleLogout}>
+                                Cerrar Sesión
+                            </Button>
                         </Nav>
                     </Navbar.Collapse>
                     <Button
@@ -127,8 +119,6 @@ function Header() {
                             </NavDropdown.Item>
                         </NavDropdown>
 
-
-
                         <NavDropdown title="Enfermedades" id="enfermedades">
                             <NavDropdown.Item>
                                 <Link to="/Enfermedades" className="link-unstyled">Registrar Enfermedades</Link>
@@ -137,8 +127,6 @@ function Header() {
                                 <Link to="/EnfermedadList" className="link-unstyled">Listar Enfermedades</Link>
                             </NavDropdown.Item>
                         </NavDropdown>
-
-
 
                         <NavDropdown title="Productos" id="Productos">
                             <NavDropdown.Item>
@@ -149,21 +137,21 @@ function Header() {
                             </NavDropdown.Item>
                         </NavDropdown>
 
-
-
-
                         <NavDropdown title="IA" id="IA">
                             <NavDropdown.Item>
                                 <Link to="/PreguntaIA" className="link-unstyled">Manola</Link>
                             </NavDropdown.Item>
-
                         </NavDropdown>
+
+                        {/* Botón de cierre de sesión en el menú lateral */}
+                        <Button variant="outline-dark" onClick={handleLogout}>
+                            Cerrar Sesión
+                        </Button>
                     </Nav>
                 </Offcanvas.Body>
             </Offcanvas>
         </div>
     );
-
 }
 
 export default Header;

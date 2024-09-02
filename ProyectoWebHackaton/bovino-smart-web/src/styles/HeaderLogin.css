@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Junge&display=swap'); /* Importa la fuente Junge */
+
+
+.HeaderLogin {
+    padding: 10px 20px;
+    background-color: #587A83;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    overflow: hidden;
+    font-family: 'Junge'; /* Aplica la fuente Junge a todo el header */
+    
+}
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between; /* Asegura que los elementos se distribuyan a los extremos */
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+  }
+  
+  .header-logo {
+    color: #ffffff; /* Color blanco */
+    font-size: 30px; /* Tamaño de fuente de 30px*/
+    font-weight: 400; /* Peso de la fuente*/
+    line-height: 36px; /* Altura de línea de 36px*/
+    letter-spacing: 0.02em; /* Ajuste de espaciado entre letras */
+    margin: 0;
+    font-family: 'Junge'; /* Aplica la fuente Junge al texto específico */
+    margin-left: -770px; /* Ajusta la posición para estar cerca del logo */
+    transition: none; /* Deshabilita todas las transiciones */
+}
+  .header-logo-image {
+    height: 80px; /* Ajusta el tamaño del logo según sea necesario */
+    width: auto; /* Mantiene la proporción de la imagen */
+    margin-right: 10px; /* Espacio entre el logo y el texto */
+    margin-top: auto; /* Alinea el logo al centro verticalmente */
+    margin-bottom: -10px; /* Alinea el logo al centro verticalmente */
+    display: flex; /* Asegura que el logo esté centrado en el contenedor */
+    margin-left: -180px;
+  }
+  
+  
+  .header-button {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #71AF61; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease; /* Efecto de transición para hover */
+    margin-left: auto; /* Empuja el botón hacia el extremo derecho */
+    z-index: 1010; /* Asegura que el botón esté sobre otros elementos */
+    margin-right: -150px;
+  }
+  
+  .header-button:hover {
+    background-color: #3E7b31; /* Cambia el color al pasar el cursor */
+  }
+  
+  .header-icon {
+    margin-right: 8px;
+  }
+  

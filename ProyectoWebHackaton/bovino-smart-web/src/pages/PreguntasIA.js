@@ -108,7 +108,7 @@ function PreguntaForm() {
                         <div className="smart-container">
                             <h1 className={efectosActivos ? 'active' : ''}>
                                 <span className='Smartxd'>Smart</span>
-                                <span className='letter-H'>h</span>
+                                
                             </h1>
                         </div>
                     </div>

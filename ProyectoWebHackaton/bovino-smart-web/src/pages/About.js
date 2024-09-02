@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import Header from '../components/Header';
 import './About.css';
 import Typed from 'typed.js';
+import HeaderLogin from '../components/HeaderLogin';
 
 const About = () => {
 
   useEffect(() => {
     const typed = new Typed('.ityped', {
-      strings: ['Bienvenidos', 'Les Saluda', 'BoVinoSmarth'],
+      strings: ['Bienvenidos', 'Les Saluda', 'BoVinoSmart'],
       typeSpeed: 100,
       backSpeed: 90,
       startDelay: 500,
@@ -41,7 +42,7 @@ const About = () => {
 
   return (
     <div className="About">
-      <Header />
+      <HeaderLogin />
       <div className="Primera_Imagen"></div>
       <h1 className='ityped'>Bienvenidos</h1>
       <h2>

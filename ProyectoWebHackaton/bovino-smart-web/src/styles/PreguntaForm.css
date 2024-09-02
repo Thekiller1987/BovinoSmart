@@ -9,17 +9,7 @@
     animation: fadeInDown 1s ease-in-out;
 }
 
-/* Animación de entrada del título */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+
 
 /* Estilo del formulario */
 .form {
