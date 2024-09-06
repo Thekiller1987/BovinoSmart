@@ -1,0 +1,115 @@
+import React from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+
+export default function GestionEnfermedades() {
+  return (
+    <View style={styles.container}>
+      {/* Fondo personalizado */}
+      <Image source={require('./assets/fondo.png')} style={styles.backgroundImage} />
+
+      {/* Encabezado personalizado */}
+      <View style={styles.customHeader}>
+        <TouchableOpacity style={styles.backButton}>
+          <Text style={styles.backButtonText}>←</Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>Gestión de enfermedades</Text>
+      </View>
+
+      {/* Campo de búsqueda con icono de lupita */}
+      <View style={styles.searchContainer}>
+        <Image source={require('./assets/buscar.png')} style={styles.searchIcon} />
+        <TextInput
+          placeholder="Buscar"
+          style={styles.searchInput}
+          placeholderTextColor="#666"
+        />
+        <TouchableOpacity style={styles.searchButton}>
+          <Text style={styles.searchButtonText}>Buscar</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Botón para añadir enfermedad */}
+      <TouchableOpacity style={styles.addButton}>
+        <Text style={styles.addButtonText}>+ Añadir Enfermedad</Text>
+      </TouchableOpacity>
+
+      {/* Otros elementos... */}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  backgroundImage: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  customHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#537982',
+    width: '100%',
+    paddingVertical: 20,
+    marginTop: 40, // Ajusta la posición del encabezado
+  },
+  backButton: {
+    position: 'absolute',
+    left: 10,
+  },
+  backButtonText: {
+    fontSize: 18,
+    color: '#fff',
+  },
+  title: {
+    fontSize: 20,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#F0F0F0', // Color gris más opaco
+    marginVertical: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    width: '90%', // Ajusta el ancho de la barra de búsqueda
+  },
+  searchIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+    paddingVertical: 8,
+    fontSize: 16,
+  },
+  searchButton: {
+    marginLeft: 10,
+    padding: 10,
+    backgroundColor: '#71AF61',
+    borderRadius: 8,
+  },
+  searchButtonText: {
+    color: '#fff',
+  },
+  addButton: {
+    alignSelf: 'flex-end',
+    marginTop: 10,
+    marginRight: 20,
+    backgroundColor: '#71AF61',
+    padding: 10,
+    borderRadius: 8,
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+});
