@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="product_type_array">
-        <item>Type 1</item>
-        <item>Type 2</item>
-        <item>Type 3</item>
-        <!-- Agrega los elementos que necesites -->
-    </string-array>
-</resources>
