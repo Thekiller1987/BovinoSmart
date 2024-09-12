@@ -1,74 +1,78 @@
 @import url('https://fonts.googleapis.com/css2?family=Junge&display=swap'); /* Importa la fuente Junge */
 
-
+/* Estilos para el componente de encabezado de inicio de sesión */
 .HeaderLogin {
     padding: 10px 20px;
-    background-color: #587A83;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-bottom: 2px solid #ddd;
+    background-color: #587A83; /* Color de fondo del encabezado */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    border-bottom: 2px solid #ddd; /* Borde inferior del encabezado */
     position: sticky;
-    top: 0;
-    z-index: 1000;
+    top: 0; /* Fija el encabezado en la parte superior de la página */
+    z-index: 1000; /* Asegura que el encabezado esté por encima de otros elementos */
     display: flex;
     align-items: center;
-    height: 60px;
+    height: 60px; /* Altura fija del encabezado */
     overflow: hidden;
-    font-family: 'Junge'; /* Aplica la fuente Junge a todo el header */
-    
+    font-family: 'Junge'; /* Aplica la fuente Junge a todo el encabezado */
 }
-  
-  .header-container {
+
+/* Contenedor del encabezado que asegura la distribución de los elementos */
+.header-container {
     display: flex;
-    justify-content: space-between; /* Asegura que los elementos se distribuyan a los extremos */
+    justify-content: space-between; /* Distribuye elementos a los extremos del contenedor */
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
-  }
-  
-  .header-logo {
-    color: #ffffff; /* Color blanco */
-    font-size: 30px; /* Tamaño de fuente de 30px*/
-    font-weight: 400; /* Peso de la fuente*/
-    line-height: 36px; /* Altura de línea de 36px*/
-    letter-spacing: 0.02em; /* Ajuste de espaciado entre letras */
-    margin: 0;
-    font-family: 'Junge'; /* Aplica la fuente Junge al texto específico */
-    margin-left: -770px; /* Ajusta la posición para estar cerca del logo */
-    transition: none; /* Deshabilita todas las transiciones */
+    max-width: 1200px; /* Ancho máximo del contenedor */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    width: 100%; /* Hace que el contenedor ocupe todo el ancho disponible */
 }
-  .header-logo-image {
-    height: 80px; /* Ajusta el tamaño del logo según sea necesario */
+
+/* Estilos para el logo del encabezado */
+.header-logo {
+    color: #ffffff; /* Color del texto en blanco */
+    font-size: 30px; /* Tamaño del texto del logo */
+    font-weight: 400; /* Peso de la fuente del logo */
+    line-height: 36px; /* Altura de línea para el texto del logo */
+    letter-spacing: 0.02em; /* Espaciado entre letras */
+    margin: 0;
+    font-family: 'Junge'; /* Aplica la fuente Junge específicamente al texto del logo */
+    margin-left: -770px; /* Ajusta la posición horizontal del logo */
+    transition: none; /* Deshabilita las transiciones para cambios instantáneos */
+}
+
+/* Estilos para la imagen del logo en el encabezado */
+.header-logo-image {
+    height: 80px; /* Altura de la imagen del logo */
     width: auto; /* Mantiene la proporción de la imagen */
-    margin-right: 10px; /* Espacio entre el logo y el texto */
-    margin-top: auto; /* Alinea el logo al centro verticalmente */
-    margin-bottom: -10px; /* Alinea el logo al centro verticalmente */
-    display: flex; /* Asegura que el logo esté centrado en el contenedor */
-    margin-left: -180px;
-  }
-  
-  
-  .header-button {
+    margin-right: 10px; /* Espacio entre la imagen del logo y el texto */
+    margin-top: auto; /* Centra verticalmente la imagen del logo */
+    margin-bottom: -10px; /* Ajusta el margen inferior de la imagen del logo */
+    display: flex; /* Asegura que la imagen esté alineada correctamente */
+    margin-left: -180px; /* Ajusta la posición horizontal de la imagen del logo */
+}
+
+/* Estilos para el botón en el encabezado */
+.header-button {
     font-size: 16px;
-    padding: 10px 20px;
+    padding: 10px 20px; /* Relleno del botón */
     background-color: #71AF61; /* Color de fondo del botón */
     color: #fff; /* Color del texto del botón */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    border: none; /* Elimina el borde del botón */
+    border-radius: 5px; /* Esquinas redondeadas del botón */
+    cursor: pointer; /* Cambia el cursor al pasar por el botón */
     display: flex;
-    align-items: center;
-    transition: background-color 0.3s ease; /* Efecto de transición para hover */
-    margin-left: auto; /* Empuja el botón hacia el extremo derecho */
+    align-items: center; /* Alinea el contenido del botón al centro verticalmente */
+    transition: background-color 0.3s ease; /* Efecto de transición suave al hacer hover */
+    margin-left: auto; /* Empuja el botón hacia el extremo derecho del contenedor */
     z-index: 1010; /* Asegura que el botón esté sobre otros elementos */
-    margin-right: -150px;
-  }
-  
-  .header-button:hover {
-    background-color: #3E7b31; /* Cambia el color al pasar el cursor */
-  }
-  
-  .header-icon {
-    margin-right: 8px;
-  }
-  
+    margin-right: -150px; /* Ajusta la posición horizontal del botón */
+}
+
+/* Efecto hover para el botón */
+.header-button:hover {
+    background-color: #3E7b31; /* Color de fondo del botón al pasar el cursor */
+}
+
+/* Estilo para los iconos dentro del botón del encabezado */
+.header-icon {
+    margin-right: 8px; /* Espacio entre el icono y el texto del botón */
+}

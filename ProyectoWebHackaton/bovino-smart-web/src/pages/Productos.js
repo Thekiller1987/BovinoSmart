@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import { Form, Row, Col, Container, FloatingLabel, Card, Button } from 'react-bootstrap';
-import Header from '../components/Header';
-import '../styles/App.css';
+import Header from '../components/Header'; // Importa el componente de cabecera
+import '../styles/App.css'; // Importa estilos personalizados
 
 function Productos() {
-    const [nombre, setNombre] = useState('');
-    const [tipo, setTipo] = useState('');
-    const [dosisRecomendada, setDosisRecomendada] = useState('');
-    const [frecuenciaAplicacion, setFrecuenciaAplicacion] = useState('');
-    const [notas, setNotas] = useState('');
-    const [esTratamiento, setEsTratamiento] = useState(false);
-    const [motivo, setMotivo] = useState('');
+    // Estados para manejar los campos del formulario
+    const [nombre, setNombre] = useState(''); // Estado para el nombre del producto
+    const [tipo, setTipo] = useState(''); // Estado para el tipo del producto
+    const [dosisRecomendada, setDosisRecomendada] = useState(''); // Estado para la dosis recomendada
+    const [frecuenciaAplicacion, setFrecuenciaAplicacion] = useState(''); // Estado para la frecuencia de aplicación
+    const [notas, setNotas] = useState(''); // Estado para notas adicionales
+    const [esTratamiento, setEsTratamiento] = useState(false); // Estado para indicar si es un tratamiento
+    const [motivo, setMotivo] = useState(''); // Estado para el motivo del tratamiento
 
+    // Maneja el envío del formulario
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
+
+        // Crea un objeto con los datos del formulario
         const formData = {
             nombre,
             tipo,
@@ -25,6 +29,7 @@ function Productos() {
         };
 
         try {
+            // Envía una solicitud POST al servidor para registrar el producto
             const response = await fetch('http://localhost:5000/crud/productos', {
                 method: 'POST',
                 headers: {
@@ -34,7 +39,8 @@ function Productos() {
             });
 
             if (response.ok) {
-                alert('Producto registrado');
+                alert('Producto registrado'); // Muestra un mensaje de éxito
+                // Resetea los campos del formulario
                 setNombre('');
                 setTipo('');
                 setDosisRecomendada('');
@@ -43,23 +49,24 @@ function Productos() {
                 setEsTratamiento(false);
                 setMotivo('');
             } else {
-                alert('Error al registrar el producto');
+                alert('Error al registrar el producto'); // Muestra un mensaje de error
             }
         } catch (error) {
-            console.error('Error en la solicitud:', error);
-            alert('Error en la solicitud al servidor');
+            console.error('Error en la solicitud:', error); // Maneja errores en la solicitud
+            alert('Error en la solicitud al servidor'); // Muestra un mensaje de error
         }
     };
 
     return (
         <div>
-            <Header />
+            <Header /> {/* Componente de cabecera */}
             <Container>
                 <Card className="mt-3">
                     <Card.Body>
                         <Card.Title>Registrar Producto</Card.Title>
                         <Form className="mt-3" onSubmit={handleSubmit}>
                             <Row className="g-3">
+                                {/* Campo de nombre del producto */}
                                 <Col sm="12" md="6">
                                     <FloatingLabel controlId="nombre" label="Nombre">
                                         <Form.Control
@@ -71,6 +78,8 @@ function Productos() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+
+                                {/* Campo de tipo del producto */}
                                 <Col sm="12" md="6">
                                     <FloatingLabel controlId="tipo" label="Tipo">
                                         <Form.Control
@@ -82,6 +91,8 @@ function Productos() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+
+                                {/* Campo de dosis recomendada */}
                                 <Col sm="12" md="6">
                                     <FloatingLabel controlId="dosisRecomendada" label="Dosis Recomendada">
                                         <Form.Control
@@ -92,6 +103,8 @@ function Productos() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+
+                                {/* Campo de frecuencia de aplicación */}
                                 <Col sm="12" md="6">
                                     <FloatingLabel controlId="frecuenciaAplicacion" label="Frecuencia de Aplicación">
                                         <Form.Control
@@ -102,6 +115,8 @@ function Productos() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+
+                                {/* Campo de notas adicionales */}
                                 <Col sm="12">
                                     <FloatingLabel controlId="notas" label="Notas">
                                         <Form.Control
@@ -112,6 +127,8 @@ function Productos() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+
+                                {/* Checkbox para indicar si es un tratamiento */}
                                 <Col sm="12" md="6">
                                     <Form.Check
                                         type="checkbox"
@@ -121,6 +138,8 @@ function Productos() {
                                         onChange={(e) => setEsTratamiento(e.target.checked)}
                                     />
                                 </Col>
+
+                                {/* Campo de motivo del tratamiento, visible solo si esTratamiento es true */}
                                 {esTratamiento && (
                                     <Col sm="12" md="6">
                                         <FloatingLabel controlId="motivo" label="Para que es el tratamiento">

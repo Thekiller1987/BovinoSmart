@@ -59,8 +59,8 @@ const About = () => {
           <div className="hojas inferior-izquierda"></div>
           <div className="hojas inferior-derecha"></div>
 
-          Bienvenido a BoVinoSmart, tu herramienta avanzada para la trazabilidad ganadera...
-          {"BoVinoSmart es una herramienta avanzada de trazabilidad ganadera diseñada para mejorar la gestión y el control de los rebaños..."}
+      
+          {"BoVinoSmarth es una herramienta avanzada de trazabilidad ganadera diseñada para mejorar la gestión y el control de los rebaños. Esta aplicación permite a los productores rastrear la salud, los tratamientos, la producción y otros aspectos críticos de sus animales en tiempo real. Con BoVinoSmarth, se optimiza la toma de decisiones basada en datos, asegurando un manejo más eficiente y sostenible del ganado, lo que contribuye a una producción más saludable y rentable. Ideal para productores ganaderos que buscan modernizar y profesionalizar la gestión de sus operaciones diarias."}
         </p>
       </h2>
 

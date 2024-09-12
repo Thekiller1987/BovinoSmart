@@ -4,12 +4,14 @@ import Header from '../components/Header';
 import '../styles/ProductoList.css';
 
 function ProductoList() {
-    const [productos, setProductos] = useState([]);
-    const [editProducto, setEditProducto] = useState(null);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [error, setError] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
+    // Estados
+    const [productos, setProductos] = useState([]); // Lista de productos
+    const [editProducto, setEditProducto] = useState(null); // Producto en edición
+    const [showEditModal, setShowEditModal] = useState(false); // Mostrar/ocultar modal de edición
+    const [error, setError] = useState(null); // Manejo de errores
+    const [searchQuery, setSearchQuery] = useState(''); // Consulta de búsqueda
 
+    // Función para obtener los productos del servidor
     const fetchProductos = async () => {
         try {
             const response = await fetch('http://localhost:5000/crud/productos');
@@ -24,22 +26,27 @@ function ProductoList() {
         }
     };
 
+    // useEffect para cargar los productos al montar el componente
     useEffect(() => {
         fetchProductos();
     }, []);
 
+    // Maneja el clic de edición
     const handleEditClick = (producto) => {
+        // Convierte el valor de 'es_tratamiento' a booleano
         setEditProducto({
             ...producto,
-            es_tratamiento: producto.es_tratamiento === 1 || producto.es_tratamiento === true // Convertir a booleano
+            es_tratamiento: producto.es_tratamiento === 1 || producto.es_tratamiento === true 
         });
-        setShowEditModal(true);
+        setShowEditModal(true); // Muestra el modal de edición
     };
 
+    // Cierra el modal de edición
     const handleCloseEditModal = () => {
         setShowEditModal(false);
     };
 
+    // Maneja la eliminación de un producto
     const handleDeleteClick = async (id) => {
         if (window.confirm('¿Estás seguro de que deseas eliminar este producto?')) {
             try {
@@ -47,7 +54,7 @@ function ProductoList() {
                     method: 'DELETE',
                 });
                 if (response.ok) {
-                    setProductos(productos.filter(prod => prod.idProductos !== id));
+                    setProductos(productos.filter(prod => prod.idProductos !== id)); // Elimina el producto de la lista local
                 } else {
                     throw new Error('Error al eliminar el producto');
                 }
@@ -57,6 +64,7 @@ function ProductoList() {
         }
     };
 
+    // Maneja la actualización de un producto
     const handleUpdateProducto = async (e) => {
         e.preventDefault();
         try {
@@ -80,6 +88,7 @@ function ProductoList() {
         }
     };
 
+    // Maneja los cambios en los campos del formulario
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
         setEditProducto(prev => ({
@@ -88,10 +97,12 @@ function ProductoList() {
         }));
     };
 
+    // Maneja los cambios en la barra de búsqueda
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
 
+    // Filtra los productos según la consulta de búsqueda
     const filteredProductos = productos.filter(producto =>
         producto.nombre.toLowerCase().includes(searchQuery.toLowerCase())
     );

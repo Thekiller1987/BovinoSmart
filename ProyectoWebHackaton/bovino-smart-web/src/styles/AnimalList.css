@@ -1,18 +1,20 @@
+/* Definición de variables CSS para facilitar la gestión de colores, fuentes y estilos generales */
 :root {
-    --primary-color: #4caf50;
-    --secondary-color: #ffffff;
-    --background-color: #f0f4f7;
-    --text-color: #333;
-    --border-radius: 10px;
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    --card-background: #ffffff;
-    --header-gradient: linear-gradient(90deg, #4caf50, #81c784);
-    --font-family: 'Roboto', sans-serif;
-    --detail-panel-border: 4px solid #000000;
-    --card-border: 2px solid #000000;
-    --line-color: #e0e0e0;
+    --primary-color: #4caf50; /* Color principal, usado para botones y otros elementos destacados */
+    --secondary-color: #ffffff; /* Color secundario, usado para textos y fondos secundarios */
+    --background-color: #f0f4f7; /* Color de fondo general de la aplicación */
+    --text-color: #333; /* Color principal del texto */
+    --border-radius: 10px; /* Radio de borde para dar una apariencia redondeada a los elementos */
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad a los elementos */
+    --card-background: #ffffff; /* Color de fondo de las tarjetas */
+    --header-gradient: linear-gradient(90deg, #4caf50, #81c784); /* Gradiente de fondo para los encabezados */
+    --font-family: 'Roboto', sans-serif; /* Fuente principal usada en la aplicación */
+    --detail-panel-border: 4px solid #000000; /* Estilo de borde para el panel de detalles */
+    --card-border: 2px solid #000000; /* Estilo de borde para las tarjetas */
+    --line-color: #e0e0e0; /* Color de las líneas de separación */
 }
 
+/* Estilos generales para la lista de animales */
 .body-animal-list {
     background-color: var(--background-color);
     font-family: var(--font-family);
@@ -21,6 +23,7 @@
     padding: 0;
 }
 
+/* Estilo para el encabezado de la lista de animales */
 .header-animal-list {
     background: var(--header-gradient);
     padding: 20px;
@@ -29,9 +32,9 @@
     border-radius: var(--border-radius);
     margin-bottom: 20px;
     box-shadow: var(--box-shadow);
-    position: sticky;
+    position: sticky; /* Permite que el encabezado permanezca visible al hacer scroll */
     top: 0;
-    z-index: 1000;
+    z-index: 1000; /* Asegura que el encabezado esté siempre encima de otros elementos */
 }
 
 .header-animal-list h1 {
@@ -39,6 +42,7 @@
     font-size: 2.5em;
 }
 
+/* Contenedor de las tarjetas de animales */
 .cards-container-animal-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -48,6 +52,7 @@
     max-width: 1200px;
 }
 
+/* Estilo para cada tarjeta de animal */
 .card-animal-list {
     background-color: var(--card-background);
     border-radius: var(--border-radius);
@@ -59,15 +64,16 @@
 }
 
 .card-animal-list:hover {
-    transform: translateY(-10px);
+    transform: translateY(-10px); /* Efecto de elevación al pasar el mouse */
 }
 
 .card-animal-list img {
     width: 100%;
     height: 200px;
-    object-fit: cover;
+    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
 }
 
+/* Contenido dentro de cada tarjeta */
 .card-content-animal-list {
     padding: 20px;
 }
@@ -92,6 +98,7 @@
     color: var(--text-color);
 }
 
+/* Estilo de los botones en la lista de animales */
 .button-animal-list {
     display: inline-block;
     padding: 10px 20px;
@@ -112,6 +119,7 @@
     background: #388e3c;
 }
 
+/* Panel de detalles del animal */
 .detail-panel-animal-list {
     position: fixed;
     top: 60px;
@@ -151,6 +159,7 @@
     color: var(--primary-color);
 }
 
+/* Contenido dentro del panel de detalles */
 .detail-content-animal-list {
     display: flex;
     flex-wrap: wrap;
@@ -166,6 +175,7 @@
     margin-bottom: 20px;
 }
 
+/* Sección de detalles específica */
 .detail-section {
     margin-bottom: 10px;
     flex: 1;
@@ -218,6 +228,7 @@
     border-bottom: 1px solid var(--line-color);
 }
 
+/* Animaciones para efectos de transición */
 @keyframes moveOut {
     0% {
         transform: translateX(0);
@@ -246,6 +257,7 @@
     animation: moveOut 1s forwards;
 }
 
+/* Botones para eliminar animales */
 .delete-button-animal-list {
     display: 20px;
     align-items: center;
@@ -276,6 +288,7 @@
     width: 20px;
 }
 
+/* Formulario con estructura de grid */
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -304,6 +317,7 @@
     font-size: 0.9em;
 }
 
+/* Botones para actualizar los detalles de los animales */
 .update-button-animal-list {
     background-color: var(--primary-color);
     color: var(--secondary-color);
@@ -326,6 +340,7 @@
     transform: scale(0.95);
 }
 
+/* Botones para editar animales */
 .edit-button-animal-list {
     background-color: var(--primary-color);
     color: var(--secondary-color);
@@ -350,6 +365,7 @@
     transform: scale(0.95);
 }
 
+/* Contenedor de botones */
 .buttons-container {
     display: flex;
     justify-content: left;
@@ -358,6 +374,7 @@
     margin-top: 20px;
 }
 
+/* Contenedor de búsqueda */
 .search-container {
     display: flex;
     justify-content: center;
@@ -412,17 +429,7 @@
     font-style: italic;
 }
 
-.card-animal-list {
-    border: 2px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-}
-.card-animal-list:hover {
-    transform: scale(1.05);
-}
-
+/* Animaciones para indicar estados especiales de los animales */
 .dead-animal {
     background-color: #f7d6d9; /* Rojo claro para indicar que el animal está muerto */
     border-color: #f5c6cb;
