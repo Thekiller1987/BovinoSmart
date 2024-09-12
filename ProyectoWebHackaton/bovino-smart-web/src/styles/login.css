@@ -1,4 +1,17 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Junge&family=Kaisei+Decol&display=swap');
+
+.header {
+  position: relative; /* Asegura que se posicione de acuerdo con el flujo del documento */
+  width: 100%;
+  top: 0;
+  z-index: 106; /* Un nivel suficiente para estar encima de otros elementos si es necesario */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px; /* Espaciado alrededor del contenido del header */
+  background-color: #f4f4f4; /* Fondo del header */
+}
 
 .login-page * {
   box-sizing: border-box;
@@ -8,13 +21,49 @@
 
 .login-page {
   font-family: 'Kaisei Decol', sans-serif;
-  background-color: #686c78;
+  background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   overflow: hidden;
+  background-image: url('../diseño/Hojafon2.png'); /* Usa la nueva imagen del patrón */
+  background-repeat: repeat; /* Repite la imagen en todo el fondo */
+  background-size: auto; /* Ajusta el tamaño del patrón */
 }
+
+
+
+
+
+
+
+
+.hoja {
+  position: absolute;
+  z-index: 105; /* Asegura que las hojas estén por encima del contenedor de login */
+  opacity: 0.8; /* Opcional: ajusta la opacidad si deseas un efecto más suave */
+}
+
+.hoja-1 {
+  top: 130px; /* Ajusta según sea necesario */
+  left: 25%; /* Ajusta según sea necesario */
+  width: 40px; /* Tamaño de la hoja */
+ 
+}
+
+.hoja-2 {
+  top: 20%; /* Ajusta según sea necesario */
+  right: 400px; /* Ajusta según sea necesario */
+  width: 40px; /* Tamaño de la hoja */
+}
+
+.hoja-3 {
+  bottom: 150px; /* Ajusta según sea necesario */
+  left: 30%; /* Ajusta según sea necesario */
+  width: 35px; /* Tamaño de la hoja */
+}
+
 
 .login-page h1, 
 .login-page h2, 
@@ -182,6 +231,7 @@
   min-height: 500px;
   display: flex;
   z-index: 100; /* Asegura que el contenedor esté encima de la superposición */
+  border: 3px solid #3E7B31; /* Añade esta línea para agregar un borde */
 }
 
 /* Contenedores de formulario */

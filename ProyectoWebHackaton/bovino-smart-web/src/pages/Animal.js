@@ -1,111 +1,124 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Row, Col, Container, FloatingLabel, Card, Button } from 'react-bootstrap';
-import Header from '../components/Header';
-import '../styles/App.css';
+import React, { useState, useEffect } from 'react'; // Importa React y los hooks useState y useEffect.
+import { Form, Row, Col, Container, FloatingLabel, Card, Button } from 'react-bootstrap'; // Importa componentes de React Bootstrap.
+import Header from '../components/Header'; // Importa el componente Header personalizado.
+import '../styles/App.css'; // Importa los estilos CSS personalizados.
 
 function Animal() {
-    // Estados para los datos del formulario
-    const [nombre, setNombre] = useState('');
-    const [sexo, setSexo] = useState('');
-    const [imagen, setImagen] = useState('');
-    const [codigo_idVaca, setCodigo_idVaca] = useState('');
-    const [fecha_nacimiento, setFecha_nacimiento] = useState('');
-    const [raza, setRaza] = useState('');
-    const [observaciones, setObservaciones] = useState('');
-    const [peso_nacimiento, setPeso_nacimiento] = useState('');
-    const [peso_destete, setPeso_destete] = useState('');
-    const [peso_actual, setPeso_actual] = useState('');
-    const [estado, setEstado] = useState(''); // Nuevo estado para el campo estado
-    const [inseminacion, setInseminacion] = useState(false); // Nuevo estado para inseminacion
-    const [enfermedades, setEnfermedades] = useState([{ id: '', fecha: '' }]);
-    const [productos, setProductos] = useState([{ id: '', dosis: '', fecha: '', es_tratamiento: false }]);
-    const [control_banos, setControl_banos] = useState([{ fecha: '', productos_utilizados: '' }]);
-    const [produccion_leche, setProduccion_leche] = useState([{ fecha: '', cantidad: '', calidad: '' }]);
-    const [inseminaciones, setInseminaciones] = useState([{ fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]);
-    const [listaProductos, setListaProductos] = useState([]);
-    const [listaEnfermedades, setListaEnfermedades] = useState([]);
+    // Estados para los datos del formulario.
+    const [nombre, setNombre] = useState(''); // Estado para el nombre del animal.
+    const [sexo, setSexo] = useState(''); // Estado para el sexo del animal.
+    const [imagen, setImagen] = useState(''); // Estado para la imagen del animal.
+    const [codigo_idVaca, setCodigo_idVaca] = useState(''); // Estado para el código ID de la vaca.
+    const [fecha_nacimiento, setFecha_nacimiento] = useState(''); // Estado para la fecha de nacimiento.
+    const [raza, setRaza] = useState(''); // Estado para la raza del animal.
+    const [observaciones, setObservaciones] = useState(''); // Estado para las observaciones.
+    const [peso_nacimiento, setPeso_nacimiento] = useState(''); // Estado para el peso al nacer.
+    const [peso_destete, setPeso_destete] = useState(''); // Estado para el peso al destete.
+    const [peso_actual, setPeso_actual] = useState(''); // Estado para el peso actual.
+    const [estado, setEstado] = useState(''); // Estado para el campo estado.
+    const [inseminacion, setInseminacion] = useState(false); // Estado para indicar si el animal ha sido inseminado.
+    const [enfermedades, setEnfermedades] = useState([{ id: '', fecha: '' }]); // Estado para el historial de enfermedades.
+    const [productos, setProductos] = useState([{ id: '', dosis: '', fecha: '', es_tratamiento: false }]); // Estado para los productos aplicados.
+    const [control_banos, setControl_banos] = useState([{ fecha: '', productos_utilizados: '' }]); // Estado para el control de baños.
+    const [produccion_leche, setProduccion_leche] = useState([{ fecha: '', cantidad: '', calidad: '' }]); // Estado para la producción de leche.
+    const [inseminaciones, setInseminaciones] = useState([{ fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]); // Estado para el historial de inseminaciones.
+    const [listaProductos, setListaProductos] = useState([]); // Estado para la lista de productos cargados del servidor.
+    const [listaEnfermedades, setListaEnfermedades] = useState([]); // Estado para la lista de enfermedades cargadas del servidor.
 
-
+    // Hook useEffect para cargar las listas de enfermedades y productos al montar el componente.
     useEffect(() => {
-        // Cargar lista de enfermedades
+        // Cargar lista de enfermedades desde el servidor.
         fetch('http://localhost:5000/crud/enfermedades')
             .then(res => res.json())
-            .then(data => setListaEnfermedades(data))
-            .catch(err => console.error('Error al cargar enfermedades:', err));
+            .then(data => setListaEnfermedades(data)) // Actualiza el estado con la lista de enfermedades.
+            .catch(err => console.error('Error al cargar enfermedades:', err)); // Maneja errores en la carga de enfermedades.
 
-        // Cargar lista de productos
+        // Cargar lista de productos desde el servidor.
         fetch('http://localhost:5000/crud/productos')
             .then(res => res.json())
-            .then(data => setListaProductos(data))
-            .catch(err => console.error('Error al cargar productos:', err));
+            .then(data => setListaProductos(data)) // Actualiza el estado con la lista de productos.
+            .catch(err => console.error('Error al cargar productos:', err)); // Maneja errores en la carga de productos.
     }, []);
 
-    // Manejo de cambios en los inputs
+    // Funciones para manejar los cambios en los campos del formulario.
+
+    // Función para manejar los cambios en los campos de enfermedades.
     const handleEnfermedadChange = (index, field, value) => {
-        const updatedEnfermedades = [...enfermedades];
-        updatedEnfermedades[index][field] = value;
-        setEnfermedades(updatedEnfermedades);
+        const updatedEnfermedades = [...enfermedades]; // Copia el estado actual de enfermedades.
+        updatedEnfermedades[index][field] = value; // Actualiza el campo específico en la enfermedad seleccionada.
+        setEnfermedades(updatedEnfermedades); // Actualiza el estado con la lista modificada de enfermedades.
     };
 
+    // Función para añadir una nueva enfermedad al historial.
     const addEnfermedad = () => {
-        setEnfermedades([...enfermedades, { id: '', fecha: '' }]);
+        setEnfermedades([...enfermedades, { id: '', fecha: '' }]); // Agrega un nuevo objeto de enfermedad al estado.
     };
 
+    // Función para manejar los cambios en los campos de productos.
     const handleProductoChange = (index, field, value) => {
-        const updatedProductos = [...productos];
-        updatedProductos[index][field] = value;
-        setProductos(updatedProductos);
+        const updatedProductos = [...productos]; // Copia el estado actual de productos.
+        updatedProductos[index][field] = value; // Actualiza el campo específico en el producto seleccionado.
+        setProductos(updatedProductos); // Actualiza el estado con la lista modificada de productos.
     };
 
+    // Función para añadir un nuevo producto al historial de productos aplicados.
     const addProducto = () => {
-        setProductos([...productos, { id: '', dosis: '', fecha: '', es_tratamiento: false }]);
+        setProductos([...productos, { id: '', dosis: '', fecha: '', es_tratamiento: false }]); // Agrega un nuevo objeto de producto al estado.
     };
 
+    // Función para manejar los cambios en los campos de control de baños.
     const handleBanoChange = (index, field, value) => {
-        const updatedBanos = [...control_banos];
-        updatedBanos[index][field] = value;
-        setControl_banos(updatedBanos);
+        const updatedBanos = [...control_banos]; // Copia el estado actual de control de baños.
+        updatedBanos[index][field] = value; // Actualiza el campo específico en el baño seleccionado.
+        setControl_banos(updatedBanos); // Actualiza el estado con la lista modificada de control de baños.
     };
 
+    // Función para añadir un nuevo registro de baño al historial.
     const addBano = () => {
-        setControl_banos([...control_banos, { fecha: '', productos_utilizados: '' }]);
+        setControl_banos([...control_banos, { fecha: '', productos_utilizados: '' }]); // Agrega un nuevo objeto de baño al estado.
     };
 
+    // Función para manejar los cambios en los campos de producción de leche.
     const handleProduccionLecheChange = (index, field, value) => {
-        const updatedProduccionLeche = [...produccion_leche];
-        updatedProduccionLeche[index][field] = value;
-        setProduccion_leche(updatedProduccionLeche);
+        const updatedProduccionLeche = [...produccion_leche]; // Copia el estado actual de producción de leche.
+        updatedProduccionLeche[index][field] = value; // Actualiza el campo específico en la producción de leche seleccionada.
+        setProduccion_leche(updatedProduccionLeche); // Actualiza el estado con la lista modificada de producción de leche.
     };
 
+    // Función para añadir un nuevo registro de producción de leche.
     const addProduccionLeche = () => {
-        setProduccion_leche([...produccion_leche, { fecha: '', cantidad: '', calidad: '' }]);
+        setProduccion_leche([...produccion_leche, { fecha: '', cantidad: '', calidad: '' }]); // Agrega un nuevo objeto de producción de leche al estado.
     };
 
+    // Función para manejar los cambios en los campos de inseminación.
     const handleInseminacionChange = (index, field, value) => {
-        const updatedInseminaciones = [...inseminaciones];
-        updatedInseminaciones[index][field] = value;
-        setInseminaciones(updatedInseminaciones);
+        const updatedInseminaciones = [...inseminaciones]; // Copia el estado actual de inseminaciones.
+        updatedInseminaciones[index][field] = value; // Actualiza el campo específico en la inseminación seleccionada.
+        setInseminaciones(updatedInseminaciones); // Actualiza el estado con la lista modificada de inseminaciones.
     };
 
+    // Función para añadir una nueva inseminación al historial.
     const addInseminacion = () => {
-        setInseminaciones([...inseminaciones, { fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]);
+        setInseminaciones([...inseminaciones, { fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]); // Agrega un nuevo objeto de inseminación al estado.
     };
 
+    // Función para manejar el cambio de imagen del animal.
     const handleImagenChange = (event) => {
-        const file = event.target.files[0];
-        const reader = new FileReader();
+        const file = event.target.files[0]; // Obtiene el archivo de imagen seleccionado.
+        const reader = new FileReader(); // Crea un lector de archivos.
         reader.onload = () => {
-            setImagen(reader.result);
+            setImagen(reader.result); // Al cargar, establece la imagen como base64.
         };
         if (file) {
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file); // Lee el archivo como una URL de datos base64.
         }
     };
 
-    // Manejo del envío del formulario
+    // Función para manejar el envío del formulario.
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario.
 
+        // Crea un objeto con los datos del formulario.
         const formData = {
             nombre,
             sexo,
@@ -117,16 +130,17 @@ function Animal() {
             peso_nacimiento,
             peso_destete,
             peso_actual,
-            estado,  // Añadir estado al formData
-            inseminacion,  // Añadir inseminacion al formData
+            estado,
+            inseminacion,
             enfermedades,
             productos,
             control_banos,
             produccion_leche,
-            inseminaciones  // Añadir inseminaciones al formData
+            inseminaciones
         };
 
         try {
+            // Envía una solicitud POST al servidor para crear un nuevo animal.
             const response = await fetch('http://localhost:5000/crud/createAnimal', {
                 method: 'POST',
                 headers: {
@@ -136,8 +150,8 @@ function Animal() {
             });
 
             if (response.ok) {
-                alert('Animal registrado exitosamente');
-                // Reset fields
+                alert('Animal registrado exitosamente'); // Muestra un mensaje de éxito.
+                // Resetea todos los campos del formulario.
                 setNombre('');
                 setSexo('');
                 setImagen('');
@@ -148,25 +162,25 @@ function Animal() {
                 setPeso_nacimiento('');
                 setPeso_destete('');
                 setPeso_actual('');
-                setEstado('');  // Reset estado
-                setInseminacion(false);  // Reset inseminacion
+                setEstado('');
+                setInseminacion(false);
                 setEnfermedades([{ id: '', fecha: '' }]);
                 setProductos([{ id: '', dosis: '', fecha: '', es_tratamiento: false }]);
                 setControl_banos([{ fecha: '', productos_utilizados: '' }]);
                 setProduccion_leche([{ fecha: '', cantidad: '', calidad: '' }]);
-                setInseminaciones([{ fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]);  // Reset inseminaciones
+                setInseminaciones([{ fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]);
             } else {
-                alert('Error al registrar el animal');
+                alert('Error al registrar el animal'); // Muestra un mensaje de error.
             }
         } catch (error) {
-            console.error('Error en la solicitud:', error);
-            alert('Error en la solicitud al servidor');
+            console.error('Error en la solicitud:', error); // Maneja el error en la solicitud.
+            alert('Error en la solicitud al servidor'); // Muestra un mensaje de error.
         }
     };
 
     return (
         <div>
-            <Header />
+            <Header /> {/* Renderiza el componente Header */}
             <Container>
                 <Card className="mt-3">
                     <Card.Body>
@@ -185,6 +199,7 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+                                {/* Campo para el sexo del animal */}
                                 <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="sexo" label="Sexo">
                                         <Form.Select
@@ -198,6 +213,7 @@ function Animal() {
                                         </Form.Select>
                                     </FloatingLabel>
                                 </Col>
+                                {/* Campo para la imagen del animal */}
                                 <Col sm="12" md="6" lg="6">
                                     <Form.Group controlId="imagen" className="">
                                         <Form.Control
@@ -208,6 +224,7 @@ function Animal() {
                                         />
                                     </Form.Group>
                                 </Col>
+                                {/* Campo para el código ID de la vaca */}
                                 <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="codigo_idVaca" label="Código ID Vaca">
                                         <Form.Control
@@ -219,6 +236,7 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+                                {/* Campo para la fecha de nacimiento del animal */}
                                 <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="fecha_nacimiento" label="Fecha de Nacimiento">
                                         <Form.Control
@@ -230,6 +248,7 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+                                {/* Campo para la raza del animal */}
                                 <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="raza" label="Raza">
                                         <Form.Control
@@ -241,6 +260,7 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+                                {/* Campo para observaciones adicionales */}
                                 <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="observaciones" label="Observaciones">
                                         <Form.Control
@@ -251,6 +271,7 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+                                {/* Campo para el peso al nacer */}
                                 <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="peso_nacimiento" label="Peso al Nacer (kg)">
                                         <Form.Control
@@ -262,6 +283,7 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+                                {/* Campo para el peso al destete */}
                                 <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="peso_destete" label="Peso al Destete (kg)">
                                         <Form.Control
@@ -273,6 +295,7 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+                                {/* Campo para el peso actual del animal */}
                                 <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="peso_actual" label="Peso Actual (kg)">
                                         <Form.Control
@@ -285,7 +308,7 @@ function Animal() {
                                     </FloatingLabel>
                                 </Col>
 
-                                {/* Sección de Estado */}
+                                {/* Sección de Estado del animal */}
                                 <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="estado" label="Estado">
                                         <Form.Select
@@ -374,6 +397,7 @@ function Animal() {
                                                         value={producto.dosis}
                                                         onChange={(e) => handleProductoChange(index, 'dosis', e.target.value)}
                                                     />
+
                                                 </FloatingLabel>
                                             </Col>
                                             <Col sm="4">
@@ -519,6 +543,7 @@ function Animal() {
                                 </Col>
 
                             </Row>
+                            {/* Botón para enviar el formulario */}
                             <div className="center-button">
                                 <Button variant="primary" type="submit" className="mt-3 custom-button" size="lg">
                                     Registrar Animal
@@ -532,4 +557,4 @@ function Animal() {
     );
 }
 
-export default Animal;
+export default Animal; // Exporta el componente Animal para ser utilizado en otras partes de la aplicación.

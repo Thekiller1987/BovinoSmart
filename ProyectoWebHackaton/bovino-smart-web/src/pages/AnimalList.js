@@ -1,86 +1,92 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form, Row, Col, FloatingLabel, Accordion } from 'react-bootstrap';
-import '../styles/AnimalList.css';
-import Header from '../components/Header';
-import deleteIcon from '../Iconos/trash3.svg';
-import EditIcon from '../Iconos/pencil.svg';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStethoscope, faSyringe, faShower, faTint, faSeedling } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react'; // Importa React y los hooks useEffect y useState.
+import { Modal, Button, Form, Row, Col, FloatingLabel, Accordion } from 'react-bootstrap'; // Importa componentes de React Bootstrap.
+import '../styles/AnimalList.css'; // Importa los estilos personalizados.
+import Header from '../components/Header'; // Importa el componente Header personalizado.
+import deleteIcon from '../Iconos/trash3.svg'; // Importa el ícono de eliminar.
+import EditIcon from '../Iconos/pencil.svg'; // Importa el ícono de editar.
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Importa el componente FontAwesomeIcon.
+import { faStethoscope, faSyringe, faShower, faTint, faSeedling } from '@fortawesome/free-solid-svg-icons'; // Importa los íconos de FontAwesome.
 
 function AnimalList() {
-    const [animales, setAnimales] = useState([]);
-    const [selectedAnimal, setSelectedAnimal] = useState(null);
-    const [editAnimal, setEditAnimal] = useState(null);
-    const [error, setError] = useState(null);
-    const [deleting, setDeleting] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [listaEnfermedades, setListaEnfermedades] = useState([]);
-    const [listaProductos, setListaProductos] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-
+    // Estados para la lista de animales y el manejo de la interfaz.
+    const [animales, setAnimales] = useState([]); // Estado para almacenar la lista de animales.
+    const [selectedAnimal, setSelectedAnimal] = useState(null); // Estado para almacenar el animal seleccionado.
+    const [editAnimal, setEditAnimal] = useState(null); // Estado para almacenar el animal en edición.
+    const [error, setError] = useState(null); // Estado para almacenar mensajes de error.
+    const [deleting, setDeleting] = useState(false); // Estado para indicar si un animal está siendo eliminado.
+    const [showEditModal, setShowEditModal] = useState(false); // Estado para mostrar u ocultar el modal de edición.
+    const [listaEnfermedades, setListaEnfermedades] = useState([]); // Estado para almacenar la lista de enfermedades.
+    const [listaProductos, setListaProductos] = useState([]); // Estado para almacenar la lista de productos.
+    const [searchQuery, setSearchQuery] = useState(''); // Estado para almacenar el término de búsqueda.
+    // Función para cargar la lista de animales desde el servidor.
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:5000/crud/listarAnimales');
+            const response = await fetch('http://localhost:5000/crud/listarAnimales'); // Realiza una solicitud GET al servidor.
             if (response.ok) {
-                const data = await response.json();
-                setAnimales(data);
+                const data = await response.json(); // Convierte la respuesta a JSON.
+                setAnimales(data); // Actualiza el estado con la lista de animales.
             } else {
-                throw new Error('Error al recuperar los datos');
+                throw new Error('Error al recuperar los datos'); // Lanza un error si la respuesta no es exitosa.
             }
         } catch (error) {
-            setError(error.message);
+            setError(error.message); // Maneja errores de la solicitud.
         }
     };
 
+    // Función para cargar las listas de enfermedades y productos desde el servidor.
     const fetchLists = async () => {
         try {
-            const enfermedadesResponse = await fetch('http://localhost:5000/crud/enfermedades');
-            const productosResponse = await fetch('http://localhost:5000/crud/productos');
+            const enfermedadesResponse = await fetch('http://localhost:5000/crud/enfermedades'); // Solicita la lista de enfermedades.
+            const productosResponse = await fetch('http://localhost:5000/crud/productos'); // Solicita la lista de productos.
 
             if (enfermedadesResponse.ok && productosResponse.ok) {
-                const enfermedadesData = await enfermedadesResponse.json();
-                const productosData = await productosResponse.json();
+                const enfermedadesData = await enfermedadesResponse.json(); // Convierte la respuesta a JSON.
+                const productosData = await productosResponse.json(); // Convierte la respuesta a JSON.
 
-                setListaEnfermedades(enfermedadesData);
-                setListaProductos(productosData);
+                setListaEnfermedades(enfermedadesData); // Actualiza el estado con la lista de enfermedades.
+                setListaProductos(productosData); // Actualiza el estado con la lista de productos.
             } else {
-                throw new Error('Error al recuperar las listas');
+                throw new Error('Error al recuperar las listas'); // Lanza un error si alguna de las respuestas no es exitosa.
             }
         } catch (error) {
-            setError(error.message);
+            setError(error.message); // Maneja errores de la solicitud.
         }
     };
 
+    // useEffect para cargar datos y listas al montar el componente.
     useEffect(() => {
-        fetchData();
-        fetchLists();
+        fetchData(); // Llama a la función para cargar la lista de animales.
+        fetchLists(); // Llama a la función para cargar las listas de enfermedades y productos.
     }, []);
 
+    // useEffect para manejar el evento de presionar la tecla Escape.
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.key === 'Escape') {
-                handleClosePanel();
+                handleClosePanel(); // Cierra el panel de detalles si se presiona Escape.
             }
         };
 
-        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keydown', handleKeyDown); // Agrega un listener para el evento keydown.
         return () => {
-            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keydown', handleKeyDown); // Limpia el listener cuando el componente se desmonta.
         };
     }, []);
-
+    // Función para formatear fechas.
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         if (isNaN(date)) {
-            return ''; // Manejar fecha inválida
+            return ''; // Maneja fecha inválida.
         }
-        return date.toISOString().split('T')[0];
+        return date.toISOString().split('T')[0]; // Formatea la fecha en formato YYYY-MM-DD.
     };
 
+    // Función para manejar el clic en una tarjeta de animal.
     const handleCardClick = (animal) => {
-        setSelectedAnimal(animal);
+        setSelectedAnimal(animal); // Establece el animal seleccionado.
     };
 
+    // Función para manejar el clic en el botón de edición.
     const handleEditClick = (animal) => {
         setEditAnimal({
             ...animal,
@@ -93,7 +99,7 @@ function AnimalList() {
                 id: listaProductos.find(prod => prod.nombre === nombre)?.idProductos || '',
                 dosis: animal.dosis_producto?.split(', ')[index] || '',
                 fecha: formatDate(animal.fechas_producto?.split(', ')[index] || ''),
-                es_tratamiento: (animal.tratamientos?.split(', ')[index] || '') === '1' // Convertir a booleano
+                es_tratamiento: (animal.tratamientos?.split(', ')[index] || '') === '1' // Convierte a booleano.
             })) : [],
             control_banos: animal.fechas_bano ? animal.fechas_bano.split(', ').map((fecha, index) => ({
                 fecha: formatDate(fecha),
@@ -110,44 +116,48 @@ function AnimalList() {
                 resultado: animal.resultados_inseminacion?.split(', ')[index] || '',
                 observaciones: animal.observaciones_inseminacion?.split(', ')[index] || ''
             })) : [],
-            inseminacion: animal.inseminacion === 1 // Convertir a booleano para el checkbox
+            inseminacion: animal.inseminacion === 1 // Convierte a booleano para el checkbox.
         });
-        setShowEditModal(true);
+        setShowEditModal(true); // Muestra el modal de edición.
     };
-
+    // Función para obtener la clase CSS de la tarjeta según el estado del animal.
     const getCardClass = (estado) => {
         switch (estado) {
             case 'Muerto':
-                return 'card-animal-list dead-animal';
+                return 'card-animal-list dead-animal'; // Clase para animales muertos.
             case 'Enfermo':
-                return 'card-animal-list sick-animal';
+                return 'card-animal-list sick-animal'; // Clase para animales enfermos.
             default:
-                return 'card-animal-list';
+                return 'card-animal-list'; // Clase por defecto para animales normales.
         }
     };
 
+    // Función para obtener el ícono según el estado del animal.
     const getIconForState = (estado) => {
         switch (estado) {
             case 'Muerto':
-                return '❌'; // Cruz roja para estado "Muerto"
+                return '❌'; // Cruz roja para estado "Muerto".
             case 'Enfermo':
-                return '⚠️'; // Signo de exclamación amarillo para estado "Enfermo"
+                return '⚠️'; // Signo de exclamación amarillo para estado "Enfermo".
             default:
-                return '';
+                return ''; // Ningún ícono para otros estados.
         }
     };
 
+    // Función para cerrar el panel de detalles.
     const handleClosePanel = () => {
-        setSelectedAnimal(null);
+        setSelectedAnimal(null); // Establece el animal seleccionado como null.
     };
 
+    // Función para cerrar el modal de edición.
     const handleCloseEditModal = () => {
-        setShowEditModal(false);
+        setShowEditModal(false); // Oculta el modal de edición.
     };
 
+    // Función para manejar cambios en los inputs del formulario de edición.
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        const [field, index, subfield] = name.split('.');
+        const { name, value } = e.target; // Obtiene el nombre y valor del campo de input.
+        const [field, index, subfield] = name.split('.'); // Divide el nombre del input en partes.
 
         if (index !== undefined) {
             setEditAnimal((prevAnimal) => {
@@ -169,50 +179,52 @@ function AnimalList() {
         }
     };
 
+    // Función para manejar el cambio de imagen del animal en el modal de edición.
     const handleImagenChange = (event) => {
         const file = event.target.files[0];
-
         const reader = new FileReader();
         reader.onload = () => {
-            const base64String = reader.result;
+            const base64String = reader.result; // Convierte la imagen a base64.
             setEditAnimal((prevAnimal) => ({
                 ...prevAnimal,
                 imagen: base64String
             }));
         };
         if (file) {
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file); // Lee el archivo como una URL de datos base64.
         }
     };
 
+    // Función para añadir un nuevo campo al historial (enfermedades, productos, etc.).
     const handleAddField = (field) => {
         setEditAnimal((prevAnimal) => ({
             ...prevAnimal,
-            [field]: [...prevAnimal[field], { id: '', fecha: '' }]
+            [field]: [...prevAnimal[field], { id: '', fecha: '' }] // Añade un nuevo objeto vacío al campo especificado.
         }));
     };
-
+    // Función para eliminar un animal de la lista.
     const handleDeleteAnimal = async (idAnimal) => {
         try {
-            setDeleting(true);
+            setDeleting(true); // Establece el estado de eliminación en true.
             const response = await fetch(`http://localhost:5000/crud/deleteAnimal/${idAnimal}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
                 setTimeout(() => {
-                    setAnimales(animales.filter(animal => animal.idAnimal !== idAnimal));
+                    setAnimales(animales.filter(animal => animal.idAnimal !== idAnimal)); // Filtra el animal eliminado.
                     setSelectedAnimal(null);
-                    setDeleting(false);
-                }, 1000); // Tiempo para la animación
+                    setDeleting(false); // Restablece el estado de eliminación.
+                }, 1000); // Tiempo para la animación.
             } else {
-                throw new Error('Error al eliminar el animal');
+                throw new Error('Error al eliminar el animal'); // Lanza un error si la respuesta no es exitosa.
             }
         } catch (error) {
-            setError(error.message);
+            setError(error.message); // Maneja errores de la solicitud.
             setDeleting(false);
         }
     };
 
+    // Función para actualizar un animal en la lista.
     const handleUpdateAnimal = async (e) => {
         e.preventDefault();
         try {
@@ -221,29 +233,31 @@ function AnimalList() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(editAnimal) // Asegúrate de que es_tratamiento se envía correctamente
+                body: JSON.stringify(editAnimal) // Asegúrate de que es_tratamiento se envía correctamente.
             });
             if (response.ok) {
                 const updatedAnimal = await response.json();
-                setAnimales(animales.map(animal => animal.idAnimal === updatedAnimal.idAnimal ? updatedAnimal : animal));
+                setAnimales(animales.map(animal => animal.idAnimal === updatedAnimal.idAnimal ? updatedAnimal : animal)); // Actualiza la lista de animales.
                 setSelectedAnimal(updatedAnimal);
-                setEditAnimal(null); // Limpiar el estado de editAnimal después de actualizar
-                await fetchLists();
-                await fetchData();
-                handleCloseEditModal();
-                handleClosePanel();
+                setEditAnimal(null); // Limpiar el estado de editAnimal después de actualizar.
+                await fetchLists(); // Recarga las listas de enfermedades y productos.
+                await fetchData(); // Recarga la lista de animales.
+                handleCloseEditModal(); // Cierra el modal de edición.
+                handleClosePanel(); // Cierra el panel de detalles.
             } else {
-                throw new Error('Error al actualizar el animal');
+                throw new Error('Error al actualizar el animal'); // Lanza un error si la respuesta no es exitosa.
             }
         } catch (error) {
-            setError(error.message);
+            setError(error.message); // Maneja errores de la solicitud.
         }
     };
 
+    // Función para manejar cambios en el término de búsqueda.
     const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
+        setSearchQuery(e.target.value); // Actualiza el término de búsqueda en el estado.
     };
 
+    // Filtra los animales según el término de búsqueda.
     const filteredAnimales = animales.filter((animal) => {
         const search = searchQuery.toLowerCase();
         return (
@@ -255,10 +269,9 @@ function AnimalList() {
             (animal.enfermedades && animal.enfermedades.toLowerCase().includes(search))
         );
     });
-
     return (
         <div className="body-animal-list">
-            <Header />
+            <Header /> {/* Renderiza el componente Header */}
             <div className="search-container">
                 <FloatingLabel controlId="search" label="Buscar">
                     <Form.Control
@@ -320,6 +333,7 @@ function AnimalList() {
                         </div>
                         <div className="detail-column">
                             <Accordion defaultActiveKey="0">
+                                {/* Historial de Enfermedades */}
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header><FontAwesomeIcon icon={faStethoscope} /> Historial de Enfermedades</Accordion.Header>
                                     <Accordion.Body className="background-enfermedades">
@@ -336,12 +350,12 @@ function AnimalList() {
                                     </Accordion.Body>
                                 </Accordion.Item>
 
+                                {/* Productos Aplicados */}
                                 <Accordion.Item eventKey="1">
                                     <Accordion.Header><FontAwesomeIcon icon={faSyringe} /> Productos Aplicados</Accordion.Header>
                                     <Accordion.Body className="background-productos">
                                         {selectedAnimal.productos && selectedAnimal.productos.split(', ').length > 0 ? (
                                             <div className="detail-section">
-                                                <h4>Productos Aplicados</h4>
                                                 {selectedAnimal.productos.split(', ').map((producto, index) => (
                                                     <div key={index} className="product-item">
                                                         <p><span className="attribute">Producto:</span> <span className="value">{producto}</span></p>
@@ -353,13 +367,13 @@ function AnimalList() {
                                             </div>
                                         ) : (
                                             <div className="detail-section">
-                                                <h4>Productos Aplicados</h4>
                                                 <p>No hay productos aplicados.</p>
                                             </div>
                                         )}
                                     </Accordion.Body>
                                 </Accordion.Item>
 
+                                {/* Control de Baños */}
                                 <Accordion.Item eventKey="2">
                                     <Accordion.Header><FontAwesomeIcon icon={faShower} /> Control de Baños</Accordion.Header>
                                     <Accordion.Body className="background-banos">
@@ -375,7 +389,7 @@ function AnimalList() {
                                         )}
                                     </Accordion.Body>
                                 </Accordion.Item>
-
+                                {/* Producción de Leche */}
                                 <Accordion.Item eventKey="3">
                                     <Accordion.Header><FontAwesomeIcon icon={faTint} /> Producción de Leche</Accordion.Header>
                                     <Accordion.Body className="background-leche">
@@ -393,6 +407,7 @@ function AnimalList() {
                                     </Accordion.Body>
                                 </Accordion.Item>
 
+                                {/* Historial de Inseminaciones */}
                                 <Accordion.Item eventKey="4">
                                     <Accordion.Header><FontAwesomeIcon icon={faSeedling} /> Historial de Inseminaciones</Accordion.Header>
                                     <Accordion.Body className="background-inseminaciones">
@@ -413,6 +428,7 @@ function AnimalList() {
                             </Accordion>
                         </div>
 
+                        {/* Botones de Editar y Eliminar */}
                         <div className="buttons-container">
                             <button onClick={() => handleEditClick(selectedAnimal)} className="edit-button-animal-list">
                                 <img src={EditIcon} alt="Editar" style={{ width: '30px', marginRight: '5px' }} />
@@ -425,6 +441,7 @@ function AnimalList() {
                 </div>
             )}
 
+            {/* Modal para Editar Animal */}
             <Modal show={showEditModal} onHide={handleCloseEditModal} size="lg" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Editar Animal</Modal.Title>
@@ -458,6 +475,7 @@ function AnimalList() {
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
+                            {/* Campo de carga de imagen */}
                             <Col sm="12" md="6" lg="6">
                                 <Form.Group controlId="imagen" className="">
                                     <Form.Control
@@ -469,6 +487,7 @@ function AnimalList() {
                                     />
                                 </Form.Group>
                             </Col>
+                            {/* Código ID Vaca */}
                             <Col sm="12" md="6" lg="6">
                                 <FloatingLabel controlId="codigo_idVaca" label="Código ID Vaca">
                                     <Form.Control
@@ -481,6 +500,7 @@ function AnimalList() {
                                     />
                                 </FloatingLabel>
                             </Col>
+                            {/* Fecha de Nacimiento */}
                             <Col sm="12" md="6" lg="6">
                                 <FloatingLabel controlId="fecha_nacimiento" label="Fecha de Nacimiento">
                                     <Form.Control
@@ -493,6 +513,7 @@ function AnimalList() {
                                     />
                                 </FloatingLabel>
                             </Col>
+                            {/* Raza del Animal */}
                             <Col sm="12" md="6" lg="6">
                                 <FloatingLabel controlId="raza" label="Raza">
                                     <Form.Control
@@ -505,6 +526,7 @@ function AnimalList() {
                                     />
                                 </FloatingLabel>
                             </Col>
+                            {/* Observaciones */}
                             <Col sm="12" md="6" lg="6">
                                 <FloatingLabel controlId="observaciones" label="Observaciones">
                                     <Form.Control
@@ -516,6 +538,7 @@ function AnimalList() {
                                     />
                                 </FloatingLabel>
                             </Col>
+                            {/* Peso al Nacer */}
                             <Col sm="12" md="6" lg="6">
                                 <FloatingLabel controlId="peso_nacimiento" label="Peso al Nacer (kg)">
                                     <Form.Control
@@ -528,6 +551,7 @@ function AnimalList() {
                                     />
                                 </FloatingLabel>
                             </Col>
+                            {/* Peso al Destete */}
                             <Col sm="12" md="6" lg="6">
                                 <FloatingLabel controlId="peso_destete" label="Peso al Destete (kg)">
                                     <Form.Control
@@ -540,6 +564,7 @@ function AnimalList() {
                                     />
                                 </FloatingLabel>
                             </Col>
+                            {/* Peso Actual */}
                             <Col sm="12" md="6" lg="6">
                                 <FloatingLabel controlId="peso_actual" label="Peso Actual (kg)">
                                     <Form.Control
@@ -553,6 +578,7 @@ function AnimalList() {
                                 </FloatingLabel>
                             </Col>
 
+                            {/* Estado del Animal */}
                             <Col sm="12" md="6" lg="6">
                                 <FloatingLabel controlId="estado" label="Estado">
                                     <Form.Select
@@ -569,7 +595,7 @@ function AnimalList() {
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
-
+                            {/* Checkbox de Inseminación */}
                             <Col sm="12" md="6" lg="6">
                                 <Form.Check
                                     type="checkbox"
@@ -580,6 +606,7 @@ function AnimalList() {
                                 />
                             </Col>
 
+                            {/* Historial de Enfermedades */}
                             <Col sm="12">
                                 <h5>Historial de Enfermedades</h5>
                                 {editAnimal?.enfermedades?.map((enfermedad, index) => (
@@ -612,10 +639,10 @@ function AnimalList() {
                                         </Col>
                                     </Row>
                                 ))}
-
                                 <Button variant="link" onClick={() => handleAddField('enfermedades')}>Añadir Enfermedad</Button>
                             </Col>
 
+                            {/* Productos Aplicados */}
                             <Col sm="12">
                                 <h5>Productos Aplicados</h5>
                                 {editAnimal?.productos?.map((producto, index) => (
@@ -676,6 +703,7 @@ function AnimalList() {
                                 <Button variant="link" onClick={() => handleAddField('productos')}>Añadir Producto</Button>
                             </Col>
 
+                            {/* Control de Baños */}
                             <Col sm="12">
                                 <h5>Control de Baños</h5>
                                 {editAnimal?.control_banos?.map((bano, index) => (
@@ -705,6 +733,7 @@ function AnimalList() {
                                 <Button variant="link" onClick={() => handleAddField('control_banos')}>Añadir Control de Baño</Button>
                             </Col>
 
+                            {/* Producción de Leche */}
                             <Col sm="12">
                                 <h5>Producción de Leche</h5>
                                 {editAnimal?.produccion_leche?.map((produccion, index) => (
@@ -744,7 +773,7 @@ function AnimalList() {
                                 ))}
                                 <Button variant="link" onClick={() => handleAddField('produccion_leche')}>Añadir Producción de Leche</Button>
                             </Col>
-
+                            {/* Historial de Inseminaciones */}
                             <Col sm="12">
                                 <h5>Historial de Inseminaciones</h5>
                                 {editAnimal?.inseminaciones?.map((inseminacion, index) => (
