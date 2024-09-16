@@ -12,6 +12,23 @@ function Productos() {
     const [notas, setNotas] = useState(''); // Estado para notas adicionales
     const [esTratamiento, setEsTratamiento] = useState(false); // Estado para indicar si es un tratamiento
     const [motivo, setMotivo] = useState(''); // Estado para el motivo del tratamiento
+    const [imagen, setImagen] = useState(''); // Estado para manejar la imagen del producto
+
+    // Función para manejar la selección de la imagen
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            setImagen(reader.result); // Guarda la imagen en base64 en el estado
+        };
+
+        if (file) {
+            reader.readAsDataURL(file); // Lee el archivo de imagen como una URL de datos
+        } else {
+            setImagen('');
+        }
+    };
 
     // Maneja el envío del formulario
     const handleSubmit = async (e) => {
@@ -25,7 +42,8 @@ function Productos() {
             frecuencia_aplicacion: frecuenciaAplicacion,
             notas,
             es_tratamiento: esTratamiento,
-            motivo
+            motivo,
+            imagen // Incluye la imagen en el objeto de datos del formulario
         };
 
         try {
@@ -48,6 +66,7 @@ function Productos() {
                 setNotas('');
                 setEsTratamiento(false);
                 setMotivo('');
+                setImagen(''); // Reinicia el estado de la imagen
             } else {
                 alert('Error al registrar el producto'); // Muestra un mensaje de error
             }
@@ -152,6 +171,18 @@ function Productos() {
                                         </FloatingLabel>
                                     </Col>
                                 )}
+
+                                {/* Campo de carga de imagen */}
+                                <Col sm="12">
+                                    <Form.Group controlId="imagen">
+                                        <Form.Label>Imagen del Producto</Form.Label>
+                                        <Form.Control
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageChange}
+                                        />
+                                    </Form.Group>
+                                </Col>
                             </Row>
                             <div className="center-button">
                                 <Button variant="primary" type="submit" className="mt-3 custom-button" size="lg">

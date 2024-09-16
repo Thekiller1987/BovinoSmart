@@ -4,7 +4,7 @@ const mysql = require('mysql'); // Importa el módulo MySQL para conectar a la b
 const cors = require('cors'); // Importa CORS para permitir solicitudes desde diferentes orígenes
 
 const app = express(); // Crea una instancia de la aplicación Express
-const port = 5000; // Define el puerto en el que se ejecutará el servidor
+const port = process.env.PORT || 5000; // Define el puerto en el que se ejecutará el servidor
 
 // Configuración de CORS
 app.use(cors()); // Habilita CORS para permitir solicitudes de recursos cruzados
@@ -14,10 +14,10 @@ app.use(express.json({ limit: '50mb' })); // Permite a la aplicación analizar s
 
 // Configuración de la conexión a la primera base de datos (BoVinoSmartBD)
 const db = mysql.createConnection({
-  host: 'localhost', // Host de la base de datos
-  user: 'root', // Usuario de la base de datos
-  password: 'Yamilg620', // Contraseña del usuario
-  database: 'BoVinoSmartBD', // Nombre de la base de datos
+  host: process.env.DB_HOST, // Host de la base de datos desde variables de entorno
+  user: process.env.DB_USER, // Usuario de la base de datos desde variables de entorno
+  password: process.env.DB_PASS, // Contraseña del usuario desde variables de entorno
+  database: process.env.DB_NAME, // Nombre de la base de datos desde variables de entorno
 });
 
 // Conexión a la primera base de datos
@@ -31,10 +31,10 @@ db.connect((err) => {
 
 // Configuración de la conexión a la segunda base de datos (trazabilidad_ganaderaIA)
 const db2 = mysql.createConnection({
-  host: 'localhost', // Host de la base de datos
-  user: 'root', // Usuario de la base de datos
-  password: 'Yamilg620', // Contraseña del usuario
-  database: 'trazabilidad_ganaderaIA', // Nombre de la base de datos
+  host: process.env.DB2_HOST, // Host de la base de datos desde variables de entorno
+  user: process.env.DB2_USER, // Usuario de la base de datos desde variables de entorno
+  password: process.env.DB2_PASS, // Contraseña del usuario desde variables de entorno
+  database: process.env.DB2_NAME, // Nombre de la base de datos desde variables de entorno
 });
 
 // Conexión a la segunda base de datos

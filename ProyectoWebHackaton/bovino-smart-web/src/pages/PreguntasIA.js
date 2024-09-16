@@ -16,27 +16,27 @@ function PreguntaForm() {
         setEfectosActivos(!efectosActivos); // Cambia el estado de efectos entre activo y desactivo.
     };
 
-    // Función para manejar el envío del formulario.
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Previene el comportamiento predeterminado del formulario.
-
+        e.preventDefault();
+    
         try {
-            // Realiza una solicitud POST al servidor para obtener la respuesta a la pregunta.
             const res = await fetch('http://localhost:5000/crudDb2/preguntar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`, // Incluye el token aquí
                 },
-                body: JSON.stringify({ pregunta }), // Envía la pregunta en formato JSON.
+                body: JSON.stringify({ pregunta }),
             });
-
-            const data = await res.json(); // Convierte la respuesta en formato JSON.
-            setRespuesta(data.respuesta); // Actualiza el estado con la respuesta recibida.
+    
+            const data = await res.json();
+            setRespuesta(data.respuesta);
         } catch (error) {
-            console.error('Error al enviar la pregunta:', error); // Maneja errores en la solicitud.
-            setRespuesta('Hubo un error al procesar la pregunta.'); // Muestra un mensaje de error al usuario.
+            console.error('Error al enviar la pregunta:', error);
+            setRespuesta('Hubo un error al procesar la pregunta.');
         }
     };
+    
 
     return (
         <div>

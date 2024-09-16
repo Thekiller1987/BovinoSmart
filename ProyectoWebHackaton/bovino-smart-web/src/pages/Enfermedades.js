@@ -7,13 +7,28 @@ function Enfermedades() {
     // Estados para los datos del formulario.
     const [nombre, setNombre] = useState(''); // Estado para el nombre de la enfermedad.
     const [descripcion, setDescripcion] = useState(''); // Estado para la descripción de la enfermedad.
+    const [sintomas, setSintomas] = useState(''); // Estado para los síntomas de la enfermedad.
+    const [modotrasmision, setModoTransmision] = useState(''); // Estado para el modo de transmisión de la enfermedad.
+    const [imagen, setImagen] = useState(''); // Estado para la imagen de la enfermedad.
+
+    // Maneja el cambio de la imagen de la enfermedad.
+    const handleImagenChange = (event) => {
+        const file = event.target.files[0]; // Obtiene el archivo de imagen seleccionado.
+        const reader = new FileReader(); // Crea un lector de archivos.
+        reader.onload = () => {
+            setImagen(reader.result); // Al cargar, establece la imagen como base64.
+        };
+        if (file) {
+            reader.readAsDataURL(file); // Lee el archivo como una URL de datos base64.
+        }
+    };
 
     // Manejo del envío del formulario.
     const handleSubmit = async (e) => {
         e.preventDefault(); // Previene el comportamiento predeterminado del formulario.
 
         // Crea un objeto con los datos del formulario.
-        const formData = { nombre, descripcion };
+        const formData = { nombre, descripcion, sintomas, modotrasmision, imagen };
 
         try {
             // Envía una solicitud POST al servidor para registrar una nueva enfermedad.
@@ -29,6 +44,9 @@ function Enfermedades() {
                 alert('Enfermedad registrada'); // Muestra un mensaje de éxito si la respuesta es correcta.
                 setNombre(''); // Resetea el campo del nombre.
                 setDescripcion(''); // Resetea el campo de la descripción.
+                setSintomas(''); // Resetea el campo de los síntomas.
+                setModoTransmision(''); // Resetea el campo del modo de transmisión.
+                setImagen(''); // Resetea el campo de la imagen.
             } else {
                 alert('Error al registrar la enfermedad'); // Muestra un mensaje de error si la respuesta no es correcta.
             }
@@ -69,6 +87,40 @@ function Enfermedades() {
                                             onChange={(e) => setDescripcion(e.target.value)} // Actualiza el estado con el valor ingresado.
                                         />
                                     </FloatingLabel>
+                                </Col>
+                                {/* Campo para los síntomas de la enfermedad */}
+                                <Col sm="12" md="6">
+                                    <FloatingLabel controlId="sintomas" label="Síntomas">
+                                        <Form.Control
+                                            as="textarea"
+                                            placeholder="Ingrese los síntomas"
+                                            value={sintomas}
+                                            onChange={(e) => setSintomas(e.target.value)}
+                                        />
+                                    </FloatingLabel>
+                                </Col>
+                                {/* Campo para el modo de transmisión */}
+                                <Col sm="12" md="6">
+                                    <FloatingLabel controlId="modotrasmision" label="Modo de Transmisión">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Ingrese el modo de transmisión"
+                                            value={modotrasmision}
+                                            onChange={(e) => setModoTransmision(e.target.value)}
+                                        />
+                                    </FloatingLabel>
+                                </Col>
+                                {/* Campo para la imagen de la enfermedad */}
+                                <Col sm="12" md="6">
+                                    <Form.Group controlId="imagen" className="">
+                                        <Form.Label>Imagen de la Enfermedad</Form.Label>
+                                        <Form.Control
+                                            type="file"
+                                            accept=".jpg, .png, .jpeg"
+                                            size="lg"
+                                            onChange={handleImagenChange}
+                                        />
+                                    </Form.Group>
                                 </Col>
                             </Row>
                             {/* Botón de envío del formulario */}

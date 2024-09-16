@@ -7,6 +7,7 @@ import EditIcon from '../Iconos/pencil.svg'; // Importa el ícono de editar.
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Importa el componente FontAwesomeIcon.
 import { faStethoscope, faSyringe, faShower, faTint, faSeedling } from '@fortawesome/free-solid-svg-icons'; // Importa los íconos de FontAwesome.
 
+
 function AnimalList() {
     // Estados para la lista de animales y el manejo de la interfaz.
     const [animales, setAnimales] = useState([]); // Estado para almacenar la lista de animales.
@@ -18,6 +19,16 @@ function AnimalList() {
     const [listaEnfermedades, setListaEnfermedades] = useState([]); // Estado para almacenar la lista de enfermedades.
     const [listaProductos, setListaProductos] = useState([]); // Estado para almacenar la lista de productos.
     const [searchQuery, setSearchQuery] = useState(''); // Estado para almacenar el término de búsqueda.
+
+    const [userRoles, setUserRoles] = useState([]);
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const userData = JSON.parse(atob(token.split('.')[1]));
+            setUserRoles(userData.rol ? [userData.rol] : []);
+        }
+    }, []);
+
     // Función para cargar la lista de animales desde el servidor.
     const fetchData = async () => {
         try {
@@ -449,379 +460,401 @@ function AnimalList() {
                 <Modal.Body>
                     <Form onSubmit={handleUpdateAnimal}>
                         <Row className="g-3">
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="nombre" label="Nombre">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Ingrese el nombre del animal"
-                                        name="nombre"
-                                        value={editAnimal?.nombre || ''}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="sexo" label="Sexo">
-                                    <Form.Select
-                                        name="sexo"
-                                        value={editAnimal?.sexo || ''}
-                                        onChange={handleInputChange}
-                                        required
-                                    >
-                                        <option value="">Seleccione el sexo</option>
-                                        <option value="Macho">Macho</option>
-                                        <option value="Hembra">Hembra</option>
-                                    </Form.Select>
-                                </FloatingLabel>
-                            </Col>
-                            {/* Campo de carga de imagen */}
-                            <Col sm="12" md="6" lg="6">
-                                <Form.Group controlId="imagen" className="">
-                                    <Form.Control
-                                        type="file"
-                                        accept=".jpg, .png, .jpeg"
-                                        size="lg"
-                                        name="imagen"
-                                        onChange={handleImagenChange}
-                                    />
-                                </Form.Group>
-                            </Col>
-                            {/* Código ID Vaca */}
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="codigo_idVaca" label="Código ID Vaca">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Ingrese el código ID de la vaca"
-                                        name="codigo_idVaca"
-                                        value={editAnimal?.codigo_idVaca || ''}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            {/* Fecha de Nacimiento */}
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="fecha_nacimiento" label="Fecha de Nacimiento">
-                                    <Form.Control
-                                        type="date"
-                                        placeholder="Ingrese la fecha de nacimiento"
-                                        name="fecha_nacimiento"
-                                        value={editAnimal?.fecha_nacimiento || ''}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            {/* Raza del Animal */}
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="raza" label="Raza">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Ingrese la raza del animal"
-                                        name="raza"
-                                        value={editAnimal?.raza || ''}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            {/* Observaciones */}
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="observaciones" label="Observaciones">
-                                    <Form.Control
-                                        as="textarea"
-                                        placeholder="Ingrese observaciones"
-                                        name="observaciones"
-                                        value={editAnimal?.observaciones || ''}
-                                        onChange={handleInputChange}
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            {/* Peso al Nacer */}
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="peso_nacimiento" label="Peso al Nacer (kg)">
-                                    <Form.Control
-                                        type="number"
-                                        placeholder="Ingrese el peso al nacer"
-                                        name="peso_nacimiento"
-                                        value={editAnimal?.peso_nacimiento || ''}
-                                        onChange={handleInputChange}
-                                        step="0.01"
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            {/* Peso al Destete */}
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="peso_destete" label="Peso al Destete (kg)">
-                                    <Form.Control
-                                        type="number"
-                                        placeholder="Ingrese el peso al destete"
-                                        name="peso_destete"
-                                        value={editAnimal?.peso_destete || ''}
-                                        onChange={handleInputChange}
-                                        step="0.01"
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            {/* Peso Actual */}
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="peso_actual" label="Peso Actual (kg)">
-                                    <Form.Control
-                                        type="number"
-                                        placeholder="Ingrese el peso actual"
-                                        name="peso_actual"
-                                        value={editAnimal?.peso_actual || ''}
-                                        onChange={handleInputChange}
-                                        step="0.01"
-                                    />
-                                </FloatingLabel>
-                            </Col>
-
-                            {/* Estado del Animal */}
-                            <Col sm="12" md="6" lg="6">
-                                <FloatingLabel controlId="estado" label="Estado">
-                                    <Form.Select
-                                        name="estado"
-                                        value={editAnimal?.estado || ''}
-                                        onChange={handleInputChange}
-                                        required
-                                    >
-                                        <option value="">Seleccione el estado</option>
-                                        <option value="Activo">Activo</option>
-                                        <option value="Enfermo">Enfermo</option>
-                                        <option value="Vendido">Vendido</option>
-                                        <option value="Muerto">Muerto</option>
-                                    </Form.Select>
-                                </FloatingLabel>
-                            </Col>
-                            {/* Checkbox de Inseminación */}
-                            <Col sm="12" md="6" lg="6">
-                                <Form.Check
-                                    type="checkbox"
-                                    id="inseminacion"
-                                    label="¿Ha sido inseminado?"
-                                    checked={editAnimal?.inseminacion || false}
-                                    onChange={(e) => setEditAnimal({ ...editAnimal, inseminacion: e.target.checked })}
-                                />
-                            </Col>
-
-                            {/* Historial de Enfermedades */}
-                            <Col sm="12">
-                                <h5>Historial de Enfermedades</h5>
-                                {editAnimal?.enfermedades?.map((enfermedad, index) => (
-                                    <Row key={index} className="g-3">
-                                        <Col sm="6">
-                                            <FloatingLabel controlId={`enfermedad-id-${index}`} label="ID Enfermedad">
-                                                <Form.Select
-                                                    name={`enfermedades.${index}.id`}
-                                                    value={enfermedad.id}
-                                                    onChange={handleInputChange}
-                                                >
-                                                    <option value="">Seleccione una enfermedad</option>
-                                                    {listaEnfermedades.map((enf) => (
-                                                        <option key={enf.idEnfermedades} value={enf.idEnfermedades}>
-                                                            {enf.nombre}
-                                                        </option>
-                                                    ))}
-                                                </Form.Select>
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="6">
-                                            <FloatingLabel controlId={`enfermedad-fecha-${index}`} label="Fecha Diagnóstico">
-                                                <Form.Control
-                                                    type="date"
-                                                    name={`enfermedades.${index}.fecha`}
-                                                    value={enfermedad.fecha}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                    </Row>
-                                ))}
-                                <Button variant="link" onClick={() => handleAddField('enfermedades')}>Añadir Enfermedad</Button>
-                            </Col>
-
-                            {/* Productos Aplicados */}
-                            <Col sm="12">
-                                <h5>Productos Aplicados</h5>
-                                {editAnimal?.productos?.map((producto, index) => (
-                                    <Row key={index} className="g-3">
-                                        <Col sm="4">
-                                            <FloatingLabel controlId={`producto-id-${index}`} label="ID Producto">
-                                                <Form.Select
-                                                    name={`productos.${index}.id`}
-                                                    value={producto.id}
-                                                    onChange={handleInputChange}
-                                                >
-                                                    <option value="">Seleccione un producto</option>
-                                                    {listaProductos.map((prod) => (
-                                                        <option key={prod.idProductos} value={prod.idProductos}>
-                                                            {prod.nombre}
-                                                        </option>
-                                                    ))}
-                                                </Form.Select>
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="4">
-                                            <FloatingLabel controlId={`producto-dosis-${index}`} label="Dosis">
-                                                <Form.Control
-                                                    type="text"
-                                                    name={`productos.${index}.dosis`}
-                                                    value={producto.dosis}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="4">
-                                            <FloatingLabel controlId={`producto-fecha-${index}`} label="Fecha Aplicación">
-                                                <Form.Control
-                                                    type="date"
-                                                    name={`productos.${index}.fecha`}
-                                                    value={producto.fecha}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="12">
-                                            <Form.Check
-                                                type="checkbox"
-                                                label="¿Es un tratamiento?"
-                                                checked={producto.es_tratamiento}
-                                                onChange={(e) => {
-                                                    const newProductos = [...editAnimal.productos];
-                                                    newProductos[index].es_tratamiento = e.target.checked;
-                                                    setEditAnimal(prevAnimal => ({
-                                                        ...prevAnimal,
-                                                        productos: newProductos
-                                                    }));
-                                                }}
+                            {/* Campos accesibles para el ganadero */}
+                            {userRoles.includes('Ganadero') && (
+                                <>
+                                    <Col sm="12" md="6" lg="6">
+                                        <FloatingLabel controlId="nombre" label="Nombre">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Ingrese el nombre del animal"
+                                                name="nombre"
+                                                value={editAnimal?.nombre || ''}
+                                                onChange={handleInputChange}
+                                                required
                                             />
-                                        </Col>
-                                    </Row>
-                                ))}
-                                <Button variant="link" onClick={() => handleAddField('productos')}>Añadir Producto</Button>
-                            </Col>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col sm="12" md="6" lg="6">
+                                        <FloatingLabel controlId="sexo" label="Sexo">
+                                            <Form.Select
+                                                name="sexo"
+                                                value={editAnimal?.sexo || ''}
+                                                onChange={handleInputChange}
+                                                required
+                                            >
+                                                <option value="">Seleccione el sexo</option>
+                                                <option value="Macho">Macho</option>
+                                                <option value="Hembra">Hembra</option>
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col sm="12" md="6" lg="6">
+                                        <Form.Group controlId="imagen" className="">
+                                            <Form.Control
+                                                type="file"
+                                                accept=".jpg, .png, .jpeg"
+                                                size="lg"
+                                                name="imagen"
+                                                onChange={handleImagenChange}
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col sm="12" md="6" lg="6">
+                                        <FloatingLabel controlId="codigo_idVaca" label="Código ID Vaca">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Ingrese el código ID de la vaca"
+                                                name="codigo_idVaca"
+                                                value={editAnimal?.codigo_idVaca || ''}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col sm="12" md="6" lg="6">
+                                        <FloatingLabel controlId="fecha_nacimiento" label="Fecha de Nacimiento">
+                                            <Form.Control
+                                                type="date"
+                                                placeholder="Ingrese la fecha de nacimiento"
+                                                name="fecha_nacimiento"
+                                                value={editAnimal?.fecha_nacimiento || ''}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col sm="12" md="6" lg="6">
+                                        <FloatingLabel controlId="raza" label="Raza">
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Ingrese la raza del animal"
+                                                name="raza"
+                                                value={editAnimal?.raza || ''}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col sm="12" md="6" lg="6">
+                                        <FloatingLabel controlId="observaciones" label="Observaciones">
+                                            <Form.Control
+                                                as="textarea"
+                                                placeholder="Ingrese observaciones"
+                                                name="observaciones"
+                                                value={editAnimal?.observaciones || ''}
+                                                onChange={handleInputChange}
+                                            />
+                                        </FloatingLabel>
+                                    </Col>
+                                </>
+                            )}
 
-                            {/* Control de Baños */}
-                            <Col sm="12">
-                                <h5>Control de Baños</h5>
-                                {editAnimal?.control_banos?.map((bano, index) => (
-                                    <Row key={index} className="g-3">
-                                        <Col sm="6">
-                                            <FloatingLabel controlId={`bano-fecha-${index}`} label="Fecha de Baño">
-                                                <Form.Control
-                                                    type="date"
-                                                    name={`control_banos.${index}.fecha`}
-                                                    value={bano.fecha}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="6">
-                                            <FloatingLabel controlId={`bano-productos-${index}`} label="Productos Utilizados">
-                                                <Form.Control
-                                                    type="text"
-                                                    name={`control_banos.${index}.productos_utilizados`}
-                                                    value={bano.productos_utilizados}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                    </Row>
-                                ))}
-                                <Button variant="link" onClick={() => handleAddField('control_banos')}>Añadir Control de Baño</Button>
-                            </Col>
+                            {/* Campos accesibles para el ganadero y el empleado */}
+                            {(userRoles.includes('Ganadero') || userRoles.includes('Empleado')) && (
+                                <>
+                                    {/* Actualización de Peso */}
+                                    <Col sm="12" md="6" lg="6">
+                                        <FloatingLabel controlId="peso_nacimiento" label="Peso al Nacer (kg)">
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="Ingrese el peso al nacer"
+                                                name="peso_nacimiento"
+                                                value={editAnimal?.peso_nacimiento || ''}
+                                                onChange={handleInputChange}
+                                                step="0.01"
+                                                disabled={userRoles.includes('Empleado')}
+                                            />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col sm="12" md="6" lg="6">
+                                        <FloatingLabel controlId="peso_destete" label="Peso al Destete (kg)">
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="Ingrese el peso al destete"
+                                                name="peso_destete"
+                                                value={editAnimal?.peso_destete || ''}
+                                                onChange={handleInputChange}
+                                                step="0.01"
+                                                disabled={userRoles.includes('Empleado')}
+                                            />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col sm="12" md="6" lg="6">
+                                        <FloatingLabel controlId="peso_actual" label="Peso Actual (kg)">
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="Ingrese el peso actual"
+                                                name="peso_actual"
+                                                value={editAnimal?.peso_actual || ''}
+                                                onChange={handleInputChange}
+                                                step="0.01"
+                                            />
+                                        </FloatingLabel>
+                                    </Col>
+                                </>
+                            )}
 
-                            {/* Producción de Leche */}
-                            <Col sm="12">
-                                <h5>Producción de Leche</h5>
-                                {editAnimal?.produccion_leche?.map((produccion, index) => (
-                                    <Row key={index} className="g-3">
-                                        <Col sm="4">
-                                            <FloatingLabel controlId={`produccion-leche-fecha-${index}`} label="Fecha de Producción">
-                                                <Form.Control
-                                                    type="date"
-                                                    name={`produccion_leche.${index}.fecha`}
-                                                    value={produccion.fecha}
-                                                    onChange={handleInputChange}
+                            {/* Estado del Animal - Solo accesible para el ganadero */}
+                            {userRoles.includes('Ganadero') && (
+                                <Col sm="12" md="6" lg="6">
+                                    <FloatingLabel controlId="estado" label="Estado">
+                                        <Form.Select
+                                            name="estado"
+                                            value={editAnimal?.estado || ''}
+                                            onChange={handleInputChange}
+                                            required
+                                        >
+                                            <option value="">Seleccione el estado</option>
+                                            <option value="Activo">Activo</option>
+                                            <option value="Enfermo">Enfermo</option>
+                                            <option value="Vendido">Vendido</option>
+                                            <option value="Muerto">Muerto</option>
+                                        </Form.Select>
+                                    </FloatingLabel>
+                                </Col>
+                            )}
+
+                            {/* Inseminación - Solo accesible para el ganadero */}
+                            {userRoles.includes('Ganadero') && (
+                                <Col sm="12" md="6" lg="6">
+                                    <Form.Check
+                                        type="checkbox"
+                                        id="inseminacion"
+                                        label="¿Ha sido inseminado?"
+                                        checked={editAnimal?.inseminacion || false}
+                                        onChange={(e) => setEditAnimal({ ...editAnimal, inseminacion: e.target.checked })}
+                                    />
+                                </Col>
+                            )}
+
+                            {/* Historial de Enfermedades - Solo accesible para el ganadero */}
+                            {userRoles.includes('Ganadero') && (
+                                <Col sm="12">
+                                    <h5>Historial de Enfermedades</h5>
+                                    {editAnimal?.enfermedades?.map((enfermedad, index) => (
+                                        <Row key={index} className="g-3">
+                                            <Col sm="6">
+                                                <FloatingLabel controlId={`enfermedad-id-${index}`} label="ID Enfermedad">
+                                                    <Form.Select
+                                                        name={`enfermedades.${index}.id`}
+                                                        value={enfermedad.id}
+                                                        onChange={handleInputChange}
+                                                    >
+                                                        <option value="">Seleccione una enfermedad</option>
+                                                        {listaEnfermedades.map((enf) => (
+                                                            <option key={enf.idEnfermedades} value={enf.idEnfermedades}>
+                                                                {enf.nombre}
+                                                            </option>
+                                                        ))}
+                                                    </Form.Select>
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="6">
+                                                <FloatingLabel controlId={`enfermedad-fecha-${index}`} label="Fecha Diagnóstico">
+                                                    <Form.Control
+                                                        type="date"
+                                                        name={`enfermedades.${index}.fecha`}
+                                                        value={enfermedad.fecha}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                    <Button variant="link" onClick={() => handleAddField('enfermedades')}>Añadir Enfermedad</Button>
+                                </Col>
+                            )}
+
+                            {/* Productos Aplicados - Solo accesible para el ganadero */}
+                            {userRoles.includes('Ganadero') && (
+                                <Col sm="12">
+                                    <h5>Productos Aplicados</h5>
+                                    {editAnimal?.productos?.map((producto, index) => (
+                                        <Row key={index} className="g-3">
+                                            <Col sm="4">
+                                                <FloatingLabel controlId={`producto-id-${index}`} label="ID Producto">
+                                                    <Form.Select
+                                                        name={`productos.${index}.id`}
+                                                        value={producto.id}
+                                                        onChange={handleInputChange}
+                                                    >
+                                                        <option value="">Seleccione un producto</option>
+                                                        {listaProductos.map((prod) => (
+                                                            <option key={prod.idProductos} value={prod.idProductos}>
+                                                                {prod.nombre}
+                                                            </option>
+                                                        ))}
+                                                    </Form.Select>
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="4">
+                                                <FloatingLabel controlId={`producto-dosis-${index}`} label="Dosis">
+                                                    <Form.Control
+                                                        type="text"
+                                                        name={`productos.${index}.dosis`}
+                                                        value={producto.dosis}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="4">
+                                                <FloatingLabel controlId={`producto-fecha-${index}`} label="Fecha Aplicación">
+                                                    <Form.Control
+                                                        type="date"
+                                                        name={`productos.${index}.fecha`}
+                                                        value={producto.fecha}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="12">
+                                                <Form.Check
+                                                    type="checkbox"
+                                                    label="¿Es un tratamiento?"
+                                                    checked={producto.es_tratamiento}
+                                                    onChange={(e) => {
+                                                        const newProductos = [...editAnimal.productos];
+                                                        newProductos[index].es_tratamiento = e.target.checked;
+                                                        setEditAnimal(prevAnimal => ({
+                                                            ...prevAnimal,
+                                                            productos: newProductos
+                                                        }));
+                                                    }}
                                                 />
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="4">
-                                            <FloatingLabel controlId={`produccion-leche-cantidad-${index}`} label="Cantidad (L)">
-                                                <Form.Control
-                                                    type="number"
-                                                    step="0.01"
-                                                    name={`produccion_leche.${index}.cantidad`}
-                                                    value={produccion.cantidad}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="4">
-                                            <FloatingLabel controlId={`produccion-leche-calidad-${index}`} label="Calidad">
-                                                <Form.Control
-                                                    type="text"
-                                                    name={`produccion_leche.${index}.calidad`}
-                                                    value={produccion.calidad}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                    </Row>
-                                ))}
-                                <Button variant="link" onClick={() => handleAddField('produccion_leche')}>Añadir Producción de Leche</Button>
-                            </Col>
-                            {/* Historial de Inseminaciones */}
-                            <Col sm="12">
-                                <h5>Historial de Inseminaciones</h5>
-                                {editAnimal?.inseminaciones?.map((inseminacion, index) => (
-                                    <Row key={index} className="g-3">
-                                        <Col sm="3">
-                                            <FloatingLabel controlId={`inseminacion-fecha-${index}`} label="Fecha de Inseminación">
-                                                <Form.Control
-                                                    type="date"
-                                                    name={`inseminaciones.${index}.fecha`}
-                                                    value={inseminacion.fecha}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="3">
-                                            <FloatingLabel controlId={`inseminacion-tipo-${index}`} label="Tipo de Inseminación">
-                                                <Form.Control
-                                                    type="text"
-                                                    name={`inseminaciones.${index}.tipo`}
-                                                    value={inseminacion.tipo}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="3">
-                                            <FloatingLabel controlId={`inseminacion-resultado-${index}`} label="Resultado">
-                                                <Form.Control
-                                                    type="text"
-                                                    name={`inseminaciones.${index}.resultado`}
-                                                    value={inseminacion.resultado}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                        <Col sm="3">
-                                            <FloatingLabel controlId={`inseminacion-observaciones-${index}`} label="Observaciones">
-                                                <Form.Control
-                                                    type="text"
-                                                    name={`inseminaciones.${index}.observaciones`}
-                                                    value={inseminacion.observaciones}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </FloatingLabel>
-                                        </Col>
-                                    </Row>
-                                ))}
-                                <Button variant="link" onClick={() => handleAddField('inseminaciones')}>Añadir Inseminación</Button>
-                            </Col>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                    <Button variant="link" onClick={() => handleAddField('productos')}>Añadir Producto</Button>
+                                </Col>
+                            )}
+
+                            {/* Control de Baños - Accesible para ganadero y empleado */}
+                            {(userRoles.includes('Ganadero') || userRoles.includes('Empleado')) && (
+                                <Col sm="12">
+                                    <h5>Control de Baños</h5>
+                                    {editAnimal?.control_banos?.map((bano, index) => (
+                                        <Row key={index} className="g-3">
+                                            <Col sm="6">
+                                                <FloatingLabel controlId={`bano-fecha-${index}`} label="Fecha de Baño">
+                                                    <Form.Control
+                                                        type="date"
+                                                        name={`control_banos.${index}.fecha`}
+                                                        value={bano.fecha}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="6">
+                                                <FloatingLabel controlId={`bano-productos-${index}`} label="Productos Utilizados">
+                                                    <Form.Control
+                                                        type="text"
+                                                        name={`control_banos.${index}.productos_utilizados`}
+                                                        value={bano.productos_utilizados}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                    <Button variant="link" onClick={() => handleAddField('control_banos')}>Añadir Control de Baño</Button>
+                                </Col>
+                            )}
+
+                            {/* Producción de Leche - Accesible para ganadero y empleado */}
+                            {(userRoles.includes('Ganadero') || userRoles.includes('Empleado')) && (
+                                <Col sm="12">
+                                    <h5>Producción de Leche</h5>
+                                    {editAnimal?.produccion_leche?.map((produccion, index) => (
+                                        <Row key={index} className="g-3">
+                                            <Col sm="4">
+                                                <FloatingLabel controlId={`produccion-leche-fecha-${index}`} label="Fecha de Producción">
+                                                    <Form.Control
+                                                        type="date"
+                                                        name={`produccion_leche.${index}.fecha`}
+                                                        value={produccion.fecha}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="4">
+                                                <FloatingLabel controlId={`produccion-leche-cantidad-${index}`} label="Cantidad (L)">
+                                                    <Form.Control
+                                                        type="number"
+                                                        step="0.01"
+                                                        name={`produccion_leche.${index}.cantidad`}
+                                                        value={produccion.cantidad}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="4">
+                                                <FloatingLabel controlId={`produccion-leche-calidad-${index}`} label="Calidad">
+                                                    <Form.Control
+                                                        type="text"
+                                                        name={`produccion_leche.${index}.calidad`}
+                                                        value={produccion.calidad}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                    <Button variant="link" onClick={() => handleAddField('produccion_leche')}>Añadir Producción de Leche</Button>
+                                </Col>
+                            )}
+
+                            {/* Historial de Inseminaciones - Solo accesible para el ganadero */}
+                            {userRoles.includes('Ganadero') && (
+                                <Col sm="12">
+                                    <h5>Historial de Inseminaciones</h5>
+                                    {editAnimal?.inseminaciones?.map((inseminacion, index) => (
+                                        <Row key={index} className="g-3">
+                                            <Col sm="3">
+                                                <FloatingLabel controlId={`inseminacion-fecha-${index}`} label="Fecha de Inseminación">
+                                                    <Form.Control
+                                                        type="date"
+                                                        name={`inseminaciones.${index}.fecha`}
+                                                        value={inseminacion.fecha}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="3">
+                                                <FloatingLabel controlId={`inseminacion-tipo-${index}`} label="Tipo de Inseminación">
+                                                    <Form.Control
+                                                        type="text"
+                                                        name={`inseminaciones.${index}.tipo`}
+                                                        value={inseminacion.tipo}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="3">
+                                                <FloatingLabel controlId={`inseminacion-resultado-${index}`} label="Resultado">
+                                                    <Form.Control
+                                                        type="text"
+                                                        name={`inseminaciones.${index}.resultado`}
+                                                        value={inseminacion.resultado}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                            <Col sm="3">
+                                                <FloatingLabel controlId={`inseminacion-observaciones-${index}`} label="Observaciones">
+                                                    <Form.Control
+                                                        type="text"
+                                                        name={`inseminaciones.${index}.observaciones`}
+                                                        value={inseminacion.observaciones}
+                                                        onChange={handleInputChange}
+                                                    />
+                                                </FloatingLabel>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                    <Button variant="link" onClick={() => handleAddField('inseminaciones')}>Añadir Inseminación</Button>
+                                </Col>
+                            )}
                         </Row>
                         <Button variant="primary" type="submit" className="mt-3">
                             Actualizar
@@ -829,6 +862,7 @@ function AnimalList() {
                     </Form>
                 </Modal.Body>
             </Modal>
+
         </div>
     );
 }

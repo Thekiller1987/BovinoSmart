@@ -97,6 +97,18 @@ function ProductoList() {
         }));
     };
 
+    // Maneja los cambios en la imagen
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+            setEditProducto(prev => ({ ...prev, imagen: reader.result }));
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
     // Maneja los cambios en la barra de búsqueda
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -135,6 +147,7 @@ function ProductoList() {
                                         <th>Es Tratamiento</th>
                                         <th>Motivo</th>
                                         <th>Notas</th>
+                                        <th>Imagen</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -149,6 +162,11 @@ function ProductoList() {
                                             <td>{producto.es_tratamiento ? 'Sí' : 'No'}</td> {/* Mostrar "Sí" en lugar de 1 */}
                                             <td>{producto.motivo}</td>
                                             <td>{producto.notas}</td>
+                                            <td>
+                                                {producto.imagen && (
+                                                    <img src={producto.imagen} alt="Producto" style={{ width: '50px', height: '50px' }} />
+                                                )}
+                                            </td>
                                             <td className="button-container">
                                                 <Button variant="warning" onClick={() => handleEditClick(producto)}>Editar</Button>
                                                 <Button variant="danger" onClick={() => handleDeleteClick(producto.idProductos)}>Eliminar</Button>
@@ -249,6 +267,19 @@ function ProductoList() {
                                         onChange={handleInputChange}
                                     />
                                 </FloatingLabel>
+                            </Col>
+                            <Col sm="12">
+                                <Form.Group controlId="imagen" className="mb-3">
+                                    <Form.Label>Imagen del Producto</Form.Label>
+                                    <Form.Control
+                                        type="file"
+                                        accept=".jpg, .png, .jpeg"
+                                        onChange={handleImageChange}
+                                    />
+                                </Form.Group>
+                                {editProducto?.imagen && (
+                                    <img src={editProducto.imagen} alt="Producto" style={{ width: '100px', height: '100px' }} />
+                                )}
                             </Col>
                         </Row>
                         <Button variant="primary" type="submit" className="mt-3">

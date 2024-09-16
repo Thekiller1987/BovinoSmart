@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'; // Importa React y los hooks useEffect y useState.
 import { Modal, Button, Form, Row, Col, FloatingLabel, Container, Card, Table } from 'react-bootstrap'; // Importa componentes de React Bootstrap para la interfaz.
 import Header from '../components/Header'; // Importa el componente Header personalizado.
-import '../styles/EnfermedadList.css'; // Importa los estilos personalizados.
+
 
 function EnfermedadList() {
     // Estados para manejar la lista de enfermedades, edición, visualización del modal, error y búsqueda.
@@ -93,6 +93,18 @@ function EnfermedadList() {
         }));
     };
 
+    // Maneja los cambios en la imagen del formulario de edición.
+    const handleImageChange = (e) => {
+        const file = e.target.files[0]; // Obtiene el archivo de imagen seleccionado.
+        const reader = new FileReader(); // Crea un lector de archivos.
+        reader.onload = () => {
+            setEditEnfermedad(prev => ({ ...prev, imagen: reader.result })); // Actualiza la imagen como base64.
+        };
+        if (file) {
+            reader.readAsDataURL(file); // Lee el archivo como una URL de datos base64.
+        }
+    };
+
     // Maneja los cambios en el campo de búsqueda.
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value); // Actualiza el estado de la consulta de búsqueda.
@@ -125,6 +137,9 @@ function EnfermedadList() {
                                     <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Descripción</th>
+                                    <th>Síntomas</th>
+                                    <th>Modo de Transmisión</th>
+                                    <th>Imagen</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -134,6 +149,13 @@ function EnfermedadList() {
                                         <td>{enfermedad.idEnfermedades}</td>
                                         <td>{enfermedad.nombre}</td>
                                         <td>{enfermedad.descripcion}</td>
+                                        <td>{enfermedad.sintomas}</td>
+                                        <td>{enfermedad.modotrasmision}</td>
+                                        <td>
+                                            {enfermedad.imagen && (
+                                                <img src={enfermedad.imagen} alt="Enfermedad" style={{ width: '50px', height: '50px' }} />
+                                            )}
+                                        </td>
                                         <td className="button-container">
                                             <Button variant="warning" onClick={() => handleEditClick(enfermedad)}>Editar</Button> {/* Botón para editar */}
                                             <Button variant="danger" onClick={() => handleDeleteClick(enfermedad.idEnfermedades)}>Eliminar</Button> {/* Botón para eliminar */}
@@ -177,6 +199,41 @@ function EnfermedadList() {
                                         onChange={handleInputChange} // Maneja los cambios en el campo de entrada.
                                     />
                                 </FloatingLabel>
+                            </Col>
+                            <Col sm="12">
+                                <FloatingLabel controlId="sintomas" label="Síntomas">
+                                    <Form.Control
+                                        as="textarea"
+                                        placeholder="Ingrese los síntomas"
+                                        name="sintomas"
+                                        value={editEnfermedad?.sintomas || ''} // Muestra los síntomas de la enfermedad seleccionada para editar.
+                                        onChange={handleInputChange} // Maneja los cambios en el campo de entrada.
+                                    />
+                                </FloatingLabel>
+                            </Col>
+                            <Col sm="12">
+                                <FloatingLabel controlId="modotrasmision" label="Modo de Transmisión">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Ingrese el modo de transmisión"
+                                        name="modotrasmision"
+                                        value={editEnfermedad?.modotrasmision || ''} // Muestra el modo de transmisión de la enfermedad seleccionada para editar.
+                                        onChange={handleInputChange} // Maneja los cambios en el campo de entrada.
+                                    />
+                                </FloatingLabel>
+                            </Col>
+                            <Col sm="12">
+                                <Form.Group controlId="imagen" className="mb-3">
+                                    <Form.Label>Imagen de la Enfermedad</Form.Label>
+                                    <Form.Control
+                                        type="file"
+                                        accept=".jpg, .png, .jpeg"
+                                        onChange={handleImageChange} // Maneja el cambio de la imagen.
+                                    />
+                                </Form.Group>
+                                {editEnfermedad?.imagen && (
+                                    <img src={editEnfermedad.imagen} alt="Enfermedad" style={{ width: '100px', height: '100px' }} />
+                                )}
                             </Col>
                         </Row>
                         <Button variant="primary" type="submit" className="mt-3"> {/* Botón para enviar el formulario de edición */}
