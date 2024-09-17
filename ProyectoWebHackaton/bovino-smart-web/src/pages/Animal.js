@@ -133,28 +133,57 @@ function Animal() {
         }
     };
 
-    // Función para manejar el envío del formulario.
+    // Función para restablecer todos los campos del formulario.
+    const resetForm = () => {
+        setNombre('');
+        setSexo('');
+        setImagen('');
+        setCodigo_idVaca('');
+        setFecha_nacimiento('');
+        setRaza('');
+        setObservaciones('');
+        setPeso_nacimiento('');
+        setPeso_destete('');
+        setPeso_actual('');
+        setEstado('');
+        setInseminacion(false);
+        setEnfermedades([{ id: '', fecha: '' }]);
+        setProductos([{ id: '', dosis: '', fecha: '', es_tratamiento: false }]);
+        setControl_banos([{ fecha: '', productos_utilizados: '' }]);
+        setProduccion_leche([{ fecha: '', cantidad: '', calidad: '' }]);
+        setInseminaciones([{ fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]);
+        setEstadoReproductivo({
+            ciclo_celo: '',
+            fecha_ultimo_celo: '',
+            servicios_realizados: '',
+            numero_gestaciones: '',
+            partos_realizados: '',
+            resultados_lactancia: '',
+            fecha_ultima_prueba_reproductiva: '',
+            resultado_prueba_reproductiva: ''
+        });
+    };
+
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Previene el comportamiento predeterminado del formulario.
+        e.preventDefault();
     
-        // Validar que las fechas sean correctas y los campos obligatorios estén llenos
-        if (sexo === 'Hembra') {
-            if (!cicloCelo || !fechaUltimoCelo || !serviciosRealizados || !numeroGestaciones || !partosRealizados || !resultadosLactancia) {
-                alert('Por favor, complete todos los campos relacionados con el estado reproductivo de la hembra.');
-                return;
-            }
-        } else if (sexo === 'Macho') {
-            if (!fechaUltimaPruebaReproductiva || !resultadoPruebaReproductiva) {
-                alert('Por favor, complete todos los campos relacionados con el estado reproductivo del macho.');
-                return;
-            }
+        if (!nombre || !sexo || !codigo_idVaca || !fecha_nacimiento || !raza) {
+            alert('Por favor, complete todos los campos obligatorios.');
+            return;
         }
     
-        // Asegurarse de que las fechas no sean nulas y estén en el formato correcto
-        const formattedFechaUltimoCelo = fechaUltimoCelo ? new Date(fechaUltimoCelo).toISOString().split('T')[0] : null;
-        const formattedFechaUltimaPruebaReproductiva = fechaUltimaPruebaReproductiva ? new Date(fechaUltimaPruebaReproductiva).toISOString().split('T')[0] : null;
+        const estadoReproductivoData = sexo === 'Hembra' ? {
+            ciclo_celo: estadoReproductivo.ciclo_celo,
+            fecha_ultimo_celo: estadoReproductivo.fecha_ultimo_celo ? new Date(estadoReproductivo.fecha_ultimo_celo).toISOString().split('T')[0] : null,
+            servicios_realizados: estadoReproductivo.servicios_realizados,
+            numero_gestaciones: estadoReproductivo.numero_gestaciones,
+            partos_realizados: estadoReproductivo.partos_realizados,
+            resultados_lactancia: estadoReproductivo.resultados_lactancia
+        } : sexo === 'Macho' ? {
+            uso_programa_inseminacion: estadoReproductivo.uso_programa_inseminacion,
+            resultado_prueba_reproductiva: estadoReproductivo.resultado_prueba_reproductiva
+        } : {};
     
-        // Crea un objeto con los datos del formulario.
         const formData = {
             nombre,
             sexo,
@@ -173,20 +202,10 @@ function Animal() {
             control_banos,
             produccion_leche,
             inseminaciones,
-            estadoReproductivo: { // Nuevo objeto para el estado reproductivo
-                ciclo_celo: cicloCelo || '',
-                fecha_ultimo_celo: formattedFechaUltimoCelo || '',
-                servicios_realizados: serviciosRealizados || 0,
-                numero_gestaciones: numeroGestaciones || 0,
-                partos_realizados: partosRealizados || 0,
-                resultados_lactancia: resultadosLactancia || '',
-                fecha_ultima_prueba_reproductiva: formattedFechaUltimaPruebaReproductiva || '',
-                resultado_prueba_reproductiva: resultadoPruebaReproductiva || ''
-            }
+            estadoReproductivo: estadoReproductivoData
         };
     
         try {
-            // Envía una solicitud POST al servidor para crear un nuevo animal.
             const response = await fetch('http://localhost:5000/crud/createAnimal', {
                 method: 'POST',
                 headers: {
@@ -196,43 +215,17 @@ function Animal() {
             });
     
             if (response.ok) {
-                alert('Animal registrado exitosamente'); // Muestra un mensaje de éxito.
-                // Resetea todos los campos del formulario.
-                setNombre('');
-                setSexo('');
-                setImagen('');
-                setCodigo_idVaca('');
-                setFecha_nacimiento('');
-                setRaza('');
-                setObservaciones('');
-                setPeso_nacimiento('');
-                setPeso_destete('');
-                setPeso_actual('');
-                setEstado('');
-                setInseminacion(false);
-                setEnfermedades([{ id: '', fecha: '' }]);
-                setProductos([{ id: '', dosis: '', fecha: '', es_tratamiento: false }]);
-                setControl_banos([{ fecha: '', productos_utilizados: '' }]);
-                setProduccion_leche([{ fecha: '', cantidad: '', calidad: '' }]);
-                setInseminaciones([{ fecha_inseminacion: '', tipo_inseminacion: '', resultado: '', observaciones: '' }]);
-                // Resetear los estados del estado reproductivo
-                setCicloCelo('');
-                setFechaUltimoCelo('');
-                setServiciosRealizados('');
-                setNumeroGestaciones('');
-                setPartosRealizados('');
-                setResultadosLactancia('');
-                setFechaUltimaPruebaReproductiva('');
-                setResultadoPruebaReproductiva('');
+                alert('Animal registrado exitosamente');
+                resetForm();
             } else {
-                alert('Error al registrar el animal'); // Muestra un mensaje de error.
+                alert('Error al registrar el animal');
             }
         } catch (error) {
-            console.error('Error en la solicitud:', error); // Maneja el error en la solicitud.
-            alert('Error en la solicitud al servidor'); // Muestra un mensaje de error.
+            console.error('Error en la solicitud:', error);
+            alert('Error en la solicitud al servidor');
         }
     };
-
+    
     return (
         <div>
             <Header /> {/* Renderiza el componente Header */}
@@ -598,12 +591,11 @@ function Animal() {
                                 </Col>
 
 
-                                  {/* Campos del estado reproductivo para hembras */}
-                                  {sexo === 'Hembra' && (
+                                {/* Campos del estado reproductivo para hembras */}
+                                {sexo === 'Hembra' && (
                                     <>
                                         <Col sm="12">
                                             <h5>Estado Reproductivo (Hembras)</h5>
-                                            {/* Ciclo de Celo */}
                                             <FloatingLabel controlId="cicloCelo" label="Ciclo de Celo">
                                                 <Form.Select value={estadoReproductivo.ciclo_celo} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, ciclo_celo: e.target.value })}>
                                                     <option value="">Seleccione el ciclo</option>
@@ -614,13 +606,11 @@ function Animal() {
                                                 </Form.Select>
                                             </FloatingLabel>
 
-                                            {/* Fecha del Último Celo */}
                                             <FloatingLabel controlId="fechaUltimoCelo" label="Fecha del Último Celo">
                                                 <Form.Control type="date" value={estadoReproductivo.fecha_ultimo_celo} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, fecha_ultimo_celo: e.target.value })} />
                                             </FloatingLabel>
 
-                                            {/* Servicios Realizados */}
-                                            <FloatingLabel controlId="serviciosRealizados" label="Intentos de insiminacion">
+                                            <FloatingLabel controlId="serviciosRealizados" label="Servicios Realizados">
                                                 <Form.Select value={estadoReproductivo.servicios_realizados} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, servicios_realizados: e.target.value })}>
                                                     <option value="">Seleccione</option>
                                                     {[...Array(10).keys()].map((num) => (
@@ -629,8 +619,7 @@ function Animal() {
                                                 </Form.Select>
                                             </FloatingLabel>
 
-                                            {/* Número de Gestaciones */}
-                                            <FloatingLabel controlId="numeroGestaciones" label="Numero de veces preñada">
+                                            <FloatingLabel controlId="numeroGestaciones" label="Número de Gestaciones">
                                                 <Form.Select value={estadoReproductivo.numero_gestaciones} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, numero_gestaciones: e.target.value })}>
                                                     <option value="">Seleccione</option>
                                                     {[...Array(10).keys()].map((num) => (
@@ -639,7 +628,6 @@ function Animal() {
                                                 </Form.Select>
                                             </FloatingLabel>
 
-                                            {/* Partos Realizados */}
                                             <FloatingLabel controlId="partosRealizados" label="Partos Realizados">
                                                 <Form.Select value={estadoReproductivo.partos_realizados} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, partos_realizados: e.target.value })}>
                                                     <option value="">Seleccione</option>
@@ -649,8 +637,7 @@ function Animal() {
                                                 </Form.Select>
                                             </FloatingLabel>
 
-                                            {/* Resultados de la Lactancia */}
-                                            <FloatingLabel controlId="resultadosLactancia" label="Resultados de la Lactancia luego del parto">
+                                            <FloatingLabel controlId="resultadosLactancia" label="Resultados de la Lactancia">
                                                 <Form.Select value={estadoReproductivo.resultados_lactancia} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, resultados_lactancia: e.target.value })}>
                                                     <option value="">Seleccione</option>
                                                     <option value="Alta producción">Alta producción</option>
@@ -662,22 +649,11 @@ function Animal() {
                                     </>
                                 )}
 
-                                {/* Campos del estado reproductivo para machos */}
+
                                 {sexo === 'Macho' && (
                                     <>
                                         <Col sm="12">
                                             <h5>Estado Reproductivo (Machos)</h5>
-                                            {/* Fertilidad */}
-                                            <FloatingLabel controlId="fertilidad" label="Fertilidad">
-                                                <Form.Select value={estadoReproductivo.fertilidad} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, fertilidad: e.target.value })}>
-                                                    <option value="">Seleccione</option>
-                                                    <option value="Alta">Alta</option>
-                                                    <option value="Media">Media</option>
-                                                    <option value="Baja">Baja</option>
-                                                </Form.Select>
-                                            </FloatingLabel>
-
-                                            {/* Uso en Programas de Inseminación */}
                                             <FloatingLabel controlId="usoProgramaInseminacion" label="Uso en Programas de Inseminación">
                                                 <Form.Select value={estadoReproductivo.uso_programa_inseminacion} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, uso_programa_inseminacion: e.target.value })}>
                                                     <option value="">Seleccione</option>
@@ -687,9 +663,8 @@ function Animal() {
                                                 </Form.Select>
                                             </FloatingLabel>
 
-                                            {/* Resultado de la Prueba Reproductiva */}
-                                            <FloatingLabel controlId="resultadoPruebaReproductivaMacho" label="Resultado de la Prueba Reproductiva">
-                                                <Form.Select value={estadoReproductivo.resultado_prueba_reproductiva_macho} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, resultado_prueba_reproductiva_macho: e.target.value })}>
+                                            <FloatingLabel controlId="resultadoPruebaReproductiva" label="Resultado de la Prueba Reproductiva">
+                                                <Form.Select value={estadoReproductivo.resultado_prueba_reproductiva} onChange={(e) => setEstadoReproductivo({ ...estadoReproductivo, resultado_prueba_reproductiva: e.target.value })}>
                                                     <option value="">Seleccione</option>
                                                     <option value="Positivo">Positivo</option>
                                                     <option value="Negativo">Negativo</option>
@@ -699,6 +674,7 @@ function Animal() {
                                         </Col>
                                     </>
                                 )}
+
                             </Row>
                             {/* Botón para enviar el formulario */}
                             <div className="center-button">

@@ -220,80 +220,123 @@ module.exports = (db) => {
 
 
 
+    // Ruta para registrar un nuevo animal
+    router.post('/createAnimal', (req, res) => {
+        const {
+            nombre,
+            sexo,
+            imagen,
+            codigo_idVaca,
+            fecha_nacimiento,
+            raza,
+            observaciones,
+            peso_nacimiento,
+            peso_destete,
+            peso_actual,
+            estado,
+            inseminacion,
+            estadoReproductivo,
+            inseminaciones,
+            idFinca // Nuevo: Relación con la tabla Fincas
+        } = req.body;
 
-  // Endpoint de creación de animal
-router.post('/createAnimal', (req, res) => {
-    const {
-        nombre,
-        sexo,
-        imagen,
-        codigo_idVaca,
-        fecha_nacimiento,
-        raza,
-        observaciones,
-        peso_nacimiento,
-        peso_destete,
-        peso_actual,
-        estado,
-        inseminacion,
-        estadoReproductivo // Asegúrate de que este objeto se incluya en la solicitud
-    } = req.body;
-
-    // Insertar animal en la tabla Animales
-    const sqlAnimal = `
-        INSERT INTO Animales (nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual, estado, inseminacion)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        const insertAnimalQuery = `
+        INSERT INTO Animales (
+            nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones,
+            peso_nacimiento, peso_destete, peso_actual, estado, inseminacion, idFinca
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-    const valuesAnimal = [nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual, estado, inseminacion];
 
-    db.query(sqlAnimal, valuesAnimal, (err, result) => {
-        if (err) {
-            console.error('Error al insertar registro de Animal:', err);
-            return res.status(500).json({ error: 'Error al insertar registro de Animal' });
-        }
+        const animalParams = [
+            nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones,
+            peso_nacimiento, peso_destete, peso_actual, estado, inseminacion, idFinca
+        ];
 
-        const animalId = result.insertId; // ID del animal recién insertado
+        db.query(insertAnimalQuery, animalParams, (err, animalResult) => {
+            if (err) {
+                console.error('Error al insertar registro de Animal:', err);
+                res.status(500).json({ error: 'Error al registrar el animal' });
+                return;
+            }
 
-        // Inserción en la tabla de estado reproductivo si hay datos asociados
-        if (estadoReproductivo) {
-            const {
-                ciclo_celo,
-                fecha_ultimo_celo,
-                servicios_realizados,
-                numero_gestaciones,
-                partos_realizados,
-                resultados_lactancia,
-                fecha_ultima_prueba_reproductiva,
-                resultado_prueba_reproductiva
-            } = estadoReproductivo;
+            const idAnimal = animalResult.insertId;
 
-            const sqlEstadoReproductivo = `
+            // Paso 2: Insertar el estado reproductivo en la tabla Estado_Reproductivo
+            if (estadoReproductivo && (sexo === 'Hembra' || sexo === 'Macho')) {
+                const insertEstadoReproductivoQuery = `
                 INSERT INTO Estado_Reproductivo (
-                    idAnimal, ciclo_celo, fecha_ultimo_celo, servicios_realizados,
-                    numero_gestaciones, partos_realizados, resultados_lactancia,
-                    fecha_ultima_prueba_reproductiva, resultado_prueba_reproductiva
+                    idAnimal, ciclo_celo, fecha_ultimo_celo, servicios_realizados, numero_gestaciones,
+                    partos_realizados, resultados_lactancia, uso_programa_inseminacion, resultado_prueba_reproductiva
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
 
-            const valuesEstadoReproductivo = [
-                animalId, ciclo_celo, fecha_ultimo_celo, servicios_realizados,
-                numero_gestaciones, partos_realizados, resultados_lactancia,
-                fecha_ultima_prueba_reproductiva, resultado_prueba_reproductiva
-            ];
+                const estadoReproductivoParams = [
+                    idAnimal,
+                    estadoReproductivo.ciclo_celo || null,
+                    estadoReproductivo.fecha_ultimo_celo || null,
+                    estadoReproductivo.servicios_realizados || null,
+                    estadoReproductivo.numero_gestaciones || null,
+                    estadoReproductivo.partos_realizados || null,
+                    estadoReproductivo.resultados_lactancia || null,
+                    estadoReproductivo.uso_programa_inseminacion || null,
+                    estadoReproductivo.resultado_prueba_reproductiva || null
+                ];
 
-            db.query(sqlEstadoReproductivo, valuesEstadoReproductivo, (err) => {
-                if (err) {
-                    console.error('Error al crear el estado reproductivo:', err);
-                    // No retornamos un error aquí porque ya hemos creado el animal
-                }
-            });
-        }
+                db.query(insertEstadoReproductivoQuery, estadoReproductivoParams, (err) => {
+                    if (err) {
+                        console.error('Error al insertar registro de Estado Reproductivo:', err);
+                        res.status(500).json({ error: 'Error al registrar el estado reproductivo' });
+                        return;
+                    }
 
-        // Respuesta exitosa con el ID del animal creado
-        res.status(201).json({ idAnimal: animalId });
+                    insertInseminaciones(idAnimal, inseminaciones, res);
+                });
+            } else {
+                insertInseminaciones(idAnimal, inseminaciones, res);
+            }
+        });
     });
-});
 
+    // Inserción de inseminaciones
+    function insertInseminaciones(idAnimal, inseminaciones, res) {
+        if (inseminaciones && Array.isArray(inseminaciones) && inseminaciones.length > 0) {
+            const inseminacionesQueries = inseminaciones.map((inseminacion) => {
+                const insertInseminacionQuery = `
+                INSERT INTO Inseminaciones (
+                    idAnimal, fecha_inseminacion, tipo_inseminacion, resultado, observaciones
+                ) VALUES (?, ?, ?, ?, ?)
+            `;
+                const inseminacionParams = [
+                    idAnimal,
+                    inseminacion.fecha_inseminacion || null,
+                    inseminacion.tipo_inseminacion || null,
+                    inseminacion.resultado || null,
+                    inseminacion.observaciones || null
+                ];
+
+                return new Promise((resolve, reject) => {
+                    db.query(insertInseminacionQuery, inseminacionParams, (err) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    });
+                });
+            });
+
+            Promise.all(inseminacionesQueries)
+                .then(() => {
+                    res.status(200).json({ message: 'Animal, estado reproductivo e inseminaciones registrados exitosamente' });
+                })
+                .catch((err) => {
+                    console.error('Error al insertar inseminaciones:', err);
+                    res.status(500).json({ error: 'Error al registrar las inseminaciones' });
+                });
+        } else {
+            res.status(200).json({ message: 'Animal registrado exitosamente' });
+        }
+    }
 
 
 
@@ -374,7 +417,7 @@ FROM
         });
     });
 
-    router.put('/updateAnimal/:id', (req, res) => {
+    router.put('/updateAnimal/:id', async (req, res) => {
         const id = req.params.id;
         const {
             nombre,
@@ -393,164 +436,150 @@ FROM
             productos,
             control_banos,
             produccion_leche,
-            inseminaciones
+            inseminaciones,
+            estadoReproductivo // Incluye los datos de estado reproductivo
         } = req.body;
 
         if (!nombre || !sexo || !codigo_idVaca || !fecha_nacimiento || !raza) {
             return res.status(400).json({ error: 'Los campos "nombre", "sexo", "codigo_idVaca", "fecha_nacimiento" y "raza" son obligatorios' });
         }
 
-        const sql = `
+        const sqlAnimal = `
             UPDATE Animales
             SET nombre = ?, sexo = ?, imagen = ?, codigo_idVaca = ?, fecha_nacimiento = ?, raza = ?, observaciones = ?, peso_nacimiento = ?, peso_destete = ?, peso_actual = ?, estado = ?, inseminacion = ?
             WHERE idAnimal = ?
         `;
-        const values = [nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual, estado, inseminacion, id];
+        const valuesAnimal = [nombre, sexo, imagen, codigo_idVaca, fecha_nacimiento, raza, observaciones, peso_nacimiento, peso_destete, peso_actual, estado, inseminacion, id];
 
-        db.query(sql, values, (err, result) => {
-            if (err) {
-                console.error('Error al actualizar registro de Animal:', err);
-                return res.status(500).json({ error: 'Error al actualizar registro de Animal' });
-            }
+        try {
+            // Actualizar registro del animal
+            await db.query(sqlAnimal, valuesAnimal);
 
             console.log('Datos de Animal actualizados correctamente.');
 
-            // Actualizar historial de enfermedades
-            db.query('DELETE FROM Historial_Enfermedades WHERE idAnimal = ?', [id], (err) => {
-                if (err) {
-                    console.error('Error al eliminar registros en Historial_Enfermedades:', err);
-                } else {
-                    if (enfermedades && Array.isArray(enfermedades)) {
-                        enfermedades.forEach(enfermedad => {
-                            const sqlEnfermedad = `
-                                INSERT INTO Historial_Enfermedades (idAnimal, idEnfermedades, fecha)
-                                VALUES (?, ?, ?)
-                            `;
-                            const valuesEnfermedad = [id, enfermedad.id, enfermedad.fecha];
+            // Actualizar o eliminar registros relacionados
+            await actualizarHistorialEnfermedades(db, id, enfermedades);
+            await actualizarHistorialProductos(db, id, productos);
+            await actualizarControlBanos(db, id, control_banos);
+            await actualizarProduccionLeche(db, id, produccion_leche);
+            await actualizarInseminaciones(db, id, inseminaciones);
 
-                            db.query(sqlEnfermedad, valuesEnfermedad, (err) => {
-                                if (err) {
-                                    console.error('Error al insertar en Historial de Enfermedades:', err);
-                                } else {
-                                    console.log('Historial de Enfermedades insertado:', valuesEnfermedad);
-                                }
-                            });
-                        });
-                    }
-                }
-            });
+            // Actualizar el estado reproductivo si se envía
+            if (estadoReproductivo) {
+                await actualizarEstadoReproductivo(db, id, estadoReproductivo);
+            }
 
-            // Actualizar historial de productos
-            db.query('DELETE FROM Historial_Productos WHERE idAnimal = ?', [id], (err) => {
-                if (err) {
-                    console.error('Error al eliminar registros en Historial_Productos:', err);
-                } else {
-                    if (productos && Array.isArray(productos)) {
-                        productos.forEach(producto => {
-                            const sqlProducto = `
-                                INSERT INTO Historial_Productos (idAnimal, idProductos, dosis, fecha, es_tratamiento)
-                                VALUES (?, ?, ?, ?, ?)
-                            `;
-                            const valuesProducto = [id, producto.id, producto.dosis, producto.fecha, producto.es_tratamiento];
+            res.status(200).json({ message: 'Animal y datos relacionados actualizados correctamente' });
 
-                            db.query(sqlProducto, valuesProducto, (err) => {
-                                if (err) {
-                                    console.error('Error al insertar en Historial de Productos:', err);
-                                } else {
-                                    console.log('Historial de Productos insertado:', valuesProducto);
-                                }
-                            });
-                        });
-                    }
-                }
-            });
-
-            // Actualizar control de baños
-            db.query('DELETE FROM Control_Banos WHERE idAnimal = ?', [id], (err) => {
-                if (err) {
-                    console.error('Error al eliminar registros en Control_Banos:', err);
-                } else {
-                    if (control_banos && Array.isArray(control_banos)) {
-                        control_banos.forEach(bano => {
-                            const sqlBano = `
-                                INSERT INTO Control_Banos (idAnimal, fecha, productos_utilizados)
-                                VALUES (?, ?, ?)
-                            `;
-                            const valuesBano = [id, bano.fecha, bano.productos_utilizados];
-
-                            db.query(sqlBano, valuesBano, (err) => {
-                                if (err) {
-                                    console.error('Error al insertar en Control de Baños:', err);
-                                } else {
-                                    console.log('Control de Baños insertado:', valuesBano);
-                                }
-                            });
-                        });
-                    }
-                }
-            });
-
-            // Actualizar producción de leche
-            db.query('DELETE FROM Produccion_Leche WHERE idAnimal = ?', [id], (err) => {
-                if (err) {
-                    console.error('Error al eliminar registros en Produccion_Leche:', err);
-                } else {
-                    if (produccion_leche && Array.isArray(produccion_leche)) {
-                        produccion_leche.forEach(leche => {
-                            const sqlLeche = `
-                                INSERT INTO Produccion_Leche (idAnimal, fecha, cantidad, calidad)
-                                VALUES (?, ?, ?, ?)
-                            `;
-                            const valuesLeche = [id, leche.fecha, leche.cantidad, leche.calidad];
-
-                            db.query(sqlLeche, valuesLeche, (err) => {
-                                if (err) {
-                                    console.error('Error al insertar en Producción de Leche:', err);
-                                } else {
-                                    console.log('Producción de Leche insertada:', valuesLeche);
-                                }
-                            });
-                        });
-                    }
-                }
-            });
-
-            // Actualizar historial de inseminaciones
-            db.query('DELETE FROM Inseminaciones WHERE idAnimal = ?', [id], (err) => {
-                if (err) {
-                    console.error('Error al eliminar registros en Inseminaciones:', err);
-                } else {
-                    if (inseminaciones && Array.isArray(inseminaciones)) {
-                        inseminaciones.forEach(inseminacion => {
-                            const sqlInseminacion = `
-                                INSERT INTO Inseminaciones (idAnimal, fecha_inseminacion, tipo_inseminacion, resultado, observaciones)
-                                VALUES (?, ?, ?, ?, ?)
-                            `;
-                            const valuesInseminacion = [id, inseminacion.fecha, inseminacion.tipo, inseminacion.resultado, inseminacion.observaciones];
-
-                            db.query(sqlInseminacion, valuesInseminacion, (err) => {
-                                if (err) {
-                                    console.error('Error al insertar en Historial de Inseminaciones:', err);
-                                } else {
-                                    console.log('Historial de Inseminaciones insertado:', valuesInseminacion);
-                                }
-                            });
-                        });
-                    }
-                }
-            });
-
-            res.status(200).json({ message: 'Animal actualizado correctamente' });
-        });
+        } catch (err) {
+            console.error('Error al actualizar los registros:', err);
+            res.status(500).json({ error: 'Error al actualizar los registros' });
+        }
     });
 
+    // Función para actualizar el historial de enfermedades
+    async function actualizarHistorialEnfermedades(db, idAnimal, enfermedades) {
+        await db.query('DELETE FROM Historial_Enfermedades WHERE idAnimal = ?', [idAnimal]);
+
+        if (enfermedades && Array.isArray(enfermedades)) {
+            for (const enfermedad of enfermedades) {
+                const sqlEnfermedad = `INSERT INTO Historial_Enfermedades (idAnimal, idEnfermedades, fecha) VALUES (?, ?, ?)`;
+                const valuesEnfermedad = [idAnimal, enfermedad.id, enfermedad.fecha];
+                await db.query(sqlEnfermedad, valuesEnfermedad);
+            }
+        }
+    }
+
+    // Función para actualizar el historial de productos
+    async function actualizarHistorialProductos(db, idAnimal, productos) {
+        await db.query('DELETE FROM Historial_Productos WHERE idAnimal = ?', [idAnimal]);
+
+        if (productos && Array.isArray(productos)) {
+            for (const producto of productos) {
+                const sqlProducto = `INSERT INTO Historial_Productos (idAnimal, idProductos, dosis, fecha, es_tratamiento) VALUES (?, ?, ?, ?, ?)`;
+                const valuesProducto = [idAnimal, producto.id, producto.dosis, producto.fecha, producto.es_tratamiento];
+                await db.query(sqlProducto, valuesProducto);
+            }
+        }
+    }
+
+    // Función para actualizar el control de baños
+    async function actualizarControlBanos(db, idAnimal, control_banos) {
+        await db.query('DELETE FROM Control_Banos WHERE idAnimal = ?', [idAnimal]);
+
+        if (control_banos && Array.isArray(control_banos)) {
+            for (const bano of control_banos) {
+                const sqlBano = `INSERT INTO Control_Banos (idAnimal, fecha, productos_utilizados) VALUES (?, ?, ?)`;
+                const valuesBano = [idAnimal, bano.fecha, bano.productos_utilizados];
+                await db.query(sqlBano, valuesBano);
+            }
+        }
+    }
+
+    // Función para actualizar la producción de leche
+    async function actualizarProduccionLeche(db, idAnimal, produccion_leche) {
+        await db.query('DELETE FROM Produccion_Leche WHERE idAnimal = ?', [idAnimal]);
+
+        if (produccion_leche && Array.isArray(produccion_leche)) {
+            for (const leche of produccion_leche) {
+                const sqlLeche = `INSERT INTO Produccion_Leche (idAnimal, fecha, cantidad, calidad) VALUES (?, ?, ?, ?)`;
+                const valuesLeche = [idAnimal, leche.fecha, leche.cantidad, leche.calidad];
+                await db.query(sqlLeche, valuesLeche);
+            }
+        }
+    }
+
+    // Función para actualizar las inseminaciones
+    async function actualizarInseminaciones(db, idAnimal, inseminaciones) {
+        await db.query('DELETE FROM Inseminaciones WHERE idAnimal = ?', [idAnimal]);
+
+        if (inseminaciones && Array.isArray(inseminaciones)) {
+            for (const inseminacion of inseminaciones) {
+                const sqlInseminacion = `INSERT INTO Inseminaciones (idAnimal, fecha_inseminacion, tipo_inseminacion, resultado, observaciones) VALUES (?, ?, ?, ?, ?)`;
+                const valuesInseminacion = [idAnimal, inseminacion.fecha, inseminacion.tipo, inseminacion.resultado, inseminacion.observaciones];
+                await db.query(sqlInseminacion, valuesInseminacion);
+            }
+        }
+    }
+
+    // Función para actualizar el estado reproductivo
+    async function actualizarEstadoReproductivo(db, idAnimal, estadoReproductivo) {
+        const {
+            ciclo_celo,
+            fecha_ultimo_celo,
+            servicios_realizados,
+            numero_gestaciones,
+            partos_realizados,
+            resultados_lactancia,
+            fecha_ultima_prueba_reproductiva,
+            resultado_prueba_reproductiva
+        } = estadoReproductivo;
+
+        const sqlEstadoReproductivo = `
+            UPDATE Estado_Reproductivo SET 
+            ciclo_celo = ?, fecha_ultimo_celo = ?, servicios_realizados = ?,
+            numero_gestaciones = ?, partos_realizados = ?, resultados_lactancia = ?,
+            fecha_ultima_prueba_reproductiva = ?, resultado_prueba_reproductiva = ?
+            WHERE idAnimal = ?
+        `;
+
+        const valuesEstadoReproductivo = [
+            ciclo_celo, fecha_ultimo_celo, servicios_realizados,
+            numero_gestaciones, partos_realizados, resultados_lactancia,
+            fecha_ultima_prueba_reproductiva, resultado_prueba_reproductiva, idAnimal
+        ];
+
+        await db.query(sqlEstadoReproductivo, valuesEstadoReproductivo);
+    }
 
 
 
-    router.delete('/deleteAnimal/:id', (req, res) => {
+    router.delete('/deleteAnimal/:id', async (req, res) => {
         const id = req.params.id;
 
+        // Lista de consultas SQL para eliminar los registros relacionados
         const queries = [
+            { sql: 'DELETE FROM Estado_Reproductivo WHERE idAnimal = ?', params: [id] },  // Eliminar el estado reproductivo
             { sql: 'DELETE FROM Historial_Enfermedades WHERE idAnimal = ?', params: [id] },
             { sql: 'DELETE FROM Historial_Productos WHERE idAnimal = ?', params: [id] },  // Incluye tratamientos como parte de productos
             { sql: 'DELETE FROM Control_Banos WHERE idAnimal = ?', params: [id] },
@@ -559,27 +588,32 @@ FROM
             { sql: 'DELETE FROM Animales WHERE idAnimal = ?', params: [id] }
         ];
 
-        const executeQuery = ({ sql, params }) => {
-            return new Promise((resolve, reject) => {
-                db.query(sql, params, (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                });
-            });
-        };
+        try {
+            // Ejecutar todas las consultas de eliminación de forma secuencial
+            for (const query of queries) {
+                await executeQuery(query.sql, query.params);
+            }
 
-        Promise.all(queries.map(executeQuery))
-            .then(results => {
-                res.status(200).json({ message: 'Registro de animal eliminado con éxito' });
-            })
-            .catch(err => {
-                console.error('Error al eliminar registros:', err);
-                res.status(500).json({ error: 'Error al eliminar registros' });
-            });
+            res.status(200).json({ message: 'Registro de animal eliminado con éxito' });
+        } catch (err) {
+            console.error('Error al eliminar registros:', err);
+            res.status(500).json({ error: 'Error al eliminar registros' });
+        }
     });
+
+    // Función para ejecutar consultas SQL
+    const executeQuery = (sql, params) => {
+        return new Promise((resolve, reject) => {
+            db.query(sql, params, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    };
+
 
 
 
@@ -675,30 +709,30 @@ FROM
 
 
 
-   // Crear un nuevo producto
-router.post('/productos', (req, res) => {
-    const { nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento, motivo, imagen } = req.body; // Añadido 'imagen'
+    // Crear un nuevo producto
+    router.post('/productos', (req, res) => {
+        const { nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento, motivo, imagen } = req.body; // Añadido 'imagen'
 
-    // Validar los campos obligatorios
-    if (!nombre) {
-        return res.status(400).json({ error: 'El campo "nombre" es obligatorio' });
-    }
+        // Validar los campos obligatorios
+        if (!nombre) {
+            return res.status(400).json({ error: 'El campo "nombre" es obligatorio' });
+        }
 
-    const sql = `
+        const sql = `
     INSERT INTO Productos (nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento, motivo, imagen) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    const values = [nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento || false, motivo || null, imagen || null]; // Añadido 'imagen'
+        const values = [nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento || false, motivo || null, imagen || null]; // Añadido 'imagen'
 
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error al crear producto:', err);
-            return res.status(500).json({ error: 'Error al crear producto' });
-        }
-        res.status(201).json({ message: 'Producto creado con éxito', id: result.insertId });
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error('Error al crear producto:', err);
+                return res.status(500).json({ error: 'Error al crear producto' });
+            }
+            res.status(201).json({ message: 'Producto creado con éxito', id: result.insertId });
+        });
     });
-});
 
 
 
@@ -731,34 +765,34 @@ router.post('/productos', (req, res) => {
     });
 
     // Actualizar un producto por ID
-router.put('/productos/:id', (req, res) => {
-    const id = req.params.id;
-    const { nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento, motivo, imagen } = req.body; // Añadido 'imagen'
+    router.put('/productos/:id', (req, res) => {
+        const id = req.params.id;
+        const { nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento, motivo, imagen } = req.body; // Añadido 'imagen'
 
-    // Validar los campos obligatorios
-    if (!nombre) {
-        return res.status(400).json({ error: 'El campo "nombre" es obligatorio' });
-    }
+        // Validar los campos obligatorios
+        if (!nombre) {
+            return res.status(400).json({ error: 'El campo "nombre" es obligatorio' });
+        }
 
-    const sql = `
+        const sql = `
     UPDATE Productos 
     SET nombre = ?, tipo = ?, dosis_recomendada = ?, frecuencia_aplicacion = ?, notas = ?, es_tratamiento = ?, motivo = ?, imagen = ? 
     WHERE idProductos = ?
     `;
 
-    const values = [nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento || false, motivo || null, imagen || null, id]; // Añadido 'imagen'
+        const values = [nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento || false, motivo || null, imagen || null, id]; // Añadido 'imagen'
 
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error al actualizar producto:', err);
-            return res.status(500).json({ error: 'Error al actualizar producto' });
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Producto no encontrado' });
-        }
-        res.status(200).json({ message: 'Producto actualizado con éxito' });
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error('Error al actualizar producto:', err);
+                return res.status(500).json({ error: 'Error al actualizar producto' });
+            }
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'Producto no encontrado' });
+            }
+            res.status(200).json({ message: 'Producto actualizado con éxito' });
+        });
     });
-});
 
 
 
@@ -879,94 +913,94 @@ router.put('/productos/:id', (req, res) => {
 
 
 
-  // Ruta para obtener todos los usuarios
-router.get('/usuarios', authenticateToken, (req, res) => {
-    const sql = 'SELECT * FROM Usuarios';
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Error al obtener usuarios:', err);
-            return res.status(500).json({ error: 'Error al obtener usuarios' });
+    // Ruta para obtener todos los usuarios
+    router.get('/usuarios', authenticateToken, (req, res) => {
+        const sql = 'SELECT * FROM Usuarios';
+        db.query(sql, (err, results) => {
+            if (err) {
+                console.error('Error al obtener usuarios:', err);
+                return res.status(500).json({ error: 'Error al obtener usuarios' });
+            }
+            res.status(200).json(results);
+        });
+    });
+
+    // Ruta para actualizar un usuario
+    router.put('/usuarios/:id', authenticateToken, (req, res) => {
+        const id = req.params.id;
+        const { nombre_usuario, rol } = req.body;
+
+        if (!nombre_usuario) {
+            return res.status(400).json({ error: 'El campo "nombre_usuario" es obligatorio' });
         }
-        res.status(200).json(results);
+
+        const sql = 'UPDATE Usuarios SET nombre_usuario = ?, rol = ? WHERE idUsuario = ?';
+        db.query(sql, [nombre_usuario, rol, id], (err, result) => {
+            if (err) {
+                console.error('Error al actualizar usuario:', err);
+                return res.status(500).json({ error: 'Error al actualizar usuario' });
+            }
+            res.status(200).json({ message: 'Usuario actualizado correctamente' });
+        });
     });
-});
 
-// Ruta para actualizar un usuario
-router.put('/usuarios/:id', authenticateToken, (req, res) => {
-    const id = req.params.id;
-    const { nombre_usuario, rol } = req.body;
+    // Ruta para eliminar un usuario
+    router.delete('/usuarios/:id', authenticateToken, (req, res) => {
+        const id = req.params.id;
+        const sql = 'DELETE FROM Usuarios WHERE idUsuario = ?';
+        db.query(sql, [id], (err, result) => {
+            if (err) {
+                console.error('Error al eliminar usuario:', err);
+                return res.status(500).json({ error: 'Error al eliminar usuario' });
+            }
+            res.status(200).json({ message: 'Usuario eliminado correctamente' });
+        });
+    });
 
-    if (!nombre_usuario) {
-        return res.status(400).json({ error: 'El campo "nombre_usuario" es obligatorio' });
-    }
 
-    const sql = 'UPDATE Usuarios SET nombre_usuario = ?, rol = ? WHERE idUsuario = ?';
-    db.query(sql, [nombre_usuario, rol, id], (err, result) => {
-        if (err) {
-            console.error('Error al actualizar usuario:', err);
-            return res.status(500).json({ error: 'Error al actualizar usuario' });
+
+
+    // Ruta para actualizar la contraseña de un usuario
+    router.put('/usuarios/:id/password', authenticateToken, (req, res) => {
+        const id = req.params.id;
+        const { nueva_contrasena } = req.body;
+
+        if (!nueva_contrasena) {
+            return res.status(400).json({ error: 'El campo "nueva_contrasena" es obligatorio' });
         }
-        res.status(200).json({ message: 'Usuario actualizado correctamente' });
+
+        // Encripta la nueva contraseña
+        const hashedPassword = bcrypt.hashSync(nueva_contrasena, 10);
+
+        const sql = 'UPDATE Usuarios SET contrasena = ? WHERE idUsuario = ?';
+        db.query(sql, [hashedPassword, id], (err, result) => {
+            if (err) {
+                console.error('Error al actualizar la contraseña del usuario:', err);
+                return res.status(500).json({ error: 'Error al actualizar la contraseña del usuario' });
+            }
+            res.status(200).json({ message: 'Contraseña actualizada correctamente' });
+        });
     });
-});
 
-// Ruta para eliminar un usuario
-router.delete('/usuarios/:id', authenticateToken, (req, res) => {
-    const id = req.params.id;
-    const sql = 'DELETE FROM Usuarios WHERE idUsuario = ?';
-    db.query(sql, [id], (err, result) => {
-        if (err) {
-            console.error('Error al eliminar usuario:', err);
-            return res.status(500).json({ error: 'Error al eliminar usuario' });
-        }
-        res.status(200).json({ message: 'Usuario eliminado correctamente' });
-    });
-});
+    //---------------------------------------------------------------------------------------------------------------------
 
 
 
 
-// Ruta para actualizar la contraseña de un usuario
-router.put('/usuarios/:id/password', authenticateToken, (req, res) => {
-    const id = req.params.id;
-    const { nueva_contrasena } = req.body;
-  
-    if (!nueva_contrasena) {
-      return res.status(400).json({ error: 'El campo "nueva_contrasena" es obligatorio' });
-    }
-  
-    // Encripta la nueva contraseña
-    const hashedPassword = bcrypt.hashSync(nueva_contrasena, 10);
-  
-    const sql = 'UPDATE Usuarios SET contrasena = ? WHERE idUsuario = ?';
-    db.query(sql, [hashedPassword, id], (err, result) => {
-      if (err) {
-        console.error('Error al actualizar la contraseña del usuario:', err);
-        return res.status(500).json({ error: 'Error al actualizar la contraseña del usuario' });
-      }
-      res.status(200).json({ message: 'Contraseña actualizada correctamente' });
-    });
-  });
+    router.post('/estado-reproductivo', authenticateToken, (req, res) => {
+        const {
+            idAnimal,
+            ciclo_celo = '',
+            fecha_ultimo_celo = null,
+            servicios_realizados = 0,
+            numero_gestaciones = 0,
+            partos_realizados = 0,
+            resultados_lactancia = '',
+            fecha_ultima_prueba_reproductiva = null,
+            resultado_prueba_reproductiva = ''
+        } = req.body;
 
-  //---------------------------------------------------------------------------------------------------------------------
-
-
-
-
-  router.post('/estado-reproductivo', authenticateToken, (req, res) => {
-    const {
-        idAnimal,
-        ciclo_celo = '',
-        fecha_ultimo_celo = null,
-        servicios_realizados = 0,
-        numero_gestaciones = 0,
-        partos_realizados = 0,
-        resultados_lactancia = '',
-        fecha_ultima_prueba_reproductiva = null,
-        resultado_prueba_reproductiva = ''
-    } = req.body;
-
-    const sql = `
+        const sql = `
         INSERT INTO estado_reproductivo (
             idAnimal, ciclo_celo, fecha_ultimo_celo, servicios_realizados,
             numero_gestaciones, partos_realizados, resultados_lactancia,
@@ -974,71 +1008,71 @@ router.put('/usuarios/:id/password', authenticateToken, (req, res) => {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    const values = [
-        idAnimal,
-        ciclo_celo,
-        fecha_ultimo_celo ? fecha_ultimo_celo : null,
-        servicios_realizados ? servicios_realizados : 0,
-        numero_gestaciones ? numero_gestaciones : 0,
-        partos_realizados ? partos_realizados : 0,
-        resultados_lactancia,
-        fecha_ultima_prueba_reproductiva ? fecha_ultima_prueba_reproductiva : null,
-        resultado_prueba_reproductiva
-    ];
+        const values = [
+            idAnimal,
+            ciclo_celo,
+            fecha_ultimo_celo ? fecha_ultimo_celo : null,
+            servicios_realizados ? servicios_realizados : 0,
+            numero_gestaciones ? numero_gestaciones : 0,
+            partos_realizados ? partos_realizados : 0,
+            resultados_lactancia,
+            fecha_ultima_prueba_reproductiva ? fecha_ultima_prueba_reproductiva : null,
+            resultado_prueba_reproductiva
+        ];
 
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error al crear el estado reproductivo:', err);
-            return res.status(500).json({ error: 'Error al crear el estado reproductivo' });
-        }
-        res.status(201).json({ message: 'Estado reproductivo creado con éxito', id: result.insertId });
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error('Error al crear el estado reproductivo:', err);
+                return res.status(500).json({ error: 'Error al crear el estado reproductivo' });
+            }
+            res.status(201).json({ message: 'Estado reproductivo creado con éxito', id: result.insertId });
+        });
     });
-});
 
 
-// Leer todos los registros de estado reproductivo
-router.get('/estado-reproductivo', authenticateToken, (req, res) => {
-    const sql = 'SELECT * FROM Estado_Reproductivo';
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Error al obtener estados reproductivos:', err);
-            return res.status(500).json({ error: 'Error al obtener estados reproductivos' });
-        }
-        res.status(200).json(results);
+    // Leer todos los registros de estado reproductivo
+    router.get('/estado-reproductivo', authenticateToken, (req, res) => {
+        const sql = 'SELECT * FROM Estado_Reproductivo';
+        db.query(sql, (err, results) => {
+            if (err) {
+                console.error('Error al obtener estados reproductivos:', err);
+                return res.status(500).json({ error: 'Error al obtener estados reproductivos' });
+            }
+            res.status(200).json(results);
+        });
     });
-});
 
-// Leer un estado reproductivo por ID
-router.get('/estado-reproductivo/:id', authenticateToken, (req, res) => {
-    const id = req.params.id;
-    const sql = 'SELECT * FROM Estado_Reproductivo WHERE idEstadoReproductivo = ?';
-    db.query(sql, [id], (err, results) => {
-        if (err) {
-            console.error('Error al obtener el estado reproductivo:', err);
-            return res.status(500).json({ error: 'Error al obtener el estado reproductivo' });
-        }
-        if (results.length === 0) {
-            return res.status(404).json({ error: 'Estado reproductivo no encontrado' });
-        }
-        res.status(200).json(results[0]);
+    // Leer un estado reproductivo por ID
+    router.get('/estado-reproductivo/:id', authenticateToken, (req, res) => {
+        const id = req.params.id;
+        const sql = 'SELECT * FROM Estado_Reproductivo WHERE idEstadoReproductivo = ?';
+        db.query(sql, [id], (err, results) => {
+            if (err) {
+                console.error('Error al obtener el estado reproductivo:', err);
+                return res.status(500).json({ error: 'Error al obtener el estado reproductivo' });
+            }
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'Estado reproductivo no encontrado' });
+            }
+            res.status(200).json(results[0]);
+        });
     });
-});
 
-// Actualizar un estado reproductivo por ID
-router.put('/estado-reproductivo/:id', authenticateToken, (req, res) => {
-    const id = req.params.id;
-    const {
-        ciclo_celo,
-        fecha_ultimo_celo,
-        servicios_realizados,
-        numero_gestaciones,
-        partos_realizados,
-        resultados_lactancia,
-        fecha_ultima_prueba_reproductiva,
-        resultado_prueba_reproductiva
-    } = req.body;
+    // Actualizar un estado reproductivo por ID
+    router.put('/estado-reproductivo/:id', authenticateToken, (req, res) => {
+        const id = req.params.id;
+        const {
+            ciclo_celo,
+            fecha_ultimo_celo,
+            servicios_realizados,
+            numero_gestaciones,
+            partos_realizados,
+            resultados_lactancia,
+            fecha_ultima_prueba_reproductiva,
+            resultado_prueba_reproductiva
+        } = req.body;
 
-    const sql = `
+        const sql = `
         UPDATE Estado_Reproductivo SET 
         ciclo_celo = ?, fecha_ultimo_celo = ?, servicios_realizados = ?,
         numero_gestaciones = ?, partos_realizados = ?, resultados_lactancia = ?,
@@ -1046,33 +1080,33 @@ router.put('/estado-reproductivo/:id', authenticateToken, (req, res) => {
         WHERE idEstadoReproductivo = ?
     `;
 
-    const values = [
-        ciclo_celo, fecha_ultimo_celo, servicios_realizados,
-        numero_gestaciones, partos_realizados, resultados_lactancia,
-        fecha_ultima_prueba_reproductiva, resultado_prueba_reproductiva, id
-    ];
+        const values = [
+            ciclo_celo, fecha_ultimo_celo, servicios_realizados,
+            numero_gestaciones, partos_realizados, resultados_lactancia,
+            fecha_ultima_prueba_reproductiva, resultado_prueba_reproductiva, id
+        ];
 
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error al actualizar el estado reproductivo:', err);
-            return res.status(500).json({ error: 'Error al actualizar el estado reproductivo' });
-        }
-        res.status(200).json({ message: 'Estado reproductivo actualizado con éxito' });
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error('Error al actualizar el estado reproductivo:', err);
+                return res.status(500).json({ error: 'Error al actualizar el estado reproductivo' });
+            }
+            res.status(200).json({ message: 'Estado reproductivo actualizado con éxito' });
+        });
     });
-});
 
-// Eliminar un estado reproductivo por ID
-router.delete('/estado-reproductivo/:id', authenticateToken, (req, res) => {
-    const id = req.params.id;
-    const sql = 'DELETE FROM Estado_Reproductivo WHERE idEstadoReproductivo = ?';
-    db.query(sql, [id], (err, result) => {
-        if (err) {
-            console.error('Error al eliminar el estado reproductivo:', err);
-            return res.status(500).json({ error: 'Error al eliminar el estado reproductivo' });
-        }
-        res.status(200).json({ message: 'Estado reproductivo eliminado con éxito' });
+    // Eliminar un estado reproductivo por ID
+    router.delete('/estado-reproductivo/:id', authenticateToken, (req, res) => {
+        const id = req.params.id;
+        const sql = 'DELETE FROM Estado_Reproductivo WHERE idEstadoReproductivo = ?';
+        db.query(sql, [id], (err, result) => {
+            if (err) {
+                console.error('Error al eliminar el estado reproductivo:', err);
+                return res.status(500).json({ error: 'Error al eliminar el estado reproductivo' });
+            }
+            res.status(200).json({ message: 'Estado reproductivo eliminado con éxito' });
+        });
     });
-});
 
 
     return router;
