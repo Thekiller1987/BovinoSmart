@@ -343,70 +343,80 @@ module.exports = (db) => {
     router.get('/listarAnimales', (req, res) => {
         const sql = `
             SELECT 
-    A.idAnimal,
-    A.nombre,
-    A.sexo,
-    A.imagen,
-    A.codigo_idVaca,
-    A.fecha_nacimiento,
-    A.raza,
-    A.observaciones,
-    A.peso_nacimiento,
-    A.peso_destete,
-    A.peso_actual,
-    A.estado,  
-    A.inseminacion, 
-    (SELECT GROUP_CONCAT(E.nombre ORDER BY HE.fecha ASC SEPARATOR ', ')
-     FROM Historial_Enfermedades HE
-     JOIN Enfermedades E ON HE.idEnfermedades = E.idEnfermedades
-     WHERE HE.idAnimal = A.idAnimal) AS enfermedades,
-    (SELECT GROUP_CONCAT(HE.fecha ORDER BY HE.fecha ASC SEPARATOR ', ')
-     FROM Historial_Enfermedades HE
-     WHERE HE.idAnimal = A.idAnimal) AS fechas_enfermedad,
-    (SELECT GROUP_CONCAT(P.nombre ORDER BY HP.fecha ASC SEPARATOR ', ')
-     FROM Historial_Productos HP
-     JOIN Productos P ON HP.idProductos = P.idProductos
-     WHERE HP.idAnimal = A.idAnimal) AS productos,
-    (SELECT GROUP_CONCAT(HP.dosis ORDER BY HP.fecha ASC SEPARATOR ', ')
-     FROM Historial_Productos HP
-     WHERE HP.idAnimal = A.idAnimal) AS dosis_producto,
-    (SELECT GROUP_CONCAT(HP.fecha ORDER BY HP.fecha ASC SEPARATOR ', ')
-     FROM Historial_Productos HP
-     WHERE HP.idAnimal = A.idAnimal) AS fechas_producto,
-    (SELECT GROUP_CONCAT(HP.es_tratamiento ORDER BY HP.fecha ASC SEPARATOR ', ')
-     FROM Historial_Productos HP
-     WHERE HP.idAnimal = A.idAnimal) AS tratamientos, 
-    (SELECT GROUP_CONCAT(CB.fecha ORDER BY CB.fecha ASC SEPARATOR ', ')
-     FROM Control_Banos CB
-     WHERE CB.idAnimal = A.idAnimal) AS fechas_bano,
-    (SELECT GROUP_CONCAT(CB.productos_utilizados ORDER BY CB.fecha ASC SEPARATOR ', ')
-     FROM Control_Banos CB
-     WHERE CB.idAnimal = A.idAnimal) AS productos_utilizados_bano,
-    (SELECT GROUP_CONCAT(PL.fecha ORDER BY PL.fecha ASC SEPARATOR ', ')
-     FROM Produccion_Leche PL
-     WHERE PL.idAnimal = A.idAnimal) AS fechas_produccion_leche,
-    (SELECT GROUP_CONCAT(PL.cantidad ORDER BY PL.fecha ASC SEPARATOR ', ')
-     FROM Produccion_Leche PL
-     WHERE PL.idAnimal = A.idAnimal) AS cantidades_produccion_leche,
-    (SELECT GROUP_CONCAT(PL.calidad ORDER BY PL.fecha ASC SEPARATOR ', ')
-     FROM Produccion_Leche PL
-     WHERE PL.idAnimal = A.idAnimal) AS calidades_produccion_leche,
-    (SELECT GROUP_CONCAT(I.fecha_inseminacion ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
-     FROM Inseminaciones I
-     WHERE I.idAnimal = A.idAnimal) AS fechas_inseminacion, 
-    (SELECT GROUP_CONCAT(I.tipo_inseminacion ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
-     FROM Inseminaciones I
-     WHERE I.idAnimal = A.idAnimal) AS tipos_inseminacion, 
-    (SELECT GROUP_CONCAT(I.resultado ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
-     FROM Inseminaciones I
-     WHERE I.idAnimal = A.idAnimal) AS resultados_inseminacion, 
-    (SELECT GROUP_CONCAT(I.observaciones ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
-     FROM Inseminaciones I
-     WHERE I.idAnimal = A.idAnimal) AS observaciones_inseminacion 
-FROM 
-    Animales A
+                A.idAnimal,
+                A.nombre,
+                A.sexo,
+                A.imagen,
+                A.codigo_idVaca,
+                A.fecha_nacimiento,
+                A.raza,
+                A.observaciones,
+                A.peso_nacimiento,
+                A.peso_destete,
+                A.peso_actual,
+                A.estado,  
+                A.inseminacion, 
+                (SELECT GROUP_CONCAT(E.nombre ORDER BY HE.fecha ASC SEPARATOR ', ')
+                 FROM Historial_Enfermedades HE
+                 JOIN Enfermedades E ON HE.idEnfermedades = E.idEnfermedades
+                 WHERE HE.idAnimal = A.idAnimal) AS enfermedades,
+                (SELECT GROUP_CONCAT(HE.fecha ORDER BY HE.fecha ASC SEPARATOR ', ')
+                 FROM Historial_Enfermedades HE
+                 WHERE HE.idAnimal = A.idAnimal) AS fechas_enfermedad,
+                (SELECT GROUP_CONCAT(P.nombre ORDER BY HP.fecha ASC SEPARATOR ', ')
+                 FROM Historial_Productos HP
+                 JOIN Productos P ON HP.idProductos = P.idProductos
+                 WHERE HP.idAnimal = A.idAnimal) AS productos,
+                (SELECT GROUP_CONCAT(HP.dosis ORDER BY HP.fecha ASC SEPARATOR ', ')
+                 FROM Historial_Productos HP
+                 WHERE HP.idAnimal = A.idAnimal) AS dosis_producto,
+                (SELECT GROUP_CONCAT(HP.fecha ORDER BY HP.fecha ASC SEPARATOR ', ')
+                 FROM Historial_Productos HP
+                 WHERE HP.idAnimal = A.idAnimal) AS fechas_producto,
+                (SELECT GROUP_CONCAT(HP.es_tratamiento ORDER BY HP.fecha ASC SEPARATOR ', ')
+                 FROM Historial_Productos HP
+                 WHERE HP.idAnimal = A.idAnimal) AS tratamientos, 
+                (SELECT GROUP_CONCAT(CB.fecha ORDER BY CB.fecha ASC SEPARATOR ', ')
+                 FROM Control_Banos CB
+                 WHERE CB.idAnimal = A.idAnimal) AS fechas_bano,
+                (SELECT GROUP_CONCAT(CB.productos_utilizados ORDER BY CB.fecha ASC SEPARATOR ', ')
+                 FROM Control_Banos CB
+                 WHERE CB.idAnimal = A.idAnimal) AS productos_utilizados_bano,
+                (SELECT GROUP_CONCAT(PL.fecha ORDER BY PL.fecha ASC SEPARATOR ', ')
+                 FROM Produccion_Leche PL
+                 WHERE PL.idAnimal = A.idAnimal) AS fechas_produccion_leche,
+                (SELECT GROUP_CONCAT(PL.cantidad ORDER BY PL.fecha ASC SEPARATOR ', ')
+                 FROM Produccion_Leche PL
+                 WHERE PL.idAnimal = A.idAnimal) AS cantidades_produccion_leche,
+                (SELECT GROUP_CONCAT(PL.calidad ORDER BY PL.fecha ASC SEPARATOR ', ')
+                 FROM Produccion_Leche PL
+                 WHERE PL.idAnimal = A.idAnimal) AS calidades_produccion_leche,
+                (SELECT GROUP_CONCAT(I.fecha_inseminacion ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
+                 FROM Inseminaciones I
+                 WHERE I.idAnimal = A.idAnimal) AS fechas_inseminacion, 
+                (SELECT GROUP_CONCAT(I.tipo_inseminacion ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
+                 FROM Inseminaciones I
+                 WHERE I.idAnimal = A.idAnimal) AS tipos_inseminacion, 
+                (SELECT GROUP_CONCAT(I.resultado ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
+                 FROM Inseminaciones I
+                 WHERE I.idAnimal = A.idAnimal) AS resultados_inseminacion, 
+                (SELECT GROUP_CONCAT(I.observaciones ORDER BY I.fecha_inseminacion ASC SEPARATOR ', ')
+                 FROM Inseminaciones I
+                 WHERE I.idAnimal = A.idAnimal) AS observaciones_inseminacion,
+                -- Aquí se añaden los campos de la tabla Estado_Reproductivo
+                ER.ciclo_celo,
+                ER.fecha_ultimo_celo,
+                ER.servicios_realizados,
+                ER.numero_gestaciones,
+                ER.partos_realizados,
+                ER.resultados_lactancia,
+                ER.uso_programa_inseminacion,
+                ER.resultado_prueba_reproductiva
+            FROM 
+                Animales A
+            LEFT JOIN Estado_Reproductivo ER ON A.idAnimal = ER.idAnimal
         `;
-
+    
         db.query(sql, (err, result) => {
             if (err) {
                 console.error('Error al recuperar registros de Animales:', err);
@@ -416,6 +426,7 @@ FROM
             }
         });
     });
+    
 
     router.put('/updateAnimal/:id', async (req, res) => {
         const id = req.params.id;
@@ -542,8 +553,13 @@ FROM
         }
     }
 
-    // Función para actualizar el estado reproductivo
     async function actualizarEstadoReproductivo(db, idAnimal, estadoReproductivo) {
+        if (!estadoReproductivo || typeof estadoReproductivo !== 'object') {
+            console.error('El valor de estadoReproductivo no es un objeto válido:', estadoReproductivo);
+            return;
+        }
+    
+        // Extraer los valores del objeto estadoReproductivo
         const {
             ciclo_celo,
             fecha_ultimo_celo,
@@ -551,56 +567,85 @@ FROM
             numero_gestaciones,
             partos_realizados,
             resultados_lactancia,
-            fecha_ultima_prueba_reproductiva,
+            uso_programa_inseminacion,
             resultado_prueba_reproductiva
         } = estadoReproductivo;
-
+    
+        // Convertir las fechas al formato adecuado (YYYY-MM-DD)
+        const formattedFechaUltimoCelo = fecha_ultimo_celo ? new Date(fecha_ultimo_celo).toISOString().split('T')[0] : null;
+    
         const sqlEstadoReproductivo = `
             UPDATE Estado_Reproductivo SET 
-            ciclo_celo = ?, fecha_ultimo_celo = ?, servicios_realizados = ?,
-            numero_gestaciones = ?, partos_realizados = ?, resultados_lactancia = ?,
-            fecha_ultima_prueba_reproductiva = ?, resultado_prueba_reproductiva = ?
+            ciclo_celo = ?,
+            fecha_ultimo_celo = ?,
+            servicios_realizados = ?,
+            numero_gestaciones = ?,
+            partos_realizados = ?,
+            resultados_lactancia = ?,
+            uso_programa_inseminacion = ?,
+            resultado_prueba_reproductiva = ?
             WHERE idAnimal = ?
         `;
-
+    
         const valuesEstadoReproductivo = [
-            ciclo_celo, fecha_ultimo_celo, servicios_realizados,
-            numero_gestaciones, partos_realizados, resultados_lactancia,
-            fecha_ultima_prueba_reproductiva, resultado_prueba_reproductiva, idAnimal
+            ciclo_celo || null,
+            formattedFechaUltimoCelo,
+            servicios_realizados || null,
+            numero_gestaciones || null,
+            partos_realizados || null,
+            resultados_lactancia || null,
+            uso_programa_inseminacion || null,
+            resultado_prueba_reproductiva || null,
+            idAnimal
         ];
-
-        await db.query(sqlEstadoReproductivo, valuesEstadoReproductivo);
+    
+        try {
+            await db.query(sqlEstadoReproductivo, valuesEstadoReproductivo);
+            console.log('Estado reproductivo actualizado correctamente.');
+        } catch (err) {
+            console.error('Error al actualizar el estado reproductivo:', err);
+            throw err;
+        }
     }
+
 
 
 
     router.delete('/deleteAnimal/:id', async (req, res) => {
         const id = req.params.id;
-
+    
         // Lista de consultas SQL para eliminar los registros relacionados
         const queries = [
-            { sql: 'DELETE FROM Estado_Reproductivo WHERE idAnimal = ?', params: [id] },  // Eliminar el estado reproductivo
+            { sql: 'DELETE FROM Estado_Reproductivo WHERE idAnimal = ?', params: [id] },
             { sql: 'DELETE FROM Historial_Enfermedades WHERE idAnimal = ?', params: [id] },
-            { sql: 'DELETE FROM Historial_Productos WHERE idAnimal = ?', params: [id] },  // Incluye tratamientos como parte de productos
+            { sql: 'DELETE FROM Historial_Productos WHERE idAnimal = ?', params: [id] },
             { sql: 'DELETE FROM Control_Banos WHERE idAnimal = ?', params: [id] },
             { sql: 'DELETE FROM Produccion_Leche WHERE idAnimal = ?', params: [id] },
-            { sql: 'DELETE FROM Inseminaciones WHERE idAnimal = ?', params: [id] }, // Agrega la eliminación del historial de inseminaciones
+            { sql: 'DELETE FROM Inseminaciones WHERE idAnimal = ?', params: [id] },
             { sql: 'DELETE FROM Animales WHERE idAnimal = ?', params: [id] }
         ];
-
+    
         try {
+            // Iniciar una transacción
+            await startTransaction();
+    
             // Ejecutar todas las consultas de eliminación de forma secuencial
             for (const query of queries) {
                 await executeQuery(query.sql, query.params);
             }
-
+    
+            // Si todas las consultas se ejecutan correctamente, confirmar la transacción
+            await commitTransaction();
+    
             res.status(200).json({ message: 'Registro de animal eliminado con éxito' });
         } catch (err) {
             console.error('Error al eliminar registros:', err);
+            // En caso de error, revertir la transacción
+            await rollbackTransaction();
             res.status(500).json({ error: 'Error al eliminar registros' });
         }
     });
-
+    
     // Función para ejecutar consultas SQL
     const executeQuery = (sql, params) => {
         return new Promise((resolve, reject) => {
@@ -613,8 +658,40 @@ FROM
             });
         });
     };
-
-
+    
+    // Funciones para manejar transacciones
+    const startTransaction = () => {
+        return new Promise((resolve, reject) => {
+            db.beginTransaction((err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    };
+    
+    const commitTransaction = () => {
+        return new Promise((resolve, reject) => {
+            db.commit((err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    };
+    
+    const rollbackTransaction = () => {
+        return new Promise((resolve, reject) => {
+            db.rollback(() => {
+                resolve(); // No necesitamos capturar errores aquí, ya que la reversión es la acción final
+            });
+        });
+    };
+    
 
 
     //Apartado de enfermedades

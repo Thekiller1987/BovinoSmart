@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react'; // Importa React y los hooks useEffect y useState.
-import { Modal, Button, Form, Row, Col, FloatingLabel, Accordion } from 'react-bootstrap'; // Importa componentes de React Bootstrap.
-import '../styles/AnimalList.css'; // Importa los estilos personalizados.
-import Header from '../components/Header'; // Importa el componente Header personalizado.
-import deleteIcon from '../Iconos/trash3.svg'; // Importa el ícono de eliminar.
-import EditIcon from '../Iconos/pencil.svg'; // Importa el ícono de editar.
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Importa el componente FontAwesomeIcon.
-import { faStethoscope, faSyringe, faShower, faTint, faSeedling } from '@fortawesome/free-solid-svg-icons'; // Importa los íconos de FontAwesome.
-
+import React, { useEffect, useState } from 'react'; 
+import { Modal, Button, Form, Row, Col, FloatingLabel, Accordion } from 'react-bootstrap'; 
+import '../styles/AnimalList.css'; 
+import Header from '../components/Header'; 
+import deleteIcon from '../Iconos/trash3.svg'; 
+import EditIcon from '../Iconos/pencil.svg'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { faStethoscope, faSyringe, faShower, faTint, faSeedling } from '@fortawesome/free-solid-svg-icons'; 
 
 function AnimalList() {
     // Estados para la lista de animales y el manejo de la interfaz.
-    const [animales, setAnimales] = useState([]); // Estado para almacenar la lista de animales.
-    const [selectedAnimal, setSelectedAnimal] = useState(null); // Estado para almacenar el animal seleccionado.
-    const [editAnimal, setEditAnimal] = useState(null); // Estado para almacenar el animal en edición.
-    const [error, setError] = useState(null); // Estado para almacenar mensajes de error.
-    const [deleting, setDeleting] = useState(false); // Estado para indicar si un animal está siendo eliminado.
-    const [showEditModal, setShowEditModal] = useState(false); // Estado para mostrar u ocultar el modal de edición.
-    const [listaEnfermedades, setListaEnfermedades] = useState([]); // Estado para almacenar la lista de enfermedades.
-    const [listaProductos, setListaProductos] = useState([]); // Estado para almacenar la lista de productos.
-    const [searchQuery, setSearchQuery] = useState(''); // Estado para almacenar el término de búsqueda.
+    const [animales, setAnimales] = useState([]); 
+    const [selectedAnimal, setSelectedAnimal] = useState(null); 
+    const [editAnimal, setEditAnimal] = useState(null); 
+    const [error, setError] = useState(null); 
+    const [deleting, setDeleting] = useState(false); 
+    const [showEditModal, setShowEditModal] = useState(false); 
+    const [listaEnfermedades, setListaEnfermedades] = useState([]); 
+    const [listaProductos, setListaProductos] = useState([]); 
+    const [searchQuery, setSearchQuery] = useState(''); 
+    const [showReproductiveModal, setShowReproductiveModal] = useState(false); 
 
     const [userRoles, setUserRoles] = useState([]);
     useEffect(() => {
@@ -32,72 +32,70 @@ function AnimalList() {
     // Función para cargar la lista de animales desde el servidor.
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:5000/crud/listarAnimales'); // Realiza una solicitud GET al servidor.
+            const response = await fetch('http://localhost:5000/crud/listarAnimales'); 
             if (response.ok) {
-                const data = await response.json(); // Convierte la respuesta a JSON.
-                setAnimales(data); // Actualiza el estado con la lista de animales.
+                const data = await response.json(); 
+                setAnimales(data); 
             } else {
-                throw new Error('Error al recuperar los datos'); // Lanza un error si la respuesta no es exitosa.
+                throw new Error('Error al recuperar los datos'); 
             }
         } catch (error) {
-            setError(error.message); // Maneja errores de la solicitud.
+            setError(error.message); 
         }
     };
 
     // Función para cargar las listas de enfermedades y productos desde el servidor.
     const fetchLists = async () => {
         try {
-            const enfermedadesResponse = await fetch('http://localhost:5000/crud/enfermedades'); // Solicita la lista de enfermedades.
-            const productosResponse = await fetch('http://localhost:5000/crud/productos'); // Solicita la lista de productos.
+            const enfermedadesResponse = await fetch('http://localhost:5000/crud/enfermedades'); 
+            const productosResponse = await fetch('http://localhost:5000/crud/productos'); 
 
             if (enfermedadesResponse.ok && productosResponse.ok) {
-                const enfermedadesData = await enfermedadesResponse.json(); // Convierte la respuesta a JSON.
-                const productosData = await productosResponse.json(); // Convierte la respuesta a JSON.
+                const enfermedadesData = await enfermedadesResponse.json(); 
+                const productosData = await productosResponse.json(); 
 
-                setListaEnfermedades(enfermedadesData); // Actualiza el estado con la lista de enfermedades.
-                setListaProductos(productosData); // Actualiza el estado con la lista de productos.
+                setListaEnfermedades(enfermedadesData); 
+                setListaProductos(productosData); 
             } else {
-                throw new Error('Error al recuperar las listas'); // Lanza un error si alguna de las respuestas no es exitosa.
+                throw new Error('Error al recuperar las listas'); 
             }
         } catch (error) {
-            setError(error.message); // Maneja errores de la solicitud.
+            setError(error.message); 
         }
     };
 
-    // useEffect para cargar datos y listas al montar el componente.
     useEffect(() => {
-        fetchData(); // Llama a la función para cargar la lista de animales.
-        fetchLists(); // Llama a la función para cargar las listas de enfermedades y productos.
+        fetchData(); 
+        fetchLists(); 
     }, []);
 
-    // useEffect para manejar el evento de presionar la tecla Escape.
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.key === 'Escape') {
-                handleClosePanel(); // Cierra el panel de detalles si se presiona Escape.
+                handleClosePanel(); 
             }
         };
 
-        document.addEventListener('keydown', handleKeyDown); // Agrega un listener para el evento keydown.
+        document.addEventListener('keydown', handleKeyDown); 
         return () => {
-            document.removeEventListener('keydown', handleKeyDown); // Limpia el listener cuando el componente se desmonta.
+            document.removeEventListener('keydown', handleKeyDown); 
         };
     }, []);
-    // Función para formatear fechas.
+    
     const formatDate = (dateString) => {
+        if (!dateString) return ''; // Manejar si la fecha es nula o indefinida
         const date = new Date(dateString);
         if (isNaN(date)) {
-            return ''; // Maneja fecha inválida.
+            return ''; // Si la fecha no es válida, devolver cadena vacía
         }
-        return date.toISOString().split('T')[0]; // Formatea la fecha en formato YYYY-MM-DD.
+        return date.toISOString().split('T')[0]; // Convertir al formato YYYY-MM-DD
     };
+    
 
-    // Función para manejar el clic en una tarjeta de animal.
     const handleCardClick = (animal) => {
-        setSelectedAnimal(animal); // Establece el animal seleccionado.
+        setSelectedAnimal(animal); 
     };
 
-    // Función para manejar el clic en el botón de edición.
     const handleEditClick = (animal) => {
         setEditAnimal({
             ...animal,
@@ -110,7 +108,7 @@ function AnimalList() {
                 id: listaProductos.find(prod => prod.nombre === nombre)?.idProductos || '',
                 dosis: animal.dosis_producto?.split(', ')[index] || '',
                 fecha: formatDate(animal.fechas_producto?.split(', ')[index] || ''),
-                es_tratamiento: (animal.tratamientos?.split(', ')[index] || '') === '1' // Convierte a booleano.
+                es_tratamiento: (animal.tratamientos?.split(', ')[index] || '') === '1' // Convertir a booleano.
             })) : [],
             control_banos: animal.fechas_bano ? animal.fechas_bano.split(', ').map((fecha, index) => ({
                 fecha: formatDate(fecha),
@@ -127,115 +125,119 @@ function AnimalList() {
                 resultado: animal.resultados_inseminacion?.split(', ')[index] || '',
                 observaciones: animal.observaciones_inseminacion?.split(', ')[index] || ''
             })) : [],
-            inseminacion: animal.inseminacion === 1 // Convierte a booleano para el checkbox.
+            estadoReproductivo: {
+                ciclo_celo: animal.ciclo_celo || '',
+                fecha_ultimo_celo: formatDate(animal.fecha_ultimo_celo) || '',  // Formatear la fecha
+                servicios_realizados: animal.servicios_realizados || '',
+                numero_gestaciones: animal.numero_gestaciones || '',
+                partos_realizados: animal.partos_realizados || '',
+                resultados_lactancia: animal.resultados_lactancia || '',
+                uso_programa_inseminacion: animal.uso_programa_inseminacion || '',
+                resultado_prueba_reproductiva: animal.resultado_prueba_reproductiva || ''
+            },
+            inseminacion: animal.inseminacion === 1 // Convertir a booleano para el checkbox.
         });
-        setShowEditModal(true); // Muestra el modal de edición.
+        setShowEditModal(true); // Mostrar el modal de edición.
     };
-    // Función para obtener la clase CSS de la tarjeta según el estado del animal.
+    
+    
+    
     const getCardClass = (estado) => {
         switch (estado) {
             case 'Muerto':
-                return 'card-animal-list dead-animal'; // Clase para animales muertos.
+                return 'card-animal-list dead-animal'; 
             case 'Enfermo':
-                return 'card-animal-list sick-animal'; // Clase para animales enfermos.
+                return 'card-animal-list sick-animal'; 
             default:
-                return 'card-animal-list'; // Clase por defecto para animales normales.
+                return 'card-animal-list'; 
         }
     };
 
-    // Función para obtener el ícono según el estado del animal.
     const getIconForState = (estado) => {
         switch (estado) {
             case 'Muerto':
-                return '❌'; // Cruz roja para estado "Muerto".
+                return '❌'; 
             case 'Enfermo':
-                return '⚠️'; // Signo de exclamación amarillo para estado "Enfermo".
+                return '⚠️'; 
             default:
-                return ''; // Ningún ícono para otros estados.
+                return ''; 
         }
     };
 
-    // Función para cerrar el panel de detalles.
     const handleClosePanel = () => {
-        setSelectedAnimal(null); // Establece el animal seleccionado como null.
+        setSelectedAnimal(null); 
     };
 
-    // Función para cerrar el modal de edición.
     const handleCloseEditModal = () => {
-        setShowEditModal(false); // Oculta el modal de edición.
+        setShowEditModal(false); 
     };
 
-    // Función para manejar cambios en los inputs del formulario de edición.
     const handleInputChange = (e) => {
-        const { name, value } = e.target; // Obtiene el nombre y valor del campo de input.
-        const [field, index, subfield] = name.split('.'); // Divide el nombre del input en partes.
-
-        if (index !== undefined) {
-            setEditAnimal((prevAnimal) => {
-                const newArray = [...prevAnimal[field]];
-                newArray[index] = {
-                    ...newArray[index],
-                    [subfield]: value
-                };
-                return {
-                    ...prevAnimal,
-                    [field]: newArray
-                };
-            });
+        const { name, value } = e.target; // Obtener el nombre y el valor del campo de entrada
+        const [field, subfield] = name.split('.'); // Dividir el nombre de entrada en partes
+    
+        if (field === 'estadoReproductivo') {
+            setEditAnimal((prevAnimal) => ({
+                ...prevAnimal,
+                estadoReproductivo: {
+                    ...prevAnimal.estadoReproductivo,
+                    [subfield]: value,
+                },
+            }));
         } else {
             setEditAnimal((prevAnimal) => ({
                 ...prevAnimal,
-                [name]: value
+                [name]: value,
             }));
         }
     };
+    
+    
+    
 
-    // Función para manejar el cambio de imagen del animal en el modal de edición.
     const handleImagenChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = () => {
-            const base64String = reader.result; // Convierte la imagen a base64.
+            const base64String = reader.result; 
             setEditAnimal((prevAnimal) => ({
                 ...prevAnimal,
                 imagen: base64String
             }));
         };
         if (file) {
-            reader.readAsDataURL(file); // Lee el archivo como una URL de datos base64.
+            reader.readAsDataURL(file); 
         }
     };
 
-    // Función para añadir un nuevo campo al historial (enfermedades, productos, etc.).
     const handleAddField = (field) => {
         setEditAnimal((prevAnimal) => ({
             ...prevAnimal,
-            [field]: [...prevAnimal[field], { id: '', fecha: '' }] // Añade un nuevo objeto vacío al campo especificado.
+            [field]: [...prevAnimal[field], { id: '', fecha: '' }]
         }));
     };
-    // Función para eliminar un animal de la lista.
+
     const handleDeleteAnimal = async (idAnimal) => {
         try {
-            setDeleting(true); // Establece el estado de eliminación en true.
+            setDeleting(true); 
             const response = await fetch(`http://localhost:5000/crud/deleteAnimal/${idAnimal}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
                 setTimeout(() => {
-                    setAnimales(animales.filter(animal => animal.idAnimal !== idAnimal)); // Filtra el animal eliminado.
+                    setAnimales(animales.filter(animal => animal.idAnimal !== idAnimal)); 
                     setSelectedAnimal(null);
-                    setDeleting(false); // Restablece el estado de eliminación.
-                }, 1000); // Tiempo para la animación.
+                    setDeleting(false); 
+                }, 1000); 
             } else {
-                throw new Error('Error al eliminar el animal'); // Lanza un error si la respuesta no es exitosa.
+                throw new Error('Error al eliminar el animal'); 
             }
         } catch (error) {
-            setError(error.message); // Maneja errores de la solicitud.
+            setError(error.message); 
             setDeleting(false);
         }
     };
 
-    // Función para actualizar un animal en la lista.
     const handleUpdateAnimal = async (e) => {
         e.preventDefault();
         try {
@@ -262,13 +264,12 @@ function AnimalList() {
             setError(error.message); // Maneja errores de la solicitud.
         }
     };
+    
 
-    // Función para manejar cambios en el término de búsqueda.
     const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value); // Actualiza el término de búsqueda en el estado.
+        setSearchQuery(e.target.value); 
     };
 
-    // Filtra los animales según el término de búsqueda.
     const filteredAnimales = animales.filter((animal) => {
         const search = searchQuery.toLowerCase();
         return (
@@ -280,9 +281,10 @@ function AnimalList() {
             (animal.enfermedades && animal.enfermedades.toLowerCase().includes(search))
         );
     });
+    
     return (
         <div className="body-animal-list">
-            <Header /> {/* Renderiza el componente Header */}
+            <Header /> 
             <div className="search-container">
                 <FloatingLabel controlId="search" label="Buscar">
                     <Form.Control
@@ -439,6 +441,57 @@ function AnimalList() {
                             </Accordion>
                         </div>
 
+                        {/* Botón para ver detalles de inseminación y estado reproductivo */}
+                        <button onClick={() => setShowReproductiveModal(true)} className="info-button-animal-list">
+                            Ver Detalles de Inseminación y Estado Reproductivo
+                        </button>
+
+                        {/* Modal para mostrar detalles de inseminación y estado reproductivo */}
+                        <Modal show={showReproductiveModal} onHide={() => setShowReproductiveModal(false)} size="lg" centered>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Detalles de Inseminación y Estado Reproductivo</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                {/* Verifica el sexo del animal y muestra la información correspondiente */}
+                                {selectedAnimal && selectedAnimal.sexo === 'Hembra' && (
+                                    <div>
+                                        <h5>Estado Reproductivo (Hembra)</h5>
+                                        <p><strong>Ciclo de Celo:</strong> {selectedAnimal.ciclo_celo || 'N/A'}</p>
+                                        <p><strong>Fecha del Último Celo:</strong> {formatDate(selectedAnimal.fecha_ultimo_celo) || 'N/A'}</p>
+                                        <p><strong>Servicios Realizados:</strong> {selectedAnimal.servicios_realizados || 'N/A'}</p>
+                                        <p><strong>Número de Gestaciones:</strong> {selectedAnimal.numero_gestaciones || 'N/A'}</p>
+                                        <p><strong>Partos Realizados:</strong> {selectedAnimal.partos_realizados || 'N/A'}</p>
+                                        <p><strong>Resultados de Lactancia:</strong> {selectedAnimal.resultados_lactancia || 'N/A'}</p>
+                                    </div>
+                                )}
+                                {selectedAnimal && selectedAnimal.sexo === 'Macho' && (
+                                    <div>
+                                        <h5>Estado Reproductivo (Macho)</h5>
+                                        <p><strong>Uso en Programas de Inseminación:</strong> {selectedAnimal.uso_programa_inseminacion || 'N/A'}</p>
+                                        <p><strong>Resultado de la Prueba Reproductiva:</strong> {selectedAnimal.resultado_prueba_reproductiva || 'N/A'}</p>
+                                    </div>
+                                )}
+
+                                {/* Historial de Inseminaciones */}
+                                <h5>Historial de Inseminaciones</h5>
+                                {selectedAnimal.fechas_inseminacion ? (
+                                    selectedAnimal.fechas_inseminacion.split(', ').map((fecha, index) => (
+                                        <div key={index}>
+                                            <p><strong>Fecha de Inseminación:</strong> {formatDate(fecha)}</p>
+                                            <p><strong>Tipo de Inseminación:</strong> {selectedAnimal.tipos_inseminacion.split(', ')[index]}</p>
+                                            <p><strong>Resultado:</strong> {selectedAnimal.resultados_inseminacion.split(', ')[index]}</p>
+                                            <p><strong>Observaciones:</strong> {selectedAnimal.observaciones_inseminacion.split(', ')[index]}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>No hay registros de inseminaciones.</p>
+                                )}
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowReproductiveModal(false)}>Cerrar</Button>
+                            </Modal.Footer>
+                        </Modal>
+
                         {/* Botones de Editar y Eliminar */}
                         <div className="buttons-container">
                             <button onClick={() => handleEditClick(selectedAnimal)} className="edit-button-animal-list">
@@ -461,6 +514,9 @@ function AnimalList() {
                     <Form onSubmit={handleUpdateAnimal}>
                         <Row className="g-3">
                             {/* Campos accesibles para el ganadero */}
+
+                           
+
                             {userRoles.includes('Ganadero') && (
                                 <>
                                     <Col sm="12" md="6" lg="6">
@@ -855,6 +911,121 @@ function AnimalList() {
                                     <Button variant="link" onClick={() => handleAddField('inseminaciones')}>Añadir Inseminación</Button>
                                 </Col>
                             )}
+
+                            {/* Estado Reproductivo - Solo accesible para el ganadero */}
+                            {userRoles.includes('Ganadero') && (
+    <Col sm="12">
+        <h5>Estado Reproductivo</h5>
+        {editAnimal?.sexo === 'Hembra' ? (
+            <>
+                <FloatingLabel controlId="cicloCelo" label="Ciclo de Celo">
+                    <Form.Select
+                        name="estadoReproductivo.ciclo_celo"
+                        value={editAnimal?.estadoReproductivo?.ciclo_celo || ''}
+                        onChange={handleInputChange}
+                    >
+                        <option value="">Seleccione el ciclo</option>
+                        <option value="18 días">18 días</option>
+                        <option value="21 días">21 días</option>
+                        <option value="24 días">24 días</option>
+                        <option value="28 días">28 días</option>
+                    </Form.Select>
+                </FloatingLabel>
+
+                <FloatingLabel controlId="fechaUltimoCelo" label="Fecha del Último Celo">
+                    <Form.Control
+                        type="date"
+                        name="estadoReproductivo.fecha_ultimo_celo"
+                        value={editAnimal?.estadoReproductivo?.fecha_ultimo_celo || ''}
+                        onChange={handleInputChange}
+                    />
+                </FloatingLabel>
+
+                <FloatingLabel controlId="serviciosRealizados" label="Servicios Realizados">
+                    <Form.Select
+                        name="estadoReproductivo.servicios_realizados"
+                        value={editAnimal?.estadoReproductivo?.servicios_realizados || ''}
+                        onChange={handleInputChange}
+                    >
+                        <option value="">Seleccione</option>
+                        {[...Array(10).keys()].map((num) => (
+                            <option key={num} value={num}>{num}</option>
+                        ))}
+                    </Form.Select>
+                </FloatingLabel>
+
+                <FloatingLabel controlId="numeroGestaciones" label="Número de Gestaciones">
+                    <Form.Select
+                        name="estadoReproductivo.numero_gestaciones"
+                        value={editAnimal?.estadoReproductivo?.numero_gestaciones || ''}
+                        onChange={handleInputChange}
+                    >
+                        <option value="">Seleccione</option>
+                        {[...Array(10).keys()].map((num) => (
+                            <option key={num} value={num}>{num}</option>
+                        ))}
+                    </Form.Select>
+                </FloatingLabel>
+
+                <FloatingLabel controlId="partosRealizados" label="Partos Realizados">
+                    <Form.Select
+                        name="estadoReproductivo.partos_realizados"
+                        value={editAnimal?.estadoReproductivo?.partos_realizados || ''}
+                        onChange={handleInputChange}
+                    >
+                        <option value="">Seleccione</option>
+                        {[...Array(10).keys()].map((num) => (
+                            <option key={num} value={num}>{num}</option>
+                        ))}
+                    </Form.Select>
+                </FloatingLabel>
+
+                <FloatingLabel controlId="resultadosLactancia" label="Resultados de la Lactancia">
+                    <Form.Select
+                        name="estadoReproductivo.resultados_lactancia"
+                        value={editAnimal?.estadoReproductivo?.resultados_lactancia || ''}
+                        onChange={handleInputChange}
+                    >
+                        <option value="">Seleccione</option>
+                        <option value="Alta producción">Alta producción</option>
+                        <option value="Producción normal">Producción normal</option>
+                        <option value="Baja producción">Baja producción</option>
+                    </Form.Select>
+                </FloatingLabel>
+            </>
+        ) : (
+            <>
+                <FloatingLabel controlId="usoProgramaInseminacion" label="Uso en Programas de Inseminación">
+                    <Form.Select
+                        name="estadoReproductivo.uso_programa_inseminacion"
+                        value={editAnimal?.estadoReproductivo?.uso_programa_inseminacion || ''}
+                        onChange={handleInputChange}
+                    >
+                        <option value="">Seleccione</option>
+                        <option value="Frecuente">Frecuente</option>
+                        <option value="Ocasional">Ocasional</option>
+                        <option value="Nunca">Nunca</option>
+                    </Form.Select>
+                </FloatingLabel>
+
+                <FloatingLabel controlId="resultadoPruebaReproductiva" label="Resultado de la Prueba Reproductiva">
+                    <Form.Select
+                        name="estadoReproductivo.resultado_prueba_reproductiva"
+                        value={editAnimal?.estadoReproductivo?.resultado_prueba_reproductiva || ''}
+                        onChange={handleInputChange}
+                    >
+                        <option value="">Seleccione</option>
+                        <option value="Positivo">Positivo</option>
+                        <option value="Negativo">Negativo</option>
+                        <option value="Pendiente">Pendiente</option>
+                    </Form.Select>
+                </FloatingLabel>
+            </>
+        )}
+    </Col>
+)}
+
+
                         </Row>
                         <Button variant="primary" type="submit" className="mt-3">
                             Actualizar
