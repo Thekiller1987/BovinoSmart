@@ -20,13 +20,15 @@ export default function GestionEnfermedades({ navigation }) {
       </View>
 
       {/* Barra de búsqueda con icono de lupa */}
-      <View style={styles.searchContainer}>
-        <Image source={require('./assets/buscar.png')} style={styles.searchIcon} />
-        <TextInput
-          placeholder="Buscar"
-          style={styles.searchInput}
-          placeholderTextColor="#666"
-        />
+      <View style={styles.searchWrapper}>
+        <View style={styles.searchContainer}>
+          <TextInput
+            placeholder="Buscar"
+            style={styles.searchInput}
+            placeholderTextColor="#666"
+          />
+          <Image source={require('./assets/buscar.png')} style={styles.searchIcon} />
+        </View>
         <TouchableOpacity style={styles.searchButton}>
           <Text style={styles.searchButtonText}>Buscar</Text>
         </TouchableOpacity>
@@ -81,14 +83,21 @@ const styles = StyleSheet.create({
     color: '#fff', // Deja el color del título en blanco
     fontWeight: 'bold',
   },
+  searchWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '90%',
+    justifyContent: 'space-between',
+    marginVertical: 30,
+  },
   searchContainer: {
     flexDirection: 'row',
     backgroundColor: '#E0E0E0',
-    marginVertical: 20,
-    borderRadius: 15,
+    borderRadius: 0,
     alignItems: 'center',
-    paddingHorizontal: 0,
-    width: '90%',
+    paddingHorizontal: 10,
+    width: '76%', // Reduce el ancho de la barra de búsqueda
+    height: 40, // Altura ajustada para la barra de búsqueda
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -98,7 +107,7 @@ const styles = StyleSheet.create({
   searchIcon: {
     width: 20,
     height: 20,
-    marginRight: 10,
+    marginHorizontal: 5,
   },
   searchInput: {
     flex: 1,
@@ -106,7 +115,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   searchButton: {
-    marginLeft: -80,
+    marginLeft: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: '#537982',
@@ -119,9 +128,9 @@ const styles = StyleSheet.create({
   addButton: {
     alignSelf: 'flex-end',
     marginRight: 40,
-    marginTop: 10,
+    marginTop: -10,
     backgroundColor: '#537982',
-    padding: 10,
+    padding: 20,
     width: 40,
     height: 40,
     borderRadius: 20,
