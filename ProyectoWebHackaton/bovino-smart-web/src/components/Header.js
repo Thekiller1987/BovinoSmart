@@ -137,6 +137,9 @@ function Header() {
                                 </Nav.Link>
                             )}
 
+
+                            
+
                             {/* Botón de cierre de sesión */}
                             <Button variant="outline-light" onClick={handleLogout}>
                                 Cerrar Sesión
