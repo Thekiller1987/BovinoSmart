@@ -648,14 +648,20 @@ h1 {
     left: -180px;
     top: 30px;
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgba(211, 40, 40, 0);
     border-radius: 8px;
     text-align: center;
     color: #fff;
     max-width: 600px;
     margin: 0 auto;
 }
+.response-title{
+    color: #8AC879;
+}
 
+.response{
+    color: #8AC879; /* Color para el texto de la respuesta */
+}
 .boon-bane-container {
     position: relative;
     padding-inline: 90px;
@@ -696,7 +702,7 @@ h1 {
 }
 
 .boon h1 {
-    color: #266eb2;
+    color: #71AF61;
     font-weight: bolder;
     animation: shut-flickers-blue 2s linear;
     opacity: 0.4;
@@ -705,7 +711,7 @@ h1 {
 
 .bane h1,
 .menu a {
-    color: rgb(209 73 74 / 55%);
+    color: #587A83;
     font-weight: bolder;
     animation: shut-flickers 2s linear;
     opacity: 0.4;
@@ -713,7 +719,7 @@ h1 {
 
 .boon h1.active {
     animation: flicker-full 8s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite;
-    text-shadow: 0px 0px 20px #1778d2;
+    text-shadow: 0px 0px 20px #71AF61;
 }
 
 .menu a:hover {
@@ -724,7 +730,7 @@ h1 {
 
 .bane h1.active {
     animation: flicker-full 8s linear infinite;
-    text-shadow: 0px 0px 20px #b91515;
+    text-shadow: 0px 0px 20px #587A83;
 }
 
 .robot img {
@@ -870,4 +876,8 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     color: #fff;
+}
+
+.form{
+    color: #d82222;
 }

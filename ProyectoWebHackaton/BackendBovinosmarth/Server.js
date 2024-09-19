@@ -1,26 +1,33 @@
-require('dotenv').config();
-const express = require('express');
-const mysql = require('mysql');
-const cors = require('cors');
+require('dotenv').config(); // Carga las variables de entorno desde un archivo .env
+const express = require('express'); // Importa el framework de servidor web Express
+const mysql = require('mysql'); // Importa el módulo MySQL para conectar a la base de datos
+const cors = require('cors'); // Importa CORS para permitir solicitudes desde diferentes orígenes
 
-
-const app = express();
-const port = 5000;
+const app = express(); // Crea una instancia de la aplicación Express
+const port = process.env.PORT || 5000; // Define el puerto en el que se ejecutará el servidor
 
 // Configuración de CORS
-app.use(cors());
+app.use(cors()); // Habilita CORS para permitir solicitudes de recursos cruzados
 
-// Agregar configuración para analizar solicitudes JSON con un límite de tamaño
-app.use(express.json({ limit: '50mb' }));
+// Configuración para analizar solicitudes JSON con un límite de tamaño
+app.use(express.json({ limit: '50mb' })); // Permite a la aplicación analizar solicitudes JSON con un tamaño máximo de 50MB
 
-// Configuración de la conexión a la base de datos
+// Configuración de la conexión a la primera base de datos (BoVinoSmartBD)
 const db = mysql.createConnection({
+<<<<<<< HEAD
   host: 'localhost',
   user: 'root',
   password: 'Mysql2023',
   database: 'BoVinoSmartBD',
+=======
+  host: process.env.DB_HOST, // Host de la base de datos desde variables de entorno
+  user: process.env.DB_USER, // Usuario de la base de datos desde variables de entorno
+  password: process.env.DB_PASS, // Contraseña del usuario desde variables de entorno
+  database: process.env.DB_NAME, // Nombre de la base de datos desde variables de entorno
+>>>>>>> 30084ba98c12d7936e29b04b1c7ff8f72faaae76
 });
 
+// Conexión a la primera base de datos
 db.connect((err) => {
   if (err) {
     console.error('Error de conexión a la base de datos:', err);
@@ -29,15 +36,15 @@ db.connect((err) => {
   }
 });
 
-
-
+// Configuración de la conexión a la segunda base de datos (trazabilidad_ganaderaIA)
 const db2 = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Yamilg620',
-  database: 'trazabilidad_ganaderaIA',
+  host: process.env.DB2_HOST, // Host de la base de datos desde variables de entorno
+  user: process.env.DB2_USER, // Usuario de la base de datos desde variables de entorno
+  password: process.env.DB2_PASS, // Contraseña del usuario desde variables de entorno
+  database: process.env.DB2_NAME, // Nombre de la base de datos desde variables de entorno
 });
 
+// Conexión a la segunda base de datos
 db2.connect((err) => {
   if (err) {
     console.error('Error de conexión a la segunda base de datos:', err);
@@ -46,16 +53,13 @@ db2.connect((err) => {
   }
 });
 
-
-
 // Importar y usar rutas para la primera base de datos
-const crudRoutes = require('./routes/crudRoutes')(db);
-app.use('/crud', crudRoutes);
-
+const crudRoutes = require('./routes/crudRoutes')(db); // Importa las rutas CRUD para la primera base de datos y pasa la conexión a la base de datos
+app.use('/crud', crudRoutes); // Asigna las rutas CRUD de la primera base de datos al prefijo '/crud'
 
 // Importar y usar rutas para la segunda base de datos
-const crudRoutesDb2 = require('./routes/crudRoutesDb2')(db2);
-app.use('/crudDb2', crudRoutesDb2);
+const crudRoutesDb2 = require('./routes/crudRoutesDb2')(db2); // Importa las rutas CRUD para la segunda base de datos y pasa la conexión a la base de datos
+app.use('/crudDb2', crudRoutesDb2); // Asigna las rutas CRUD de la segunda base de datos al prefijo '/crudDb2'
 
 // Manejador de errores para errores de análisis JSON
 app.use((err, req, res, next) => {
@@ -66,9 +70,7 @@ app.use((err, req, res, next) => {
   }
 });
 
-// Iniciar el servidor
+// Iniciar el servidor en el puerto especificado
 app.listen(port, () => {
   console.log(`Servidor backend en funcionamiento en el puerto ${port}`);
 });
-
-

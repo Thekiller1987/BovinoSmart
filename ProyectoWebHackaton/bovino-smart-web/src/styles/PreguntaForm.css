@@ -1,113 +1,99 @@
-
-
-/* Título de la página */
+/* Estilos para el Título de la Página */
 .title {
-    font-size: 3rem;
-    color: #2c3e50;
-    margin-bottom: 30px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    animation: fadeInDown 1s ease-in-out;
+    font-size: 3rem; /* Tamaño de fuente grande para destacar el título */
+    color: #2c3e50; /* Color del texto oscuro para buena legibilidad */
+    margin-bottom: 30px; /* Espacio debajo del título */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra del texto para efecto 3D */
+    animation: fadeInDown 1s ease-in-out; /* Animación de entrada suave hacia abajo */
 }
 
-/* Animación de entrada del título */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Estilo del formulario */
+/* Estilo del Formulario */
 .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
+    display: flex; /* Utiliza flexbox para organizar los elementos del formulario */
+    flex-direction: column; /* Alinea los elementos en una columna */
+    align-items: center; /* Centra los elementos horizontalmente */
+    width: 100%; /* Ancho total disponible */
+    max-width: 600px; /* Limita el ancho máximo del formulario */
 }
 
-/* Estilo del input */
+/* Estilo del Input */
 .input {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.2rem;
-    border-radius: 12px;
-    border: 2px solid #3498db;
-    margin-bottom: 20px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s, border-color 0.3s;
+    width: 100%; /* Ancho total del contenedor */
+    padding: 15px; /* Espacio interior para un área de clic mayor */
+    font-size: 1.2rem; /* Tamaño de fuente mayor para mejor legibilidad */
+    border-radius: 12px; /* Bordes redondeados para un diseño moderno */
+    border: 2px solid #3498db; /* Borde con color primario */
+    margin-bottom: 20px; /* Espacio debajo del input */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para efecto de profundidad */
+    transition: box-shadow 0.3s, border-color 0.3s; /* Transición suave al enfocar */
 }
 
-/* Efecto hover en el input */
+/* Efecto Hover en el Input */
 .input:focus {
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-    border-color: #2980b9;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al enfocar */
+    border-color: #2980b9; /* Cambio de color de borde al enfocar */
 }
 
-/* Estilo del botón */
+/* Estilo del Botón */
 .button {
-    padding: 15px 40px;
-    font-size: 1.4rem;
-    border-radius: 12px;
-    border: none;
-    background-color: #3498db;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px 40px; /* Espaciado alrededor del texto del botón */
+    font-size: 1.4rem; /* Tamaño de fuente grande */
+    border-radius: 12px; /* Bordes redondeados para consistencia con el input */
+    border: none; /* Sin borde para un diseño limpio */
+    background-color: #3498db; /* Color de fondo primario */
+    color: #fff; /* Color de texto blanco */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s, transform 0.2s; /* Transición suave al hover y al hacer clic */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
 }
 
-/* Efecto hover en el botón */
+/* Efecto Hover en el Botón */
 .button:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
+    background-color: #2980b9; /* Color más oscuro al pasar el ratón */
+    transform: translateY(-2px); /* Levanta el botón ligeramente */
 }
 
-/* Efecto de clic en el botón */
+/* Efecto de Clic en el Botón */
 .button:active {
-    background-color: #1c6ea4;
-    transform: translateY(0px);
+    background-color: #1c6ea4; /* Color aún más oscuro al hacer clic */
+    transform: translateY(0px); /* El botón vuelve a su posición original */
 }
 
-/* Contenedor de la respuesta */
+/* Contenedor de la Respuesta */
 .response-container {
-    margin-top: 30px;
-    padding: 20px;
-    border: 2px solid #3498db;
-    border-radius: 12px;
-    background-color: #eaf2f8;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    width: 100%;
-    animation: fadeInUp 1s ease-in-out;
+    margin-top: 30px; /* Espacio superior para separar la respuesta del formulario */
+    padding: 20px; /* Espacio interior alrededor del texto de la respuesta */
+    border: 2px solid #3498db; /* Borde con color primario */
+    border-radius: 12px; /* Bordes redondeados para consistencia visual */
+    background-color: #eaf2f8; /* Color de fondo suave para contraste */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para efecto de profundidad */
+    max-width: 600px; /* Ancho máximo del contenedor */
+    width: 100%; /* Ancho completo del contenedor */
+    animation: fadeInUp 1s ease-in-out; /* Animación de entrada hacia arriba */
 }
 
-/* Animación de entrada de la respuesta */
+/* Animación de Entrada de la Respuesta */
 @keyframes fadeInUp {
     from {
-        opacity: 0;
-        transform: translateY(50px);
+        opacity: 0; /* Comienza transparente */
+        transform: translateY(50px); /* Comienza 50px más abajo */
     }
     to {
-        opacity: 1;
-        transform: translateY(0);
+        opacity: 1; /* Aparece completamente */
+        transform: translateY(0); /* Vuelve a su posición original */
     }
 }
 
-/* Estilo del título de la respuesta */
+/* Estilo del Título de la Respuesta */
 .response-title {
-    font-weight: bold;
-    margin-bottom: 10px;
-    font-size: 1.4rem;
-    color: #2c3e50;
+    font-weight: bold; /* Negrita para destacar */
+    margin-bottom: 10px; /* Espacio debajo del título */
+    font-size: 1.4rem; /* Tamaño de fuente mediano */
+    color: #2c3e50; /* Color oscuro para legibilidad */
 }
 
-/* Estilo del texto de la respuesta */
+/* Estilo del Texto de la Respuesta */
 .response {
-    font-size: 1.2rem;
-    color: #34495e;
+    font-size: 1.2rem; /* Tamaño de fuente para el cuerpo del texto */
+    color: #34495e; /* Color de texto más suave */
 }

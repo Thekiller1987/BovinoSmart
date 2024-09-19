@@ -1,0 +1,478 @@
+@import url('https://fonts.googleapis.com/css2?family=Junge&family=Kaisei+Decol&display=swap');
+
+/* Estilos generales para el encabezado */
+.header {
+  position: relative; /* Posiciona el encabezado de acuerdo al flujo del documento */
+  width: 100%;
+  top: 0;
+  z-index: 106; /* Asegura que el encabezado esté en la parte superior de otros elementos */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribuye el contenido de manera uniforme */
+  padding: 10px 20px; /* Espacio alrededor del contenido del encabezado */
+  background-color: #f4f4f4; /* Color de fondo del encabezado */
+}
+
+/* Resetea el estilo para todos los elementos en la página de inicio de sesión */
+.login-page * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilos principales de la página de inicio de sesión */
+.login-page {
+  font-family: 'Kaisei Decol', sans-serif;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  overflow: hidden;
+  background-image: url('../diseño/Hojafon2.png'); /* Imagen de fondo */
+  background-repeat: repeat; /* Repite la imagen en todo el fondo */
+  background-size: auto; /* Ajusta el tamaño del patrón de fondo */
+}
+
+/* Estilos para las hojas decorativas en la página de inicio de sesión */
+.hoja {
+  position: absolute;
+  z-index: 105; /* Coloca las hojas por encima del contenedor de login */
+  opacity: 0.8; /* Ajusta la opacidad para un efecto suave */
+}
+
+.hoja-1 {
+  top: 130px; /* Ajusta la posición superior */
+  left: 25%; /* Ajusta la posición izquierda */
+  width: 40px; /* Tamaño de la hoja */
+}
+
+.hoja-2 {
+  top: 20%; /* Ajusta la posición superior */
+  right: 400px; /* Ajusta la posición derecha */
+  width: 40px; /* Tamaño de la hoja */
+}
+
+.hoja-3 {
+  bottom: 150px; /* Ajusta la posición inferior */
+  left: 30%; /* Ajusta la posición izquierda */
+  width: 35px; /* Tamaño de la hoja */
+}
+
+/* Estilos para los títulos y textos de la página de inicio de sesión */
+.login-page h1, 
+.login-page h2, 
+.login-page .title {
+  font-family: 'Junge', serif;
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+/* Estilo específico para el título principal */
+.login-page h1 {
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+/* Estilo para los títulos con clase "title" */
+.login-page h1.title {
+  color: #3e7b31; /* Color del texto */
+  font-size: 36px; /* Tamaño de fuente */
+  line-height: 45px; /* Altura de línea */
+  margin: 0;
+  text-shadow: 0 0 10px #ffffff; /* Sombra del texto */
+  margin-top: -150px; /* Ajusta la posición superior */
+}
+
+/* Estilos para los párrafos */
+.login-page p {
+  font-family: 'Kaisei Decol', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin: 10px 0 20px;
+}
+
+/* Estilos para los spans de texto */
+.login-page span {
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* Estilos para los enlaces */
+.login-page a {
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 15px 0;
+  transition: 0.3s ease-in-out;
+}
+
+/* Estilos específicos para textos pequeños */
+.login-page .Textopequeño {
+  color: #000000;
+}
+
+/* Estilos para el contenedor de contenido */
+.login-page .content {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Estilos para la sección de checkbox */
+.login-page .content .checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos para los inputs dentro de la sección de contenido */
+.login-page .content input {
+  accent-color: #333;
+  width: 12px;
+  height: 12px;
+}
+
+/* Estilos para las etiquetas dentro de la sección de contenido */
+.login-page .content label {
+  font-size: 14px;
+  user-select: none; /* Evita que el texto sea seleccionable */
+  padding: 5px;
+}
+
+/* Estilos para los botones */
+.login-page button {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid #686c78;
+  background-color: #686c78;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 10px 0;
+  padding: 12px 60px;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+/* Estilos para los botones al hacer hover */
+.login-page button:hover {
+  letter-spacing: 3px;
+}
+
+/* Estilos para los botones al ser activados */
+.login-page button:active {
+  transform: scale(0.95);
+}
+
+/* Estilos para los botones al tener foco */
+.login-page button:focus {
+  outline: none;
+}
+
+/* Estilo para el botón "ghost" */
+.login-page button.ghost {
+  background-color: #71AF61;
+  border: 1px solid #000000;
+  color: #000000;
+}
+
+/* Estilo para el botón de registro */
+.login-page button.regisBoton {
+  background-color: #587A83;
+  border: 1px solid #000000;
+  color: #000000;
+}
+
+/* Estilo para el botón de inicio de sesión */
+.login-page button.botIniSesion {
+  background-color: #587A83;
+  color: #000000;
+  border: 1px solid #000000;
+}
+
+/* Estilos para íconos de los botones */
+.login-page #login i {
+  position: absolute;
+  left: 10px;
+}
+
+.login-page #register i {
+  position: absolute;
+  right: 10px;
+}
+
+/* Estilos para el formulario */
+.login-page form {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 30px;
+  height: 100%;
+  text-align: center;
+  z-index: 101; /* Asegura que el formulario esté encima de otros elementos */
+}
+
+/* Estilos para los inputs del formulario */
+.login-page input {
+  background-color: #fff;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #adadad;
+  padding: 10px 0;
+  margin: 8px 0;
+  width: 100%;
+}
+
+/* Estilos para el contenedor principal */
+.login-page .container {
+  border-radius: 25px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 0px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 500px;
+  display: flex;
+  z-index: 100; /* Asegura que el contenedor esté encima de la superposición */
+  border: 3px solid #3E7B31; /* Añade un borde verde oscuro */
+}
+
+/* Estilos para los contenedores de formulario */
+.login-page .form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transition: all 0.6s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #fff;
+  z-index: 101;
+  padding: 20px;
+}
+
+/* Estilos para los controles de formulario */
+.login-page .form-control,
+.login-page .form-control2 {
+  width: 100%;
+  position: relative;
+}
+
+/* Estilos para las líneas de fondo de los inputs */
+.login-page .form-control2 span,
+.login-page .form-control span {
+  position: absolute;
+  border-bottom: 3px solid #71AF61;
+  left: 0;
+  bottom: 8px;
+  width: 0%;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para las líneas de fondo al hacer foco */
+.login-page .form-control2 input:focus ~ span,
+.login-page .form-control input:focus ~ span {
+  width: 100%;
+}
+
+/* Estilos para los textos pequeños en los controles */
+.login-page .form-control small,
+.login-page .form-control2 small {
+  color: #71AF61;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  font-size: 12px;
+  z-index: 101;
+}
+
+/* Estilos para el contenedor de inicio de sesión */
+.login-page .login-container {
+  left: 0;
+  width: 50%;
+  z-index: 102;
+}
+
+/* Estilos para el contenedor de registro */
+.login-page .form-container.login-container {
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 0;
+  width: 50%;
+  z-index: 102;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  height: 100%;
+}
+
+/* Estilos para el contenedor de formulario de registro */
+.login-page .form-container.register-container {
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 0;
+  width: 50%;
+  z-index: 102;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  height: 100%;
+}
+
+/* Estilos de animación para el contenedor activo */
+.login-page .container.right-panel-active .login-container {
+  transform: translateX(100%);
+}
+
+/* Estilos específicos para el contenedor de registro */
+.login-page .register-container {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 102;
+}
+
+/* Estilos de animación para el contenedor de registro activo */
+.login-page .container.right-panel-active .register-container {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 103;
+  animation: show 0.6s;
+}
+
+/* Animaciones para la visibilidad del contenedor */
+@keyframes show {
+  0%,
+  49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+  50%,
+  100% {
+    opacity: 1;
+    z-index: 103;
+  }
+}
+
+/* Estilos para el contenedor de superposición */
+.login-page .overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+/* Estilos de animación para el contenedor de superposición activo */
+.login-page .container.right-panel-active .overlay-container {
+  transform: translate(-100%);
+}
+
+/* Estilos para la superposición */
+.login-page .overlay {
+  background-image: url("../imagenes/paisaje.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 0;
+  color: #fff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+  z-index: 99;
+}
+
+/* Estilos para la superposición */
+.login-page .overlay::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(to top, #5795491f 40%, #579549ab);
+}
+
+/* Estilos de animación para la superposición activa */
+.login-page .container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+/* Estilos para los paneles de superposición */
+.login-page .overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 30px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+/* Estilos para el panel izquierdo de superposición */
+.login-page .overlay-left {
+  transform: translateX(-20%);
+}
+
+/* Estilos para el panel izquierdo de superposición activo */
+.login-page .container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+/* Estilos para el panel derecho de superposición */
+.login-page .overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+/* Estilos para el panel derecho de superposición activo */
+.login-page .container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+/* Estilos específicos para el texto de inicio de sesión */
+.login-page .LetIniciaSe {
+  font-size: 30px;
+  margin-top: -215px;
+  z-index: 104;
+}
+
+/* Estilos específicos para el texto de registro */
+.login-page .TexRegis {
+  font-size: 30px;
+  margin-top: -215px;
+  z-index: 104;
+}
