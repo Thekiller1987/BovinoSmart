@@ -10,7 +10,6 @@
 }
 
 .cabecera {
-  
   background-color: #212121;
   height: 80px;
   width: 100%;
@@ -60,7 +59,6 @@ h1 {
   font-weight: 900;
   text-align: center;
   text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
- 
   font-family: 'Junge'; /* Aplica la fuente Junge */
 }
 
@@ -103,10 +101,6 @@ h2 {
   transition: all 0.3s ease-in-out;
 }
 
-
-
-
-
 .Descripcion::before {
   content: "";
   position: absolute;
@@ -147,7 +141,6 @@ h2 {
   animation: brisa-derecha 4s ease-in-out infinite;
 }
 
-/* Nuevas hojas en las esquinas inferiores */
 .hojas.inferior-izquierda {
   bottom: -2px;
   left: -310px;
@@ -164,7 +157,6 @@ h2 {
   animation: brisa-inferior-derecha 4s ease-in-out infinite;
 }
 
-/* Animaciones de Brisa con Transformaciones */
 @keyframes brisa-izquierda {
   0%, 100% {
     transform: translateX(0) translateY(0) rotate(0deg) scale(1.5);
@@ -200,14 +192,6 @@ h2 {
     transform: translateX(10px) translateY(5px) scaleX(-1) rotate(270deg) scale(1.5);
   }
 }
-
-
-/* Elimina cualquier transformación en hover */
-.hojas:hover {
-  transform: none;
-}
-
-
 
 h3 {
   color: #3E7B31;
@@ -246,8 +230,6 @@ h3 {
   margin-bottom: 15px;
 }
 
-
-/* Asegúrate de que los info-boxes tengan suficiente espacio para los iconos */
 .info-box {
   padding: 40px 25px; /* Aumenta el padding superior para acomodar los iconos */
 }
@@ -298,7 +280,6 @@ h3 {
 }
 
 .info-box h3:before {
- 
   position: absolute;
   left: 0;
   top: 0;
@@ -316,10 +297,6 @@ h3 {
   transform: translateY(-12px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   background-color: #eef5e9;
-}
-
-.info-box img {
-  margin-bottom: 20px;
 }
 
 .image-slider {
@@ -406,3 +383,83 @@ a.ico4:hover i {
   transform: scale(1.2);
 }
 
+/* Media queries para hacer el diseño responsivo */
+
+/* Estilos para pantallas pequeñas (móviles y portátiles pequeños) */
+@media only screen and (max-width: 768px) {
+  h1 {
+    font-size: 35px; /* Tamaño de fuente reducido para pantallas móviles y pequeñas */
+  }
+
+  h2 {
+    font-size: 28px; /* Ajuste del tamaño del subtítulo */
+  }
+
+  .cabecera {
+    height: 60px; /* Reducir el tamaño del header */
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .Primera_Imagen {
+    height: 60vh; /* Reducir la altura de la imagen principal */
+  }
+
+  .cuadro-fijo {
+    width: 50px; /* Reducir el tamaño del contenedor de iconos */
+    height: 200px;
+    top: 200px; /* Ajustar la posición para que siempre esté visible */
+  }
+
+  .info-box {
+    padding: 15px;
+    margin: 10px;
+    max-width: 100%;
+  }
+
+  .image-container img {
+    max-width: 150px;
+    max-height: 150px;
+  }
+
+  .btn-login {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 14px; /* Hacer más pequeño el botón de login */
+  }
+}
+
+/* Estilos para pantallas medianas (tabletas) */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  h1 {
+    font-size: 50px;
+  }
+
+  h2 {
+    font-size: 35px;
+  }
+
+  .cabecera {
+    height: 70px;
+    font-size: 22px;
+    line-height: 32px;
+  }
+
+  .Primera_Imagen {
+    height: 70vh;
+  }
+
+  .cuadro-fijo {
+    width: 60px;
+    height: 240px;
+    top: 250px;
+  }
+
+  .btn-login {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 16px;
+  }
+}

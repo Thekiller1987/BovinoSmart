@@ -15,6 +15,8 @@ import SelectLicencia from './pages/SelectLicencia';
 import GestionUsuarios from './pages/GestionUsuario';
 import GestionEstadoReproductivo from './pages/GestionEstadoReproductivo'
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importa los estilos de Font Awesome
+import './tailwind.css';
+
 
 function App() {
   return (

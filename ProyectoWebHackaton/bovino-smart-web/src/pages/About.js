@@ -54,10 +54,7 @@ const About = () => {
         <span className="Bovino-texto">BoVinoSmart</span>
         <p className="Descripcion">
           {/* Contenedor de texto descriptivo con decoraciones de hojas. */}
-          <div className="hojas izquierda"></div>
-          <div className="hojas derecha"></div>
-          <div className="hojas inferior-izquierda"></div>
-          <div className="hojas inferior-derecha"></div>
+          
 
       
           {"BoVinoSmarth es una herramienta avanzada de trazabilidad ganadera diseñada para mejorar la gestión y el control de los rebaños. Esta aplicación permite a los productores rastrear la salud, los tratamientos, la producción y otros aspectos críticos de sus animales en tiempo real. Con BoVinoSmarth, se optimiza la toma de decisiones basada en datos, asegurando un manejo más eficiente y sostenible del ganado, lo que contribuye a una producción más saludable y rentable. Ideal para productores ganaderos que buscan modernizar y profesionalizar la gestión de sus operaciones diarias."}
