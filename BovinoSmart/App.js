@@ -11,8 +11,9 @@ import GestionAnimales from './GestionAnimales';
 import GestionEnfermedades from './GestionEnfermedades';
 import GestionProductos from './GestionProductos';
 import EscanerQR from './EscanerQR';
+import LeafBackground from './LeafBackground'; // Importa el nuevo fondo
 
-SplashScreen.preventAutoHideAsync(); // Prevenir que la pantalla de splash se oculte automáticamente
+SplashScreen.preventAutoHideAsync();
 
 const Stack = createStackNavigator();
 
@@ -34,34 +35,36 @@ export default function App() {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerShown: false, // Oculta la barra de navegación predeterminada
-        }}
-      >
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen
-          name="GestionAnimales"
-          component={GestionAnimales}
-          options={{ title: 'Gestión de Animales' }}
-        />
-        <Stack.Screen
-          name="GestionEnfermedades"
-          component={GestionEnfermedades}
-          options={{ title: 'Gestión de Enfermedades' }}
-        />
-        <Stack.Screen
-          name="GestionProductos"
-          component={GestionProductos}
-          options={{ title: 'Gestión de Productos' }}
-        />
-        <Stack.Screen
-          name="EscanerQR"
-          component={EscanerQR}
-          options={{ title: 'Escáner QR' }}
-        />
-      </Stack.Navigator>
+      <LeafBackground>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerShown: false, // Oculta la barra de navegación predeterminada
+          }}
+        >
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="GestionAnimales"
+            component={GestionAnimales}
+            options={{ title: 'Gestión de Animales' }}
+          />
+          <Stack.Screen
+            name="GestionEnfermedades"
+            component={GestionEnfermedades}
+            options={{ title: 'Gestión de Enfermedades' }}
+          />
+          <Stack.Screen
+            name="GestionProductos"
+            component={GestionProductos}
+            options={{ title: 'Gestión de Productos' }}
+          />
+          <Stack.Screen
+            name="EscanerQR"
+            component={EscanerQR}
+            options={{ title: 'Escáner QR' }}
+          />
+        </Stack.Navigator>
+      </LeafBackground>
     </NavigationContainer>
   );
 }
