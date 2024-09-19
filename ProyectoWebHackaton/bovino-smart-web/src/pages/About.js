@@ -47,7 +47,7 @@ const About = () => {
 
   return (
     <div className="About">
-      <HeaderLogin /> {/* Renderiza el componente HeaderLogin. */}
+      <HeaderLogin /> {/* Renderiza el componente HeaderLogi. */}
       <div className="Primera_Imagen"></div> {/* Contenedor para una imagen decorativa en la parte superior. */}
       <h1 className='ityped'>Bienvenidos</h1> {/* Título animado con Typed.js. */}
       <h2>
