@@ -1,0 +1,64 @@
+/* Personalización de la barra de navegación */
+.navbar-color {
+  background-color: rgb(33, 34, 34); /* Establece un color de fondo oscuro para la barra de navegación */
+}
+
+/* Enlace sin estilo predeterminado */
+.link-unstyled {
+  text-decoration: none; /* Elimina el subrayado de los enlaces */
+  color: inherit; /* Hereda el color del texto del elemento padre */
+}
+
+/* Estilo de botón centrado */
+.center-button {
+  text-align: center; /* Centra el botón horizontalmente */
+}
+
+/* Estilo personalizado para botones */
+.custom-button {
+  background-color: #dda90d; /* Color de fondo del botón */
+  color: #000000; /* Color del texto del botón */
+  transition: none; /* Sin transición para los efectos de hover */
+}
+.custom-button:hover {
+  background-color: rgb(218, 172, 22); /* Color de fondo al pasar el ratón por encima */
+  color: #ffffff; /* Color del texto al pasar el ratón por encima */
+}
+
+/* Estilo de las imágenes en el contenedor */
+.img-habitacion {
+  max-width: 150px; /* Ancho máximo de la imagen */
+  max-height: 150px; /* Altura máxima de la imagen */
+}
+
+/* Botón de cliente personalizado */
+.custom-client-button {
+  width: 100%; /* Establece el ancho del botón al 100% del contenedor */
+}
+
+/* Estilo para las tablas de habitaciones */
+.NameHabitacionesTabla {
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 0px 0px 10px 10px; /* Bordes inferiores redondeados */
+  margin-top: 0px; /* Sin margen superior */
+  font-family: 'Times New Roman', Times, serif; /* Fuente serif */
+}
+
+/* Clase con margen superior y bordes redondeados */
+.mt-30 {
+  border-radius: 10px 10px 0px 0px; /* Bordes superiores redondeados */
+  margin-top: 50px; /* Margen superior de 50px */
+  font-family: Georgia, 'Times New Roman', Times, serif; /* Fuente serif */
+}
+
+/* Estilo para el cuadro de información */
+.Informacion {
+  border-radius: 5px; /* Bordes ligeramente redondeados */
+  font-family: 'Times New Roman', Times, serif; /* Fuente serif */
+  background-color: white; /* Fondo blanco */
+  text-align: justify; /* Alinea el texto para justificar */
+  padding: 20px; /* Espacio alrededor del texto */
+  border: 2px solid #ccc; /* Borde gris claro alrededor del cuadro */
+  max-width: 600px; /* Limita el ancho máximo del cuadro */
+  margin: 150px auto; /* Centra el cuadro horizontalmente y agrega un margen superior */
+}

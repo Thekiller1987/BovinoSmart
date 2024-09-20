@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Junge&display=swap'); /* Fuente Junge */
+
+.HeaderLogin {
+    padding: 10px 20px;
+    background-color: #587A83;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    height: 100px; /* Reduce la altura del header */
+    overflow: hidden;
+    font-family: 'Junge', sans-serif;
+}
+
+
+.header-logo {
+    color: #ffffff;
+    font-size: 36px; /* Ajusta el tamaño del texto */
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: 0.1em; /* Aumenta el espaciado entre las letras */
+    margin-left: -220px; /* Reduce este valor para mover el texto a la izquierda */
+    padding-right: 1100px; /* Ajusta el espacio desde el borde izquierdo */
+}
+
+
+
+.header-logo-image {
+    height: 180px; /* Mantén el tamaño del logo */
+    width: auto; /* Mantiene la proporción */
+    margin-left: -60px; /* Ajusta el margen izquierdo para moverlo a la izquierda */
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    object-fit: contain; /* Mantiene la proporción del logo */
+}
+
+/* Estilos para el botón */
+.header-button {
+    font-size: 16px;
+    padding: 10px 20px; /* Relleno del botón */
+    background-color: #71AF61; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    border: none;
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    z-index: 2000;
+}
+
+.header-button:hover {
+    background-color: #3E7b31; /* Color del botón al hacer hover */
+}
+
+/* Estilo para los iconos */
+.header-icon {
+    margin-right: 8px; /* Espacio entre el icono y el texto */
+}
+
+
+
+/* Responsividad */
+@media only screen and (max-width: 768px) {
+    .header-logo {
+        font-size: 40px; /* Reduce el tamaño del texto en pantallas pequeñas */
+        padding-left: 110px; /* Ajusta el espacio desde el borde izquierdo */
+    }
+
+    .header-logo-image {
+        height: 190px; /* Ajusta el tamaño del logo para pantallas pequeñas */
+    }
+
+    .header-button {
+        font-size: 20px; /* Reduce el tamaño del botón */
+        padding: 8px 12px;
+    }
+}
+
+
+
+@media only screen and (min-width: 1025px) {
+    .header-logo {
+        font-size: 40px; /* Aumenta el tamaño del texto en pantallas grandes */
+        padding-left: 100px;
+    }
+
+    .header-logo-image {
+        height: 160px; /* Aumenta el tamaño del logo */
+        margin-left: -50px;
+    }
+
+    .header-button {
+        font-size: 18px;
+        padding: 10px 18px; /* Aumenta el tamaño del botón */
+    }
+}
+
+
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .header-logo {
+        font-size: 40px; /* Ajusta el tamaño del texto */
+        padding-left: 110px; /* Ajusta la posición del texto */
+    }
+
+    .header-logo-image {
+        height: 180px; /* Ajusta el tamaño del logo */
+        margin-left: -50px;
+    }
+
+    .header-button {
+        font-size: 16px;
+        padding: 8px 14px;
+    }
+}
+
+
+
+
+@media only screen and (min-width: 1920px) {
+    .header-logo {
+        font-size: 50px; /* Aumenta el tamaño del texto en pantallas grandes */
+        padding-right: 1350px; /* Ajusta la posición del texto */
+    }
+
+    .header-logo-image {
+        height: 220px; /* Aumenta el tamaño del logo */
+        margin-left: -50px; /* Ajusta el logo ligeramente */
+    }
+
+    .header-button {
+        font-size: 30px; /* Ajusta el tamaño del botón */
+        padding: 10px 20px; /* Aumenta el padding del botón */
+    }
+
+    .HeaderLogin {
+        height: 120px; /* Aumenta la altura del header */
+    }
+}

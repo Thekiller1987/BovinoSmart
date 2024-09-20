@@ -1,0 +1,179 @@
+/* Definición de variables globales para el tema de la aplicación */
+:root {
+    --primary-color: #4caf50; /* Color primario utilizado para fondos y acentos */
+    --secondary-color: #ffffff; /* Color secundario utilizado para el texto en fondos primarios */
+    --background-color: #f0f4f7; /* Color de fondo principal de la aplicación */
+    --text-color: #333; /* Color del texto principal */
+    --border-radius: 10px; /* Radio de borde utilizado para esquinas redondeadas */
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra utilizada en elementos elevados */
+    --card-background: #ffffff; /* Color de fondo de las tarjetas */
+    --header-gradient: linear-gradient(90deg, #4caf50, #81c784); /* Gradiente de color utilizado en los encabezados */
+    --font-family: 'Roboto', sans-serif; /* Fuente principal de la aplicación */
+    --detail-panel-border: 4px solid #000000; /* Borde utilizado en paneles de detalles */
+    --card-border: 2px solid #000000; /* Borde de las tarjetas */
+    --line-color: #e0e0e0; /* Color utilizado para líneas divisorias */
+}
+
+/* Estilo del cuerpo de la lista de enfermedades */
+.body-enfermedad-list {
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Encabezado de la lista de enfermedades */
+.header-enfermedad-list {
+    background: var(--header-gradient);
+    padding: 20px;
+    color: white;
+    text-align: center;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-enfermedad-list h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+/* Contenedor de la tabla de enfermedades */
+.table-container {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    padding: 20px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse; /* Quita los espacios entre las celdas de la tabla */
+}
+
+/* Estilo de las celdas de la tabla */
+.table-container th, .table-container td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line-color); /* Línea divisoria debajo de cada fila */
+}
+
+/* Encabezado de las columnas de la tabla */
+.table-container th {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+/* Efecto al pasar el ratón sobre las filas de la tabla */
+.table-container tr:hover {
+    background-color: var(--background-color);
+}
+
+/* Contenedor del campo de búsqueda */
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    padding: 10px;
+    background: var(--primary-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.search-container input {
+    width: 500px;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    border: none;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo del campo de entrada cuando está en foco */
+.search-container input:focus {
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 10px rgba(76, 175, 80, 0.5);
+    background-color: #ffffff;
+}
+
+/* Botón de búsqueda en el contenedor */
+.search-container button {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: var(--box-shadow);
+}
+
+/* Efecto hover del botón de búsqueda */
+.search-container button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Efecto al hacer clic en el botón de búsqueda */
+.search-container button:active {
+    transform: scale(0.95);
+}
+
+/* Contenedor para botones de acción */
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+/* Estilo de botones de advertencia y peligro */
+.button-container .btn-warning, .button-container .btn-danger {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* Encabezado del modal */
+.modal-header {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.modal-header .close {
+    color: var(--secondary-color);
+}
+
+/* Cuerpo del modal */
+.modal-body {
+    padding: 20px;
+}
+
+/* Estilo de los controles de formulario dentro del modal */
+.modal-body .form-control, .modal-body .form-select {
+    margin-bottom: 15px;
+}
+
+/* Espaciado superior para alertas */
+.alert {
+    margin-top: 20px;
+}
+
+/* Estilo del título de las tarjetas */
+.card-title {
+    margin-bottom: 20px;
+}
+
+/* Cuerpo de las tarjetas */
+.card-body {
+    padding: 20px;
+}
+

@@ -1,0 +1,212 @@
+/* -------------------- Variables CSS: Establece temas de colores y estilos globales -------------------- */
+:root {
+    --primary-color: #4caf50; /* Color principal utilizado para encabezados, botones y otros elementos clave */
+    --secondary-color: #ffffff; /* Color secundario, generalmente blanco, para texto y fondos */
+    --background-color: #f0f4f7; /* Color de fondo principal de la página */
+    --text-color: #333; /* Color del texto general */
+    --border-radius: 10px; /* Radio de las esquinas redondeadas para varios elementos */
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra aplicada a tarjetas y elementos flotantes */
+    --card-background: #ffffff; /* Color de fondo para las tarjetas */
+    --header-gradient: linear-gradient(90deg, #4caf50, #81c784); /* Gradiente de color para el encabezado */
+    --font-family: 'Roboto', sans-serif; /* Fuente principal para la página */
+    --line-color: #e0e0e0; /* Color de las líneas de borde en tablas y elementos de división */
+}
+
+/* -------------------- Estilos generales del contenedor principal -------------------- */
+.body-tratamiento-list {
+    background-color: var(--background-color); /* Fondo del cuerpo de la página */
+    font-family: var(--font-family); /* Fuente aplicada a todo el cuerpo */
+    color: var(--text-color); /* Color del texto */
+    margin: 0;
+    padding: 0;
+}
+
+/* -------------------- Estilos del encabezado -------------------- */
+.header-tratamiento-list {
+    background: var(--header-gradient); /* Fondo degradado del encabezado */
+    padding: 20px; /* Relleno interno del encabezado */
+    color: white; /* Color del texto del encabezado */
+    text-align: center; /* Alineación del texto al centro */
+    border-radius: var(--border-radius); /* Bordes redondeados del encabezado */
+    margin-bottom: 20px; /* Margen inferior para separación */
+    box-shadow: var(--box-shadow); /* Sombra aplicada al encabezado */
+    position: sticky; /* Hace que el encabezado permanezca fijo en la parte superior al hacer scroll */
+    top: 0; /* Posición superior del encabezado */
+    z-index: 1000; /* Asegura que el encabezado esté por encima de otros elementos */
+}
+
+.header-tratamiento-list h1 {
+    margin: 0; /* Sin margen para el título */
+    font-size: 2.5em; /* Tamaño de fuente del título */
+}
+
+/* -------------------- Estilos de la tabla -------------------- */
+.table-container {
+    background-color: var(--card-background); /* Fondo de la tabla */
+    border-radius: var(--border-radius); /* Bordes redondeados de la tabla */
+    box-shadow: var(--box-shadow); /* Sombra alrededor de la tabla */
+    overflow-x: auto; /* Permite desplazamiento horizontal en dispositivos pequeños */
+    padding: 20px; /* Relleno interno del contenedor de la tabla */
+}
+
+.table-container table {
+    width: 100%; /* Ancho completo de la tabla */
+    min-width: 600px; /* Ancho mínimo para la tabla */
+    border-collapse: collapse; /* Colapsa bordes de celdas adyacentes */
+}
+
+.table-container th, .table-container td {
+    padding: 12px; /* Relleno interno de las celdas */
+    text-align: left; /* Alineación del texto a la izquierda */
+    border-bottom: 1px solid var(--line-color); /* Borde inferior de las celdas */
+    font-size: 0.9em; /* Tamaño de fuente de las celdas */
+}
+
+.table-container th {
+    background-color: var(--primary-color); /* Fondo de los encabezados de columna */
+    color: var(--secondary-color); /* Color del texto de los encabezados */
+}
+
+.table-container tr:hover {
+    background-color: var(--background-color); /* Fondo de las filas al pasar el cursor */
+}
+
+/* -------------------- Estilos del contenedor de búsqueda -------------------- */
+.search-container {
+    display: flex; /* Usa flexbox para alinear el contenido */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Alinea el contenido verticalmente */
+    margin-bottom: 20px; /* Margen inferior para separación */
+    gap: 10px; /* Espacio entre los elementos */
+    padding: 10px; /* Relleno interno del contenedor */
+    background: var(--primary-color); /* Fondo del contenedor de búsqueda */
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    box-shadow: var(--box-shadow); /* Sombra del contenedor */
+}
+
+.search-container input {
+    width: 100%; /* Ancho completo del campo de entrada */
+    max-width: 500px; /* Ancho máximo */
+    padding: 12px 20px; /* Relleno interno del campo */
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    border: none; /* Sin borde */
+    font-size: 1em; /* Tamaño de fuente */
+    transition: all 0.3s ease; /* Transición suave para cambios */
+    background-color: #f9f9f9; /* Fondo del campo de entrada */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra interna del campo */
+}
+
+.search-container input:focus {
+    outline: none; /* Sin contorno al enfocar */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 10px rgba(76, 175, 80, 0.5); /* Sombra al enfocar */
+    background-color: #ffffff; /* Cambia el fondo al enfocar */
+}
+
+.search-container button {
+    background-color: var(--secondary-color); /* Fondo del botón */
+    color: var(--primary-color); /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: var(--border-radius); /* Bordes redondeados del botón */
+    padding: 12px 20px; /* Relleno interno del botón */
+    font-size: 1em; /* Tamaño de fuente del botón */
+    cursor: pointer; /* Cursor de mano al pasar sobre el botón */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transiciones para el botón */
+    box-shadow: var(--box-shadow); /* Sombra del botón */
+}
+
+.search-container button:hover {
+    background-color: #e0e0e0; /* Color de fondo al pasar el cursor */
+}
+
+.search-container button:active {
+    transform: scale(0.95); /* Efecto de reducción al hacer clic */
+}
+
+/* -------------------- Estilos de los botones -------------------- */
+.button-container {
+    display: flex; /* Usa flexbox para alinear los botones */
+    gap: 10px; /* Espacio entre los botones */
+}
+
+.button-container .btn-warning, .button-container .btn-danger {
+    padding: 5px 10px; /* Relleno interno de los botones */
+    font-size: 14px; /* Tamaño de fuente de los botones */
+    border-radius: var(--border-radius); /* Bordes redondeados de los botones */
+    box-shadow: var(--box-shadow); /* Sombra de los botones */
+}
+
+/* -------------------- Estilos del modal -------------------- */
+.modal-header {
+    background: var(--primary-color); /* Fondo del encabezado del modal */
+    color: var(--secondary-color); /* Color del texto del encabezado */
+}
+
+.modal-header .close {
+    color: var(--secondary-color); /* Color del botón de cerrar */
+}
+
+.modal-body {
+    padding: 20px; /* Relleno interno del cuerpo del modal */
+}
+
+.modal-body .form-control, .modal-body .form-select {
+    margin-bottom: 15px; /* Margen inferior entre los campos del formulario */
+}
+
+.alert {
+    margin-top: 20px; /* Margen superior para la alerta */
+}
+
+.card-title {
+    margin-bottom: 20px; /* Margen inferior para el título de la tarjeta */
+}
+
+.card-body {
+    padding: 20px; /* Relleno interno del cuerpo de la tarjeta */
+}
+
+/* -------------------- Estilos de Responsividad -------------------- */
+
+/* Estilos para pantallas medianas */
+@media (max-width: 768px) {
+    .table-container table, 
+    .table-container th, 
+    .table-container td {
+        font-size: 0.9em; /* Ajuste del tamaño de fuente para pantallas medianas */
+    }
+
+    .table-container th, .table-container td {
+        padding: 8px; /* Ajuste del relleno interno para pantallas medianas */
+    }
+
+    .header-tratamiento-list h1 {
+        font-size: 2em; /* Ajuste del tamaño de fuente del encabezado */
+    }
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 576px) {
+    .table-container table, 
+    .table-container th, 
+    .table-container td {
+        font-size: 0.8em; /* Ajuste del tamaño de fuente para pantallas pequeñas */
+    }
+
+    .table-container th, .table-container td {
+        padding: 8px; /* Ajuste del relleno interno para pantallas pequeñas */
+    }
+
+    .header-tratamiento-list h1 {
+        font-size: 1.8em; /* Ajuste del tamaño de fuente del encabezado */
+    }
+
+    .search-container {
+        flex-direction: column; /* Cambia la dirección de los elementos a columna */
+        gap: 10px; /* Espacio entre elementos */
+    }
+
+    .search-container input, 
+    .search-container button {
+        width: 100%; /* Ancho completo para elementos de búsqueda en pantallas pequeñas */
+    }
+}

@@ -1,0 +1,212 @@
+:root {
+    --primary-color: #4caf50; /* Color primario usado en elementos como encabezados y botones */
+    --secondary-color: #ffffff; /* Color secundario, generalmente usado para texto en fondos oscuros */
+    --background-color: #f0f4f7; /* Color de fondo general de la aplicación */
+    --text-color: #333; /* Color de texto principal */
+    --border-radius: 10px; /* Radio de los bordes redondeados de varios elementos */
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para elementos elevados */
+    --card-background: #ffffff; /* Color de fondo de las tarjetas */
+    --header-gradient: linear-gradient(90deg, #4caf50, #81c784); /* Gradiente para encabezados */
+    --font-family: 'Roboto', sans-serif; /* Fuente principal de la aplicación */
+    --detail-panel-border: 4px solid #000000; /* Borde del panel de detalles */
+    --card-border: 2px solid #000000; /* Borde de las tarjetas */
+    --line-color: #e0e0e0; /* Color de las líneas divisorias en las tablas */
+}
+
+/* Estilo principal del cuerpo de la lista de productos */
+.body-producto-list {
+    background-color: var(--background-color); /* Fondo claro para contraste */
+    font-family: var(--font-family); /* Fuente consistente */
+    color: var(--text-color); /* Color de texto general */
+    margin: 0; /* Elimina márgenes predeterminados */
+    padding: 0; /* Elimina padding predeterminado */
+}
+
+/* Estilo del encabezado de la lista de productos */
+.header-producto-list {
+    background: var(--header-gradient); /* Gradiente de color para el fondo */
+    padding: 20px; /* Espaciado interno */
+    color: white; /* Color del texto en el encabezado */
+    text-align: center; /* Centra el texto del encabezado */
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    margin-bottom: 20px; /* Espacio inferior para separación */
+    box-shadow: var(--box-shadow); /* Sombra para efecto de elevación */
+    position: sticky; /* Fija el encabezado al principio de la página */
+    top: 0; /* Posición en la parte superior */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+
+.header-producto-list h1 {
+    margin: 0; /* Elimina márgenes */
+    font-size: 2.5em; /* Tamaño de fuente grande */
+}
+
+/* Contenedor de la tabla */
+.table-container {
+    background-color: var(--card-background); /* Fondo blanco */
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    box-shadow: var(--box-shadow); /* Sombra para efecto de elevación */
+    overflow-x: auto; /* Desplazamiento horizontal en tablas largas */
+    padding: 20px; /* Espaciado interno */
+}
+
+.table-container table {
+    width: 100%; /* Ancho total */
+    min-width: 600px; /* Mínimo ancho de la tabla */
+    border-collapse: collapse; /* Colapsa bordes para eliminar espacios */
+}
+
+.table-container th, .table-container td {
+    padding: 12px; /* Espaciado interno en celdas */
+    text-align: left; /* Alinea el texto a la izquierda */
+    border-bottom: 1px solid var(--line-color); /* Línea divisoria inferior */
+    font-size: 0.9em; /* Tamaño de fuente reducido */
+}
+
+.table-container th {
+    background-color: var(--primary-color); /* Fondo de los encabezados de tabla */
+    color: var(--secondary-color); /* Color del texto en los encabezados */
+}
+
+.table-container tr:hover {
+    background-color: var(--background-color); /* Fondo de fila al pasar el ratón */
+}
+
+/* Contenedor de búsqueda */
+.search-container {
+    display: flex; /* Flexbox para centrar contenido */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin-bottom: 20px; /* Margen inferior */
+    gap: 10px; /* Espacio entre elementos */
+    padding: 10px; /* Espaciado interno */
+    background: var(--primary-color); /* Fondo de la barra de búsqueda */
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    box-shadow: var(--box-shadow); /* Sombra */
+}
+
+.search-container input {
+    width: 100%; /* Ancho completo */
+    max-width: 500px; /* Ancho máximo */
+    padding: 12px 20px; /* Espaciado interno */
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    border: none; /* Sin borde */
+    font-size: 1em; /* Tamaño de fuente */
+    transition: all 0.3s ease; /* Transiciones suaves */
+    background-color: #f9f9f9; /* Fondo claro */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra interna */
+}
+
+.search-container input:focus {
+    outline: none; /* Sin contorno al enfocar */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 10px rgba(76, 175, 80, 0.5); /* Sombra adicional al enfocar */
+    background-color: #ffffff; /* Fondo blanco al enfocar */
+}
+
+.search-container button {
+    background-color: var(--secondary-color); /* Fondo blanco */
+    color: var(--primary-color); /* Color de texto primario */
+    border: none; /* Sin borde */
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    padding: 12px 20px; /* Espaciado interno */
+    font-size: 1em; /* Tamaño de fuente */
+    cursor: pointer; /* Puntero al pasar el ratón */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transición de color y tamaño */
+    box-shadow: var(--box-shadow); /* Sombra */
+}
+
+.search-container button:hover {
+    background-color: #e0e0e0; /* Fondo gris claro al pasar el ratón */
+}
+
+.search-container button:active {
+    transform: scale(0.95); /* Efecto de escala al hacer clic */
+}
+
+.button-container {
+    display: flex; /* Flexbox para disposición de botones */
+    gap: 10px; /* Espacio entre botones */
+}
+
+.button-container .btn-warning, .button-container .btn-danger {
+    padding: 5px 10px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de fuente de los botones */
+    border-radius: var(--border-radius); /* Bordes redondeados */
+    box-shadow: var(--box-shadow); /* Sombra */
+}
+
+.modal-header {
+    background: var(--primary-color); /* Fondo del encabezado del modal */
+    color: var(--secondary-color); /* Color de texto del modal */
+}
+
+.modal-header .close {
+    color: var(--secondary-color); /* Color del botón de cierre del modal */
+}
+
+.modal-body {
+    padding: 20px; /* Espaciado interno del cuerpo del modal */
+}
+
+.modal-body .form-control, .modal-body .form-select {
+    margin-bottom: 15px; /* Margen inferior en controles de formulario */
+}
+
+.alert {
+    margin-top: 20px; /* Margen superior de alertas */
+}
+
+.card-title {
+    margin-bottom: 20px; /* Margen inferior de títulos de tarjeta */
+}
+
+.card-body {
+    padding: 20px; /* Espaciado interno del cuerpo de la tarjeta */
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 576px) {
+    .table-container table, 
+    .table-container th, 
+    .table-container td {
+        font-size: 0.8em; /* Tamaño de fuente más pequeño en pantallas pequeñas */
+    }
+    .search-container input {
+        font-size: 0.9em; /* Tamaño de fuente más pequeño en input */
+        padding: 10px 15px; /* Espaciado reducido en input */
+    }
+
+    .search-container button {
+        font-size: 0.9em; /* Tamaño de fuente más pequeño en botón */
+        padding: 10px 15px; /* Espaciado reducido en botón */
+    }
+
+    .button-container .btn-warning, 
+    .button-container .btn-danger {
+        font-size: 12px; /* Tamaño de fuente más pequeño en botones */
+        padding: 4px 8px; /* Espaciado reducido en botones */
+    }
+
+    .modal-body .form-control, 
+    .modal-body .form-select {
+        font-size: 0.9em; /* Tamaño de fuente más pequeño en formularios */
+    }
+}
+
+@media (max-width: 576px) {
+    .header-producto-list h1 {
+        font-size: 2em; /* Tamaño de fuente reducido para encabezados */
+    }
+
+    .search-container input {
+        width: 100%; /* Ancho completo en pantallas pequeñas */
+    }
+
+    .table-container {
+        padding: 15px; /* Espaciado interno reducido */
+    }
+
+    .table-container th, .table-container td {
+        padding: 8px; /* Espaciado reducido en celdas */
+    }
+}
