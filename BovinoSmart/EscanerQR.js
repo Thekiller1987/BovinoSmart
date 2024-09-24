@@ -1,14 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
-import MenuSVG from './assets/Menu.svg'; // Importa el archivo SVG de fondo
+import LeafBackground from './LeafBackground'; // Importa el componente LeafBackground
 import QRSVG from './assets/qr.svg'; // Importa el archivo SVG del código QR
 
 export default function EscanerQR({ navigation }) {
   return (
-    <View style={styles.container}>
-      {/* SVG de fondo */}
-      <MenuSVG style={styles.backgroundSVG} />
-
+    <LeafBackground>
       {/* Encabezado con botón de regreso */}
       <View style={styles.customHeader}>
         <TouchableOpacity
@@ -37,13 +34,15 @@ export default function EscanerQR({ navigation }) {
 
       {/* Área de Escáner con ícono QR grande */}
       <View style={styles.scannerArea}>
-        {/* Asegúrate de que el SVG se esté usando correctamente */}
-        <QRSVG style={styles.qrImage} width={200} height={200} /> 
-        <TouchableOpacity style={styles.scanButton}>
+        <QRSVG style={styles.qrImage} width={200} height={200} />
+        <TouchableOpacity
+          style={styles.scanButton}
+          onPress={() => navigation.navigate('QRScanner')} // Navegación hacia la pantalla del escáner QR
+        >
           <Text style={styles.scanButtonText}>Escanear Código</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LeafBackground>
   );
 }
 
@@ -52,17 +51,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  backgroundSVG: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
-    alignSelf: 'center',
   },
   customHeader: {
     flexDirection: 'row',
@@ -101,12 +89,13 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     alignItems: 'center',
     paddingHorizontal: 10,
-    width: '76%', // Reduce el ancho de la barra de búsqueda
+    width: '80%', // Reduce el ancho de la barra de búsqueda
     height: 40, // Altura ajustada para la barra de búsqueda
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+    marginLeft: 5,
     elevation: 2,
   },
   searchIcon: {
@@ -120,7 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   searchButton: {
-    marginLeft: 10,
+    marginLeft: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: '#537982',

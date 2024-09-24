@@ -24,8 +24,6 @@ const LeafBackground = ({ children }) => {
         <Oja1SVG style={[styles.oja, styles.oja13]} />
         <Oja2SVG style={[styles.oja, styles.oja14]} />
         <Oja1SVG style={[styles.oja, styles.oja15]} />
-
-        {/* Más hojas añadidas */}
         <Oja1SVG style={[styles.oja, styles.oja16]} />
         <Oja2SVG style={[styles.oja, styles.oja17]} />
         <Oja1SVG style={[styles.oja, styles.oja18]} />
@@ -66,8 +64,6 @@ const LeafBackground = ({ children }) => {
         <Oja2SVG style={[styles.oja, styles.oja53]} />
         <Oja1SVG style={[styles.oja, styles.oja54]} />
         <Oja2SVG style={[styles.oja, styles.oja55]} />
-
-        {/* 30 hojas adicionales para llenar la izquierda y la parte inferior */}
         <Oja1SVG style={[styles.oja, styles.oja56]} />
         <Oja2SVG style={[styles.oja, styles.oja57]} />
         <Oja1SVG style={[styles.oja, styles.oja58]} />
@@ -119,7 +115,6 @@ const LeafBackground = ({ children }) => {
         <Oja1SVG style={[styles.oja, styles.oja104]} />
         <Oja1SVG style={[styles.oja, styles.oja105]} />
         <Oja1SVG style={[styles.oja, styles.oja106]} />
-        
         <Oja2SVG style={[styles.oja, styles.oja107]} />
         <Oja2SVG style={[styles.oja, styles.oja108]} />
         <Oja2SVG style={[styles.oja, styles.oja109]} />
@@ -164,7 +159,7 @@ const styles = StyleSheet.create({
     left: -90,
     right: -90,
     height: 380, // Aumentamos la altura para hacer la barra más redonda
-    backgroundColor: '#597580',
+    backgroundColor: '#587A83',
     borderBottomLeftRadius: 480, // Ajuste para redondear más
     borderBottomRightRadius: 480, // Ajuste para redondear más
     zIndex: 0,
@@ -233,32 +228,31 @@ const styles = StyleSheet.create({
   oja53: { top: 850, left: 260 },
   oja54: { top: 850, left: 360 },
   oja55: { top: 850, left: 460 },
-  oja56: { top: 50, left: -40 },  // Más a la izquierda
-  oja57: { top: 130, left: -40 },  // Más a la izquierda
-  oja58: { top: 210, left: 0 },    // Más a la izquierda
-  oja59: { top: 290, left: -40 },  // Más a la izquierda
-  oja60: { top: 370, left: -20 },  // Más a la izquierda
-  oja61: { top: 50, left: 620 },   // Más a la derecha
-  oja62: { top: 130, left: 600 },  // Más a la derecha
-  oja63: { top: 210, left: 580 },  // Más a la derecha
-  oja64: { top: 290, left: 600 },  // Más a la derecha
-  oja65: { top: 370, left: 620 },  // Más a la derecha
-  oja66: { top: 930, left: 100 },  // Más abajo
+  oja56: { top: 50, left: -40 },  
+  oja58: { top: 210, left: 0 },   
+  oja59: { top: 290, left: -40 },  
+  oja60: { top: 370, left: -20 }, 
+  oja61: { top: 50, left: 620 },  
+  oja62: { top: 130, left: 600 },  
+  oja63: { top: 210, left: 580 },  
+  oja64: { top: 290, left: 600 },  
+  oja65: { top: 370, left: 620 },  
+  oja66: { top: 930, left: 100 },  
   oja67: { top: 930, left: 200 },
   oja68: { top: 930, left: 300 },
   oja69: { top: 930, left: 400 },
   oja70: { top: 930, left: 500 },
-  oja71: { top: 970, left: 60 },  // Más hacia la izquierda y separadas
+  oja71: { top: 970, left: 60 },  
   oja72: { top: 970, left: 180 },
   oja73: { top: 970, left: 280 },
   oja74: { top: 970, left: 380 },
   oja75: { top: 970, left: 480 },
-  oja76: { top: 1030, left: 120 }, // Más cerca de la esquina inferior izquierda
+  oja76: { top: 1030, left: 120 },
   oja77: { top: 1030, left: 220 },
   oja78: { top: 1030, left: 320 },
   oja79: { top: 1030, left: 420 },
   oja80: { top: 1030, left: 520 },
-  oja81: { top: 1110, left: 140 }, // Más cerca de la esquina inferior derecha
+  oja81: { top: 1110, left: 140 }, 
   oja82: { top: 1110, left: 240 },
   oja83: { top: 1110, left: 340 },
   oja84: { top: 1110, left: 440 },
@@ -284,8 +278,6 @@ const styles = StyleSheet.create({
   oja104: { top: 100, left: -40 },
   oja105: { top: 970, left: -40 },
   oja106: { top: 970, left: -40 },
-
-
   oja107: { top: 590, left: 560 },
   oja108: { top: 600, left: 660 },
   oja109: { top: 680, left: 560 },

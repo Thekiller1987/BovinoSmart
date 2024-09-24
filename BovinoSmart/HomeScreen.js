@@ -1,26 +1,15 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import UserSVG from './assets/user.svg'; // Importa el nuevo archivo SVG para el usuario
-import { useFonts } from 'expo-font';
+import UserSVG from './assets/user.svg'; // Verifica si este SVG está bien implementado
 import * as SplashScreen from 'expo-splash-screen';
-import LeafBackground from './LeafBackground'; // Importa el fondo decorativo
+import LeafBackground from './LeafBackground'; // Fondo decorativo
 
 SplashScreen.preventAutoHideAsync();
 
 export default function HomeScreen({ navigation }) {
-  const [fontsLoaded] = useFonts({
-    'KaiseiDecol-Bold': require('./assets/fonts/KaiseiDecol-Bold.ttf'),
-  });
-
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
+    await SplashScreen.hideAsync();
+  }, []);
 
   return (
     <LeafBackground>
@@ -31,6 +20,7 @@ export default function HomeScreen({ navigation }) {
             style={[styles.userButton, styles.lightGreenBackground]}
             activeOpacity={0.7}
           >
+            {/* Verifica que este componente SVG está bien manejado */}
             <UserSVG width={30} height={30} style={styles.userIcon} />
           </TouchableOpacity>
         </View>

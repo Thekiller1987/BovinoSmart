@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
-import MenuSVG from './assets/Menu.svg'; // Importa el archivo SVG de fondo
+import LeafBackground from './LeafBackground'; // Importa el componente LeafBackground para el fondo de hojas
 
 export default function GestionAnimales({ navigation }) {
   const [activeCategory, setActiveCategory] = useState(''); // Estado para gestionar qué botón está activo
 
   return (
-    <View style={styles.container}>
-      {/* SVG de fondo */}
-      <MenuSVG style={styles.backgroundSVG} />
-
+    <LeafBackground>
       {/* Encabezado con botón de regreso */}
       <View style={styles.customHeader}>
         <TouchableOpacity
@@ -65,7 +62,7 @@ export default function GestionAnimales({ navigation }) {
           <Image source={require('./assets/mas.png')} style={styles.addIcon} />
         </TouchableOpacity>
       </View>
-    </View>
+    </LeafBackground>
   );
 }
 
@@ -74,17 +71,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  backgroundSVG: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
-    alignSelf: 'center',
   },
   customHeader: {
     flexDirection: 'row',
@@ -130,6 +116,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 2,
+    marginLeft: 5, // Añade un margen de 5 a la izquierda de la barra de búsqueda
   },
   searchIcon: {
     width: 20,
@@ -142,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   searchButton: {
-    marginLeft: 10,
+    marginLeft: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: '#537982',

@@ -1,74 +1,60 @@
-import React, { useCallback } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-
-// Importa las pantallas que creaste
+import { useFonts } from 'expo-font';
+import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
 import GestionAnimales from './GestionAnimales';
 import GestionEnfermedades from './GestionEnfermedades';
 import GestionProductos from './GestionProductos';
 import EscanerQR from './EscanerQR';
-import LeafBackground from './LeafBackground'; // Importa el nuevo fondo
-
-SplashScreen.preventAutoHideAsync();
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [appReady, setAppReady] = useState(false);
+
+  // Cargar las fuentes personalizadas
   const [fontsLoaded] = useFonts({
+    'KaiseiDecol-Bold': require('./assets/fonts/KaiseiDecol-Bold.ttf'),
     'Arapey-Regular': require('./assets/fonts/Arapey-Regular.ttf'),
-    'Arapey-Italic': require('./assets/fonts/Arapey-Italic.ttf'),
   });
 
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+      setAppReady(true);
+    }
+    prepare();
+  }, []);
+
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (appReady && fontsLoaded) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [appReady, fontsLoaded]);
 
-  if (!fontsLoaded) {
-    return null; // Muestra una pantalla vacía mientras las fuentes se cargan
+  if (!appReady || !fontsLoaded) {
+    return null; // Espera hasta que todo esté listo
   }
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <LeafBackground>
-        <Stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            headerShown: false, // Oculta la barra de navegación predeterminada
-          }}
-        >
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen
-            name="GestionAnimales"
-            component={GestionAnimales}
-            options={{ title: 'Gestión de Animales' }}
-          />
-          <Stack.Screen
-            name="GestionEnfermedades"
-            component={GestionEnfermedades}
-            options={{ title: 'Gestión de Enfermedades' }}
-          />
-          <Stack.Screen
-            name="GestionProductos"
-            component={GestionProductos}
-            options={{ title: 'Gestión de Productos' }}
-          />
-          <Stack.Screen
-            name="EscanerQR"
-            component={EscanerQR}
-            options={{ title: 'Escáner QR' }}
-          />
-        </Stack.Navigator>
-      </LeafBackground>
+      <Stack.Navigator
+        initialRouteName="LoginScreen"
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        {/* Pantallas dentro del Stack.Navigator */}
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="GestionAnimales" component={GestionAnimales} />
+        <Stack.Screen name="GestionEnfermedades" component={GestionEnfermedades} />
+        <Stack.Screen name="GestionProductos" component={GestionProductos} />
+        <Stack.Screen name="EscanerQR" component={EscanerQR} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  // Estilos adicionales si necesitas
-});
