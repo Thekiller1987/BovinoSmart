@@ -1,46 +1,97 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
-import LeafBackground from './LeafBackground'; // Importa el componente LeafBackground
-import QRSVG from './assets/qr.svg'; // Importa el archivo SVG del código QR
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import LeafBackground from './LeafBackground';
+import QRSVG from './assets/qr.svg';
 
 export default function EscanerQR({ navigation }) {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [showScanner, setShowScanner] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    setSearchText(data);
+    setShowScanner(false);
+  };
+
+  const handleScanButtonPress = () => {
+    setSearchText(''); // Limpiar la barra de búsqueda
+    setShowScanner(true); // Mostrar el escáner
+    setScanned(false); // Reiniciar el estado de escaneado
+  };
+
+  if (hasPermission === null) {
+    return <Text>Solicitando permiso para la cámara...</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No se concedió permiso a la cámara</Text>;
+  }
+
   return (
     <LeafBackground>
-      {/* Encabezado con botón de regreso */}
-      <View style={styles.customHeader}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()} // Función para regresar al menú
-        >
-          <Text style={styles.backButtonText}>←</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Escáner QR</Text>
-      </View>
-
-      {/* Barra de búsqueda con icono de lupa */}
-      <View style={styles.searchWrapper}>
-        <View style={styles.searchContainer}>
-          <TextInput
-            placeholder="Buscar"
-            style={styles.searchInput}
-            placeholderTextColor="#666"
-          />
-          <Image source={require('./assets/buscar.png')} style={styles.searchIcon} />
+      <View style={styles.container}>
+        <View style={styles.customHeader}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.backButtonText}>←</Text>
+          </TouchableOpacity>
+          <Text style={styles.title}>Escáner QR</Text>
         </View>
-        <TouchableOpacity style={styles.searchButton}>
-          <Text style={styles.searchButtonText}>Buscar</Text>
-        </TouchableOpacity>
-      </View>
 
-      {/* Área de Escáner con ícono QR grande */}
-      <View style={styles.scannerArea}>
-        <QRSVG style={styles.qrImage} width={200} height={200} />
-        <TouchableOpacity
-          style={styles.scanButton}
-          onPress={() => navigation.navigate('QRScanner')} // Navegación hacia la pantalla del escáner QR
-        >
-          <Text style={styles.scanButtonText}>Escanear Código</Text>
-        </TouchableOpacity>
+        <View style={styles.searchWrapper}>
+          <View style={styles.searchContainer}>
+            <TextInput
+              placeholder="Buscar"
+              style={styles.searchInput}
+              placeholderTextColor="#666"
+              value={searchText}
+              onChangeText={(text) => setSearchText(text)}
+            />
+            <Image source={require('./assets/buscar.png')} style={styles.searchIcon} />
+          </View>
+          <TouchableOpacity style={styles.searchButton}>
+            <Text style={styles.searchButtonText}>Buscar</Text>
+          </TouchableOpacity>
+        </View>
+
+        {!showScanner ? (
+          <View style={styles.scannerArea}>
+            <QRSVG style={styles.qrImage} width={200} height={200} />
+            <TouchableOpacity
+              style={styles.scanButton}
+              onPress={handleScanButtonPress} // Limpiar barra y mostrar escáner
+            >
+              <Text style={styles.scanButtonText}>Escanear Código</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.cameraWrapper}>
+            <BarCodeScanner
+              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+              style={styles.qrScanner}
+              barCodeTypes={[
+                BarCodeScanner.Constants.BarCodeType.qr, 
+                BarCodeScanner.Constants.BarCodeType.code128, 
+                BarCodeScanner.Constants.BarCodeType.code39
+              ]}
+            />
+            <View style={styles.overlayTop} />
+            <View style={styles.overlayBottom} />
+            <View style={styles.overlayLeft} />
+            <View style={styles.overlayRight} />
+          </View>
+        )}
       </View>
     </LeafBackground>
   );
@@ -89,8 +140,8 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     alignItems: 'center',
     paddingHorizontal: 10,
-    width: '80%', // Reduce el ancho de la barra de búsqueda
-    height: 40, // Altura ajustada para la barra de búsqueda
+    width: '80%',
+    height: 40,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -135,5 +186,48 @@ const styles = StyleSheet.create({
   scanButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  cameraWrapper: {
+    width: 300,
+    height: 300,
+    overflow: 'hidden',
+    borderWidth: 4,
+    borderColor: 'green',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    position: 'relative',
+  },
+  qrScanner: {
+    width: 600,
+    height: 600, // Ajustamos la cámara para que sea cuadrada
+  },
+  overlayTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 0,
+  },
+  overlayBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 0,
+  },
+  overlayLeft: {
+    position: 'absolute',
+    top: 100,
+    bottom: 100,
+    left: 0,
+    width: 0,
+  },
+  overlayRight: {
+    position: 'absolute',
+    top: 100,
+    bottom: 100,
+    right: 0,
+    width: 0,
   },
 });
