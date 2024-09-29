@@ -13,7 +13,7 @@ import PreguntaForm from './pages/PreguntasIA'; // Importa la página PreguntasI
 import PrivateRoute from './pages/PrivateRoute'; // Importa el componente de rutas privadas
 import SelectLicencia from './pages/SelectLicencia';
 import GestionUsuarios from './pages/GestionUsuario';
-import GestionEstadoReproductivo from './pages/GestionEstadoReproductivo'
+
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importa los estilos de Font Awesome
 import './tailwind.css';
 
@@ -41,7 +41,7 @@ function App() {
         <Route path="/PreguntaIA" element={<PrivateRoute element={PreguntaForm} />} />
         <Route path="/select-licencia" element={<SelectLicencia />} />
         <Route path="/GestionUsuarios" element={<GestionUsuarios />} />
-        <Route path="/GestionEstadoReproductivo" element={<GestionEstadoReproductivo />} />
+
       </Routes>
     </Router>
   );

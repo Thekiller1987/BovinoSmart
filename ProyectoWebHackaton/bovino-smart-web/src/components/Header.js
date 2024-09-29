@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Offcanvas, Button, NavDropdown, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import '../styles/Header.css'; // Importa el archivo CSS personalizado
+import logo from '../logo/Logo.png'; // Importa la imagen del logo
 
 function Header() {
     const [showMenu, setShowMenu] = useState(false);
-    const navigate = useNavigate(); // Hook para redirigir a otras páginas
+    const navigate = useNavigate();
     const [userRoles, setUserRoles] = useState([]);
     const [userLicense, setUserLicense] = useState('');
 
@@ -13,7 +15,6 @@ function Header() {
         const token = localStorage.getItem('token');
         if (token) {
             try {
-                // Decodifica el token
                 const userData = JSON.parse(atob(token.split('.')[1]));
                 setUserRoles(userData.rol ? [userData.rol] : []);
                 setUserLicense(userData.idLicencia.toString());
@@ -23,227 +24,148 @@ function Header() {
         }
     }, []);
 
-
     const toggleMenu = () => {
         setShowMenu(!showMenu);
     };
 
-    // Función de cierre de sesión
     const handleLogout = () => {
-        localStorage.removeItem('token'); // Elimina el token del almacenamiento local
-        navigate('/Login'); // Redirige al usuario a la página de inicio de sesión
+        localStorage.removeItem('token');
+        navigate('/Login');
     };
 
     return (
         <div>
             {/* Navbar principal */}
             <Navbar className="navbar-color" variant="dark" expand="md">
-                <Container>
-                    <Navbar.Brand href="/">BoVinoSmart</Navbar.Brand>
+                <Container fluid>
+                    <Navbar.Brand href="/">
+                        {/* Logo a la izquierda del nombre */}
+                        <img
+                            src={logo}
+                            alt="BoVinoSmart Logo"
+                            className="navbar-logo"
+                        />
+                        BoVinoSmart
+                    </Navbar.Brand>
                     <Navbar.Toggle
                         aria-controls="basic-navbar-nav"
-                        style={{ display: 'none' }}
-                        className="d-sm-none d-xs-none"
+                        onClick={toggleMenu}
                     />
-
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
-                            <Nav.Link>
-                                <Link to="/" className="link-unstyled">Inicio</Link>
-                            </Nav.Link>
+                            <Nav.Link as={Link} to="/" className="link-unstyled">Inicio</Nav.Link>
+                            <Nav.Link as={Link} to="/about" className="link-unstyled">Información</Nav.Link>
 
-                            <Nav.Link>
-                                <Link to="/about" className="link-unstyled">Información</Link>
-                            </Nav.Link>
-
-                            {/* Dropdown de Animales */}
+                            {/* Opciones dinámicas basadas en los roles del usuario */}
                             {userRoles.includes('Ganadero') && (
-                                <NavDropdown title="Animales" id="animales">
-                                    <NavDropdown.Item>
-                                        <Link to="/Animales" className="link-unstyled">Registrar Animales</Link>
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item>
-                                        <Link to="/AnimalList" className="link-unstyled">Listar Animales</Link>
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                            )}
+                                <>
+                                    <NavDropdown title="Animales" id="animales">
+                                        <NavDropdown.Item as={Link} to="/Animales" className="link-unstyled">
+                                            Registrar Animales
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="/AnimalList" className="link-unstyled">
+                                            Listar Animales
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
 
-                            {/* Dropdown de Enfermedades */}
-                            {userRoles.includes('Ganadero') && (
-                                <NavDropdown title="Enfermedades" id="enfermedades">
-                                    <NavDropdown.Item>
-                                        <Link to="/Enfermedades" className="link-unstyled">Registrar Enfermedades</Link>
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item>
-                                        <Link to="/EnfermedadList" className="link-unstyled">Listar Enfermedades</Link>
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                            )}
+                                    <NavDropdown title="Enfermedades" id="enfermedades">
+                                        <NavDropdown.Item as={Link} to="/Enfermedades" className="link-unstyled">
+                                            Registrar Enfermedades
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="/EnfermedadList" className="link-unstyled">
+                                            Listar Enfermedades
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
 
-                            {/* Dropdown de Productos */}
-                            {userRoles.includes('Ganadero') && (
-                                <NavDropdown title="Productos" id="productos">
-                                    <NavDropdown.Item>
-                                        <Link to="/Productos" className="link-unstyled">Registrar Productos</Link>
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item>
-                                        <Link to="/ProductoList" className="link-unstyled">Listar Productos</Link>
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                            )}
+                                    <NavDropdown title="Productos" id="productos">
+                                        <NavDropdown.Item as={Link} to="/Productos" className="link-unstyled">
+                                            Registrar Productos
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="/ProductoList" className="link-unstyled">
+                                            Listar Productos
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
 
+                                    <Nav.Link as={Link} to="/select-licencia" className="link-unstyled">
+                                        Actualizar Licencia
+                                    </Nav.Link>
+                                    <Nav.Link as={Link} to="/GestionUsuarios" className="link-unstyled">
+                                        Gestionar usuarios
+                                    </Nav.Link>
+                                </>
+                            )}
 
                             {userLicense === '3' && (
                                 <NavDropdown title="IA" id="IA">
-                                    <NavDropdown.Item>
-                                        <Link to="/PreguntaIA" className="link-unstyled">Manola</Link>
+                                    <NavDropdown.Item as={Link} to="/PreguntaIA" className="link-unstyled">
+                                        Manola
                                     </NavDropdown.Item>
                                 </NavDropdown>
                             )}
 
-
-
-
-
-                            {/* Dropdown de Animales */}
                             {userRoles.includes('Empleado') && (
-                                <NavDropdown title="Animales" id="animales">
-
-                                    <NavDropdown.Item>
-                                        <Link to="/AnimalList" className="link-unstyled">Listar Animales</Link>
-                                    </NavDropdown.Item>
-                                </NavDropdown>
+                                <>
+                                    <Nav.Link as={Link} to="/registro-produccion" className="link-unstyled">
+                                        Registro de Producción
+                                    </Nav.Link>
+                                    <Nav.Link as={Link} to="/control-banos" className="link-unstyled">
+                                        Control de Baños
+                                    </Nav.Link>
+                                </>
                             )}
-
-                            {/* Opciones para Ganadero que puede actualizar licencia */}
-                            {userRoles.includes('Ganadero') && (
-                                <Nav.Link>
-                                    <Link to="/select-licencia" className="link-unstyled">Actualizar Licencia</Link>
-                                </Nav.Link>
-                            )}
-
-
-                             {/* Opciones para Ganadero que puede GestionarUsuarios */}
-                             {userRoles.includes('Ganadero') && (
-                                <Nav.Link>
-                                    <Link to="/GestionUsuarios" className="link-unstyled">Gestionar usuarios</Link>
-                                </Nav.Link>
-                            )}
-
-                             {/* Opciones para Ganadero que puede gestionar estado reproductivo */}
-                             {userRoles.includes('Ganadero') && (
-                                <Nav.Link>
-                                    <Link to="/GestionEstadoReproductivo" className="link-unstyled">Gestionar Estado Reproductivo</Link>
-                                </Nav.Link>
-                            )}
-
-
-                            
-
-                            {/* Botón de cierre de sesión */}
-                            <Button variant="outline-light" onClick={handleLogout}>
-                                Cerrar Sesión
-                            </Button>
                         </Nav>
+
+                        {/* Botón de cierre de sesión */}
+                        <Button variant="outline-light" onClick={handleLogout} className="btn-circle">
+                            <img src={require('../Iconos/fi-rr-user.png')} alt="Cerrar sesión" className="icono-cerrar-sesion" />
+                        </Button>
                     </Navbar.Collapse>
-                    <Button
-                        variant="outline-light"
-                        onClick={toggleMenu}
-                        className="d-md-none d-block"
-                        aria-controls="basic-navbar-nav"
-                        aria-expanded={showMenu ? 'true' : 'false'}
-                    >
-                        Menú
-                    </Button>
                 </Container>
             </Navbar>
 
             {/* Menú lateral (Offcanvas) */}
-            <Offcanvas show={showMenu} onHide={toggleMenu} placement="start">
+            <Offcanvas show={showMenu} onHide={toggleMenu} placement="start" className="offcanvas">
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Menú</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <Nav className="flex-column">
-                        <Nav.Link>
-                            <Link to="/" className="link-unstyled">Inicio</Link>
-                        </Nav.Link>
-
-                        <Nav.Link>
-                            <Link to="/about" className="link-unstyled">About</Link>
-                        </Nav.Link>
-
-                        {/* Replicar el dropdown de opciones para el menú lateral */}
+                        <Nav.Link as={Link} to="/" className="link-unstyled">Inicio</Nav.Link>
+                        <Nav.Link as={Link} to="/about" className="link-unstyled">Información</Nav.Link>
                         {userRoles.includes('Ganadero') && (
                             <>
                                 <NavDropdown title="Animales" id="animales">
-                                    <NavDropdown.Item>
-                                        <Link to="/Animales" className="link-unstyled">Registrar animales</Link>
+                                    <NavDropdown.Item as={Link} to="/Animales" className="link-unstyled">
+                                        Registrar animales
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item>
-                                        <Link to="/AnimalList" className="link-unstyled">Listar animales</Link>
+                                    <NavDropdown.Item as={Link} to="/AnimalList" className="link-unstyled">
+                                        Listar animales
                                     </NavDropdown.Item>
                                 </NavDropdown>
-
                                 <NavDropdown title="Enfermedades" id="enfermedades">
-                                    <NavDropdown.Item>
-                                        <Link to="/Enfermedades" className="link-unstyled">Registrar Enfermedades</Link>
+                                    <NavDropdown.Item as={Link} to="/Enfermedades" className="link-unstyled">
+                                        Registrar Enfermedades
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item>
-                                        <Link to="/EnfermedadList" className="link-unstyled">Listar Enfermedades</Link>
+                                    <NavDropdown.Item as={Link} to="/EnfermedadList" className="link-unstyled">
+                                        Listar Enfermedades
                                     </NavDropdown.Item>
                                 </NavDropdown>
-
                                 <NavDropdown title="Productos" id="Productos">
-                                    <NavDropdown.Item>
-                                        <Link to="/Productos" className="link-unstyled">Registrar Productos</Link>
+                                    <NavDropdown.Item as={Link} to="/Productos" className="link-unstyled">
+                                        Registrar Productos
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item>
-                                        <Link to="/ProductoList" className="link-unstyled">Listar Productos</Link>
+                                    <NavDropdown.Item as={Link} to="/ProductoList" className="link-unstyled">
+                                        Listar Productos
                                     </NavDropdown.Item>
                                 </NavDropdown>
-
-                                {/* Opción para actualizar licencia */}
-                                <Nav.Link>
-                                    <Link to="/select-licencia" className="link-unstyled">Actualizar Licencia</Link>
+                                <Nav.Link as={Link} to="/select-licencia" className="link-unstyled">
+                                    Actualizar Licencia
+                                </Nav.Link>
+                                <Nav.Link as={Link} to="/GestionUsuarios" className="link-unstyled">
+                                    Gestionar usuarios
                                 </Nav.Link>
                             </>
                         )}
-
-                        {userLicense === '3' && (
-                            <NavDropdown title="IA" id="IA">
-                                <NavDropdown.Item>
-                                    <Link to="/PreguntaIA" className="link-unstyled">Manola</Link>
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                        )}
-
-                        {userRoles.includes('Empleado') && (
-                            <>
-                                <Nav.Link>
-                                    <Link to="/registro-produccion" className="link-unstyled">Registro de Producción</Link>
-                                </Nav.Link>
-                                <Nav.Link>
-                                    <Link to="/control-banos" className="link-unstyled">Control de Baños</Link>
-                                </Nav.Link>
-                            </>
-                        )}
-
-                         {/* Opciones para Ganadero que puede actualizar licencia */}
-                         {userRoles.includes('Ganadero') && (
-                                <Nav.Link>
-                                    <Link to="/GestionUsuarios" className="link-unstyled">Gestionar usuarios</Link>
-                                </Nav.Link>
-                            )}
-
-                              {/* Opciones para Ganadero que puede gestionar estado reproductivo */}
-                              {userRoles.includes('Ganadero') && (
-                                <Nav.Link>
-                                    <Link to="/GestionEstadoReproductivo" className="link-unstyled">Gestionar Estado Reproductivo</Link>
-                                </Nav.Link>
-                            )}
-
-                        {/* Botón de cierre de sesión en el menú lateral */}
                         <Button variant="outline-dark" onClick={handleLogout}>
                             Cerrar Sesión
                         </Button>

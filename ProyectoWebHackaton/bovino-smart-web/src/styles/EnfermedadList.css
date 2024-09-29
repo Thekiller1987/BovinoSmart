@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Junge&family=Kaisei+Decol&display=swap');
 /* Definición de variables globales para el tema de la aplicación */
 :root {
     --primary-color: #4caf50; /* Color primario utilizado para fondos y acentos */
@@ -9,7 +10,6 @@
     --card-background: #ffffff; /* Color de fondo de las tarjetas */
     --header-gradient: linear-gradient(90deg, #4caf50, #81c784); /* Gradiente de color utilizado en los encabezados */
     --font-family: 'Roboto', sans-serif; /* Fuente principal de la aplicación */
-    --detail-panel-border: 4px solid #000000; /* Borde utilizado en paneles de detalles */
     --card-border: 2px solid #000000; /* Borde de las tarjetas */
     --line-color: #e0e0e0; /* Color utilizado para líneas divisorias */
 }
@@ -21,6 +21,7 @@
     color: var(--text-color);
     margin: 0;
     padding: 0;
+    padding-bottom: 40px;
 }
 
 /* Encabezado de la lista de enfermedades */
@@ -37,143 +38,335 @@
     z-index: 1000;
 }
 
-.header-enfermedad-list h1 {
-    margin: 0;
-    font-size: 2.5em;
-}
-
-/* Contenedor de la tabla de enfermedades */
-.table-container {
-    background-color: var(--card-background);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    overflow: hidden;
-    padding: 20px;
-}
-
-.table-container table {
-    width: 100%;
-    border-collapse: collapse; /* Quita los espacios entre las celdas de la tabla */
-}
-
-/* Estilo de las celdas de la tabla */
-.table-container th, .table-container td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid var(--line-color); /* Línea divisoria debajo de cada fila */
-}
-
-/* Encabezado de las columnas de la tabla */
-.table-container th {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-}
-
-/* Efecto al pasar el ratón sobre las filas de la tabla */
-.table-container tr:hover {
-    background-color: var(--background-color);
-}
-
-/* Contenedor del campo de búsqueda */
-.search-container {
+/* Contenedor del campo de búsqueda y el botón */
+.search-containers {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
-    gap: 10px;
-    padding: 10px;
-    background: var(--primary-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    justify-content: center; /* Centrar el cuadro de búsqueda y el botón horizontalmente */
+    gap: 15px; /* Ajusta el espacio entre el cuadro de búsqueda y el botón */
+    margin-top: 35px; /* Espacio adicional hacia la parte superior */
+    margin-bottom: 85px; /* Espacio hacia abajo */
 }
 
-.search-container input {
-    width: 500px;
-    padding: 12px 20px;
-    border-radius: var(--border-radius);
-    border: none;
+.search-input {
+    width: 100%;
+    height: 90%;
+    padding: 12px 20px 12px 20px; /* Espacio a la izquierda, sin interferir con el icono */
+    border-radius: 5px; /* Radio del borde como en el diseño */
+    border: 1px solid #3E7B31;
+    background-color: #D9D9D9;
     font-size: 1em;
-    transition: all 0.3s ease;
-    background-color: #f9f9f9;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); /* sombra suave alrededor del botón */
+    transition: all 0.3s ease-in-out; /* Añade una transición para los cambios de propiedades */
 }
 
-/* Estilo del campo de entrada cuando está en foco */
-.search-container input:focus {
-    outline: none;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 10px rgba(76, 175, 80, 0.5);
-    background-color: #ffffff;
+/* Contenedor del cuadro de búsqueda con icono */
+.search-input-wrapper {
+    position: relative;
+    width: 1217px;
+    height: 64px;
 }
 
-/* Botón de búsqueda en el contenedor */
-.search-container button {
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
+
+
+/* Botón de búsqueda */
+.search-containers button {
+    width: 115px; /* Ajusta el ancho del botón */
+    height: 45px; /* Ajusta la altura del botón */
+    background-color: #507F8B; /* Color del botón */
+    color: #000000;
     border: none;
-    border-radius: var(--border-radius);
-    padding: 12px 20px;
-    font-size: 1em;
+    border-radius: 20px; /* Radio del borde como en el diseño */
+    padding: 10px 24px 10px 24px; /* Ajuste de padding */
+    font-size: 15px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: var(--box-shadow);
+    font-family: 'Kaisei Decol';
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5); /* sombra suave alrededor del botón */
+  
 }
+
+
+
+.search-input:focus {
+    outline: none; /* Elimina el borde predeterminado del navegador */
+    border: 2px solid rgb(138, 200, 121); /* Cambia el color del borde al verde deseado */
+    box-shadow: 0 0 10px rgba(138, 200, 121, 0.5); /* Añade un sombreado suave si lo deseas */
+}
+
+
+
 
 /* Efecto hover del botón de búsqueda */
-.search-container button:hover {
-    background-color: #e0e0e0;
+.search-containers button:hover {
+    background-color: #3f646d; /* Color al pasar el cursor */
 }
 
-/* Efecto al hacer clic en el botón de búsqueda */
-.search-container button:active {
-    transform: scale(0.95);
+/* Efecto clic del botón de búsqueda */
+.search-containers button:active {
+    transform: scale(0.98);
 }
 
-/* Contenedor para botones de acción */
-.button-container {
-    display: flex;
-    gap: 10px;
+
+/* Icono de búsqueda a la derecha */
+.search-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px; /* Mueve el icono a la derecha del cuadro de búsqueda */
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    pointer-events: none; /* El icono no bloqueará el clic en el campo de entrada */
 }
 
-/* Estilo de botones de advertencia y peligro */
-.button-container .btn-warning, .button-container .btn-danger {
-    padding: 5px 10px;
-    font-size: 14px;
+
+
+
+
+
+/* Contenedor para las tarjetas de enfermedades */
+.enfermedades-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    font-family: 'Kaisei Decol';
+    justify-content: center; /* Centra las columnas dentro del contenedor */
+    align-items: center; /* Alinea las filas verticalmente */
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+/* Estilo individual para cada tarjeta de enfermedad */
+.enfermedad-card {
+    border: 4px solid #3E7B31; /* Borde verde oscuro */
     border-radius: var(--border-radius);
+    overflow: hidden;
     box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease;
+    background-color: var(--card-background);
+    width: 300px; /* Ancho fijo para todas las tarjetas */
+    height: 300px; /* Altura fija para todas las tarjetas */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* Ajuste de la imagen para que se ajuste al tamaño del card */
+.enfermedad-card img {
+    width: 100%;
+    height: 180px; /* Altura fija para la imagen */
+    object-fit: cover;
+    border-bottom: 2px solid #3E7B31; /* Añadir borde inferior a la imagen */
+}
+
+
+/* Ajuste del cuerpo de la tarjeta */
+.enfermedad-card .card-body {
+    text-align: left;
+    padding: 15px;
+    background-color: #8AC879; /* Fondo verde claro para el cuerpo de la tarjeta */
+    flex-grow: 1; /* Expande el cuerpo para llenar el espacio restante */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Estilo del título de la tarjeta */
+.enfermedad-card .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px; /* Espacio debajo del título */
+    height: 40px; /* Altura fija para el título para asegurar uniformidad */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* Recorta el texto si es demasiado largo */
+}
+
+
+/* Efecto hover para las tarjetas */
+.enfermedad-card:hover {
+    transform: scale(1.05);
+}
+
+
+
+
+
+/* Estilo del cuerpo de la lista de enfermedades */
+.body-enfermedad-list {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    margin: 0;
+    padding-bottom: 40px;
+    background: transparent; /* Fondo transparente para ver las hojas */
+    min-height: 100vh; /* Asegura que el contenedor llene la pantalla */
+}
+
+/* Estilo del mensaje de "No se encontraron enfermedades" */
+.no-enfermedades {
+    text-align: center; /* Alinea el texto al centro */
+    color: #587A83; /* Color verde */
+    font-family: 'Kaisei Decol', sans-serif; /* Tipografía Kaisei Decol */
+    font-size: 4em; /* Tamaño de la fuente */
+    margin-top: 200px; /* Margen superior */
+    -webkit-text-stroke: 0.5px #000000; /* Borde negro alrededor del texto */
+}
+
+
+
+
+
+
+
+
+
+.tituloenfermedad {
+    position: relative;
+    text-align: left;
+    font-family: 'kaiscoi';
+    font-size: 2.5em;
+    top: -70px;
+
+}
+
+
+/* Modal personalizado */
+.modal-custom .modal-content-custom {
+    background-color: #8AC879; /* Fondo verde claro */
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    margin: auto;
+    height: auto; /* Ajuste de altura automático */
 }
 
 /* Encabezado del modal */
-.modal-header {
-    background: var(--primary-color);
-    color: var(--secondary-color);
+.modal-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    padding: 15px 20px;
+    font-family: 'Kaisei Decol', sans-serif;
+ 
 }
 
-.modal-header .close {
-    color: var(--secondary-color);
+/* Pie del modal */
+.modal-footer-custom {
+    margin-top: 20px;
+    text-align: center;
+    padding: 15px 0;
 }
 
 /* Cuerpo del modal */
-.modal-body {
-    padding: 20px;
-}
-
-/* Estilo de los controles de formulario dentro del modal */
-.modal-body .form-control, .modal-body .form-select {
-    margin-bottom: 15px;
-}
-
-/* Espaciado superior para alertas */
-.alert {
+.modal-body-custom {
     margin-top: 20px;
+    padding: 10px;
 }
 
-/* Estilo del título de las tarjetas */
-.card-title {
-    margin-bottom: 20px;
+/* Contenedor de las secciones dentro del modal */
+.enfermedad-modal-section-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-top: 10px;
 }
 
-/* Cuerpo de las tarjetas */
-.card-body {
+/* Sección individual dentro del modal */
+.enfermedad-modal-section {
+    position: relative;
+    flex: 1;
+    background-color: transparent;
+    border-radius: 15px;
+    text-align: center;
+    font-family: 'Kaisei Decol', sans-serif;
+    top: -50px;
+    height: 350px; /* Aumentar la altura para mejor visualización */
+    box-sizing: border-box;
+    margin-bottom: 20px; /* Añadir espacio inferior para dar separación */
+}
+
+
+/* Título de cada sección */
+.enfermedad-title {
+    font-size: 1.2em;
+    color: #000000; /* Negro */
+    margin-bottom: 10px;
+}
+
+/* Caja para la información dentro del modal */
+.enfermedad-info-box {
+    background-color: #E0E0E0; /* Fondo gris claro */
+    color: #333; /* Texto oscuro */
+    border: 4px solid #3E7B31; /* Borde verde */
+    border-radius: 20px;
+    padding: 20px; /* Añadir más espacio interno para el texto */
+    height: 100%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    overflow: auto; /* Permitir scroll si el contenido se desborda */
+    text-align: justify; /* Justificar el texto para mejorar la lectura */
+    -ms-overflow-style: none;  /* Para ocultar la barra de desplazamiento en IE y Edge */
+    scrollbar-width: none; /* Para ocultar la barra de desplazamiento en Firefox */
+}
+
+
+/* Ocultar barra de desplazamiento en Chrome, Safari y Opera */
+.enfermedad-info-box::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* Estilo del botón Editar */
+.btn-edit {
+    background-color: #507F8B; /* Naranja */
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'kaisecoi';
+}
+
+.btn-edit:hover {
+    background-color: #507f8b; /* Naranja oscuro al pasar el cursor */
+}
+
+/* Estilo del botón Actualizar */
+.btn-update {
+    background-color: #4caf50; /* Verde */
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-update:hover {
+    background-color: #388e3c; /* Verde oscuro al pasar el cursor */
+}
+
+/* Contenedor de los botones del modal */
+.modal-buttons-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+
+.cards-container-animal-list,
+.enfermedades-cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Define 4 columnas por fila */
+    gap: 20px; /* Espacio entre las tarjetas */
     padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
 }
+
+
+
 

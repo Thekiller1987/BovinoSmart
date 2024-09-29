@@ -52,6 +52,8 @@
     max-width: 1200px;
 }
 
+
+
 /* Estilo para cada tarjeta de animal */
 .card-animal-list {
     background-color: var(--card-background);
@@ -486,3 +488,5 @@
 .card-animal-list.sick-animal {
     animation: blink 2s infinite;
 }
+
+

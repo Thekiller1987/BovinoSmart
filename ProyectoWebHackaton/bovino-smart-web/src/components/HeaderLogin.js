@@ -17,7 +17,7 @@ const HeaderLogin = () => {
         {/* Logo */}
         <div className="d-flex align-items-center">
           <img src={logo} alt="BoVinoSmart Logo" className="header-logo-image me-2" />
-          <h1 className="header-logo m-0">BoVinoSmart</h1>
+          <h1 className="header-logo m-0">BovinoSmart</h1>
         </div>
         {/* Botón de login */}
         <button onClick={handleLoginClick} className="header-button btn btn-success">

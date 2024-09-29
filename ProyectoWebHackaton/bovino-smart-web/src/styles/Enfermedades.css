@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Junge&family=Kaisei+Decol&display=swap');
+
+/* Contenedor principal de la enfermedad */
+.container-enfermedad {
+    background-color: #8AC879; /* Color de fondo verde */
+    border-radius: 20px;
+    padding: 40px;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    border: 5px solid #3E7B31; /* Borde alrededor del cuadro, color verde oscuro */
+    max-width: 90%; /* Limita el ancho del contenedor */
+}
+
+/* Título */
+.titulo-enfermedad {
+    font-family: 'Junge'; /* Aplica la fuente Junge */
+    font-size: 40px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 30px;
+    color: #000000; /* Color más oscuro para el título */
+}
+
+/* Estilo del formulario */
+.formulario-enfermedad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Cuatro columnas de igual tamaño */
+    gap: 20px; /* Espacio entre columnas */
+    align-items: center;
+}
+
+/* Estilo de cada campo */
+.campo-enfermedad {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.campo-enfermedad label {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.campo-enfermedad input,
+.campo-enfermedad textarea {
+    width: 100%; /* El campo ocupa el 100% del contenedor */
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #2f4f2f; /* Borde verde oscuro */
+    background-color: #f2f2f2;
+    font-size: 16px;
+    height: 150px; /* Tamaño uniforme para todos los cuadros */
+    box-sizing: border-box; /* Incluye el padding y el borde dentro del tamaño total */
+}
+
+.campo-enfermedad textarea {
+    resize: none; /* Evita que el usuario pueda redimensionar el cuadro */
+}
+
+/* Estilo para la sección de imagen */
+.upload-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
+    border-radius: 10px;
+    border: 2px solid #2f4f2f; /* Borde verde oscuro */
+    padding: 10px;
+    height: 98px;
+    width: 74px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.upload-image:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.upload-label {
+    cursor: pointer;
+}
+
+.upload-icon {
+    width: 100%;
+    height: auto;
+}
+
+/* Ocultar el input de archivo */
+.hidden-input {
+    display: none;
+}
+
+/* Estilo del botón */
+.custom-button {
+    background-color: #4CAF50; /* Color verde */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-button:hover {
+    background-color: #45a049; /* Color al pasar el cursor */
+}
+
+.center-button {
+    grid-column: 1 / -1; /* Para que el botón ocupe toda la fila */
+    text-align: center;
+    margin-top: 20px;
+}

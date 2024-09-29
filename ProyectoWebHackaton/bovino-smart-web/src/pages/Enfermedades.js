@@ -1,7 +1,8 @@
 import React, { useState } from 'react'; // Importa React y el hook useState para manejar estados.
-import { Form, Row, Col, Container, FloatingLabel, Card, Button } from 'react-bootstrap'; // Importa componentes de React Bootstrap para la interfaz.
+import { Container, Button } from 'react-bootstrap'; // Importa componentes de React Bootstrap para la interfaz.
 import Header from '../components/Header'; // Importa el componente Header personalizado.
-import '../styles/App.css'; // Importa estilos personalizados.
+import '../styles/Enfermedades.css'; // Importa estilos personalizados.
+import FlechaIcon from '../Iconos/Vector.png'; // Importa la imagen de la flecha
 
 function Enfermedades() {
     // Estados para los datos del formulario.
@@ -59,82 +60,63 @@ function Enfermedades() {
     return (
         <div>
             <Header /> {/* Renderiza el componente Header */}
-            <Container>
-                <Card className="mt-3"> {/* Componente de tarjeta de Bootstrap para el formulario */}
-                    <Card.Body>
-                        <Card.Title>Registrar Enfermedad</Card.Title> {/* Título de la tarjeta */}
-                        <Form className="mt-3" onSubmit={handleSubmit}> {/* Formulario que llama a handleSubmit al enviarse */}
-                            <Row className="g-3"> {/* Grupo de filas y columnas para organizar el formulario */}
-                                {/* Campo para el nombre de la enfermedad */}
-                                <Col sm="12" md="6">
-                                    <FloatingLabel controlId="nombre" label="Nombre">
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Ingrese el nombre de la enfermedad"
-                                            value={nombre}
-                                            onChange={(e) => setNombre(e.target.value)} // Actualiza el estado con el valor ingresado.
-                                            required
-                                        />
-                                    </FloatingLabel>
-                                </Col>
-                                {/* Campo para la descripción de la enfermedad */}
-                                <Col sm="12" md="6">
-                                    <FloatingLabel controlId="descripcion" label="Descripción">
-                                        <Form.Control
-                                            as="textarea" // Componente de área de texto para descripciones largas.
-                                            placeholder="Ingrese la descripción de la enfermedad"
-                                            value={descripcion}
-                                            onChange={(e) => setDescripcion(e.target.value)} // Actualiza el estado con el valor ingresado.
-                                        />
-                                    </FloatingLabel>
-                                </Col>
-                                {/* Campo para los síntomas de la enfermedad */}
-                                <Col sm="12" md="6">
-                                    <FloatingLabel controlId="sintomas" label="Síntomas">
-                                        <Form.Control
-                                            as="textarea"
-                                            placeholder="Ingrese los síntomas"
-                                            value={sintomas}
-                                            onChange={(e) => setSintomas(e.target.value)}
-                                        />
-                                    </FloatingLabel>
-                                </Col>
-                                {/* Campo para el modo de transmisión */}
-                                <Col sm="12" md="6">
-                                    <FloatingLabel controlId="modotrasmision" label="Modo de Transmisión">
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Ingrese el modo de transmisión"
-                                            value={modotrasmision}
-                                            onChange={(e) => setModoTransmision(e.target.value)}
-                                        />
-                                    </FloatingLabel>
-                                </Col>
-                                {/* Campo para la imagen de la enfermedad */}
-                                <Col sm="12" md="6">
-                                    <Form.Group controlId="imagen" className="">
-                                        <Form.Label>Imagen de la Enfermedad</Form.Label>
-                                        <Form.Control
-                                            type="file"
-                                            accept=".jpg, .png, .jpeg"
-                                            size="lg"
-                                            onChange={handleImagenChange}
-                                        />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            {/* Botón de envío del formulario */}
-                            <div className="center-button">
-                                <Button variant="primary" type="submit" className="mt-3 custom-button" size="lg">
-                                    Registrar Enfermedad
-                                </Button>
-                            </div>
-                        </Form>
-                    </Card.Body>
-                </Card>
+            <Container className="container-enfermedad">
+                <h2 className="titulo-enfermedad">Nueva Enfermedad:</h2>
+                <form className="formulario-enfermedad" onSubmit={handleSubmit}>
+                    <div className="upload-image">
+                        <input
+                            type="file"
+                            id="file-input"
+                            accept=".jpg, .png, .jpeg"
+                            onChange={handleImagenChange}
+                            className="hidden-input"
+                        />
+                        <label htmlFor="file-input" className="upload-label">
+                            <img src={FlechaIcon} alt="Subir" className="upload-icon" />
+                        </label>
+                    </div>
+                    <div className="campo-enfermedad">
+                        <label>Nombre:</label>
+                        <input
+                            type="text"
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="campo-enfermedad">
+                        <label>Descripción:</label>
+                        <textarea
+                            value={descripcion}
+                            onChange={(e) => setDescripcion(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="campo-enfermedad">
+                        <label>Síntomas:</label>
+                        <textarea
+                            value={sintomas}
+                            onChange={(e) => setSintomas(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="campo-enfermedad">
+                        <label>Modo de Transmisión:</label>
+                        <textarea
+                            value={modotrasmision}
+                            onChange={(e) => setModoTransmision(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="center-button">
+                        <Button variant="primary" type="submit" className="custom-button" size="lg">
+                            Registrar Enfermedad
+                        </Button>
+                    </div>
+                </form>
             </Container>
         </div>
     );
 }
 
-export default Enfermedades; // Exporta el componente para que pueda ser utilizado en otros archivos.
+export default Enfermedades;

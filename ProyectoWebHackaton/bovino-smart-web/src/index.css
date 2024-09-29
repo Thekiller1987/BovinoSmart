@@ -5,6 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image: url('./diseño/Hojafon2.png'); /* Imagen de fondo */
+  background-repeat: repeat; /* Repite la imagen en todo el fondo */
+  background-size: auto; /* Ajusta el tamaño del patrón de fondo */
 }
 
 code {

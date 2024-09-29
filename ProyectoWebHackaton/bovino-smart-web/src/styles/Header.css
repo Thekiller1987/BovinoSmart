@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Junge&display=swap'); /* Fuente Junge */
+
+/* Estilo del Navbar principal */
+.navbar-color {
+    background-color: #587A83; /* Mismo color de fondo que el HeaderLogin */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: 80px;
+    font-family: 'Junge', sans-serif; /* Mismas tipografías */
+}
+
+/* Estilo para el nombre del proyecto en el Navbar */
+.navbar-brand {
+    color: #ffffff !important;
+    font-size: 36px; /* Ajusta el tamaño del texto */
+    font-weight: 400;
+    margin-left: 15px; /* Ajusta según sea necesario */
+    letter-spacing: 0.1em; /* Aumenta el espaciado entre las letras */
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+    gap: 10px; /* Espacio entre el logo y el texto */
+}
+
+/* Estilo del logo en el Navbar */
+.navbar-logo {
+    height: 110px; /* Ajusta el tamaño del logo para que esté alineado con el texto */
+    margin-right: -40px; /* Espacio entre el logo y el texto */
+    vertical-align: middle;
+    margin-top: 15px;
+    margin-left: -70px;
+}
+
+.navbar-toggler {
+    border-color: #ffffff;
+}
+
+.navbar-toggler-icon {
+    background-color: #ffffff; /* Color del icono del menú */
+}
+
+/* Estilo para los enlaces del Navbar */
+.link-unstyled {
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 18px;
+    margin-right: 20px; /* Ajusta el margen entre enlaces */
+    transition: color 0.3s;
+}
+
+.link-unstyled:hover {
+    color: #8AC879 !important; /* Color al pasar el cursor */
+}
+
+.navbar-collapse .btn {
+    font-family: 'Junge', sans-serif; /* Fuente */
+}
+
+/* Estilo para los elementos del menú desplegable */
+.navbar .dropdown-menu .link-unstyled {
+    color: #000000 !important; /* Cambia el color a negro para los enlaces dentro de NavDropdown */
+}
+
+.navbar .dropdown-menu .link-unstyled:hover {
+    color: #3E7b31 !important; /* Cambia el color al pasar el cursor en los elementos del dropdown */
+}
+
+/* Estilo para el botón de cierre de sesión en el Navbar */
+.btn-outline-light {
+    color: #fff !important;
+    border-color: #71AF61;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+.btn-outline-light:hover {
+    background-color: #3E7b31;
+    border-color: #3E7b31;
+}
+
+/* Menú lateral Offcanvas */
+.offcanvas {
+    background-color: #587A83; /* Mismo color que el Navbar */
+    color: #ffffff;
+    font-family: 'Junge', sans-serif; /* Fuente */
+}
+
+.offcanvas .offcanvas-title {
+    font-size: 28px;
+}
+
+.offcanvas-header .btn-close {
+    filter: brightness(0) invert(1); /* Hace el botón de cerrar blanco */
+}
+
+.offcanvas-body a {
+    color: #ffffff !important;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.offcanvas-body a:hover {
+    color: #3E7b31 !important;
+}
+
+/* Estilo para los botones dentro del menú Offcanvas */
+.offcanvas-body .btn {
+    color: #587A83;
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.offcanvas-body .btn:hover {
+    background-color: #3E7b31;
+    color: #ffffff;
+}
+
+/* Estilo del botón circular de cierre de sesión */
+.btn-circle {
+    background-color: #8AC879; /* Verde */
+    border: 4px solid #3E7B31;
+    border-radius: 50%; /* Hace el botón circular */
+    width: 60px; /* Tamaño fijo del botón */
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    overflow: hidden; /* Asegura que nada salga del círculo */
+}
+
+/* Cambia el color cuando se hace hover */
+.btn-circle:hover {
+    background-color: #579549; /* Verde más oscuro */
+    transform: scale(1.1); /* Efecto de aumentar tamaño */
+}
+
+/* Estilo del ícono de cerrar sesión */
+.icono-cerrar-sesion {
+    width: 100%; /* Ajusta el ancho al 100% del contenedor del botón */
+    height: auto; /* Mantén la proporción del ícono */
+    transform: scale(3); /* Ajusta este valor para aumentar el tamaño del ícono */
+    object-fit: contain; /* Asegura que el ícono no se deforme */
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .navbar-color {
+        height: 60px; /* Reducir la altura del Navbar en pantallas pequeñas */
+    }
+
+    .navbar-logo {
+        height: 80px; /* Reducir el tamaño del logo */
+        margin-top: 0; /* Ajustar el margen superior */
+    }
+
+    .navbar-brand {
+        font-size: 24px; /* Reducir el tamaño del texto del nombre del proyecto */
+        gap: 5px; /* Ajustar el espacio entre el logo y el nombre del proyecto */
+    }
+
+    .link-unstyled {
+        font-size: 14px; /* Reducir el tamaño de los enlaces en el Navbar */
+        margin-right: 10px;
+    }
+
+    .btn-circle {
+        width: 40px; /* Reducir el tamaño del botón circular */
+        height: 40px;
+    }
+
+    .icono-cerrar-sesion {
+        transform: scale(2); /* Ajustar el tamaño del ícono */
+    }
+
+    .offcanvas {
+        width: 70%; /* Ajustar el ancho del menú lateral */
+    }
+
+    .offcanvas-title {
+        font-size: 24px; /* Ajustar el tamaño del título del Offcanvas */
+    }
+
+    .offcanvas-body a {
+        font-size: 16px; /* Ajustar el tamaño del texto de los enlaces */
+    }
+
+    .offcanvas-body .btn {
+        padding: 8px 12px; /* Ajustar el padding de los botones */
+    }
+}

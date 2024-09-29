@@ -14,17 +14,17 @@ app.use(express.json({ limit: '50mb' })); // Permite a la aplicación analizar s
 
 // Configuración de la conexión a la primera base de datos (BoVinoSmartBD)
 const db = mysql.createConnection({
-<<<<<<< HEAD
+
   host: 'localhost',
   user: 'root',
-  password: 'Mysql2023',
+  password: 'Yamilg620',
   database: 'BoVinoSmartBD',
-=======
+
   host: process.env.DB_HOST, // Host de la base de datos desde variables de entorno
   user: process.env.DB_USER, // Usuario de la base de datos desde variables de entorno
   password: process.env.DB_PASS, // Contraseña del usuario desde variables de entorno
   database: process.env.DB_NAME, // Nombre de la base de datos desde variables de entorno
->>>>>>> 30084ba98c12d7936e29b04b1c7ff8f72faaae76
+
 });
 
 // Conexión a la primera base de datos
