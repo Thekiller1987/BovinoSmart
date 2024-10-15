@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".menu">
+    <!-- Título del menú -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu"
+        android:textSize="30sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp" />
+
+    <!-- Botón de usuario -->
+    <ImageButton
+        android:id="@+id/userButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@drawable/circle_background"
+        android:src="@drawable/icono1"
+        android:scaleType="centerInside"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="40dp" />
+
+
+    <!-- Botón 1: Gestión del animal -->
+    <Button
+        android:id="@+id/btnGestionAnimales"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:text="Gestión del animal"
+        android:textColor="@android:color/black"
+        android:backgroundTint="#71AF61"
+        android:drawableTop="@drawable/iconov1"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnGestionEnfermedades"
+        android:layout_margin="10dp" />
+
+    <!-- Botón 2: Gestión de enfermedades -->
+    <Button
+        android:id="@+id/btnGestionEnfermedades"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:text="Gestión de enfermedades"
+        android:textColor="@android:color/black"
+        android:backgroundTint="#8AC879"
+        android:drawableTop="@drawable/iconoe1"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toEndOf="@id/btnGestionAnimales"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp" />
+
+    <!-- Botón 3: Gestión de productos -->
+    <Button
+        android:id="@+id/btnGestionProductos"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:text="Gestión de productos"
+        android:textColor="@android:color/black"
+        android:backgroundTint="#8AC879"
+        android:drawableTop="@drawable/iconop1"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/btnGestionAnimales"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnEscanerQR"
+        android:layout_margin="10dp" />
+
+    <!-- Botón 4: Escáner QR -->
+    <Button
+        android:id="@+id/btnEscanerQR"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:text="Escáner QR"
+        android:textColor="@android:color/black"
+        android:backgroundTint="#71AF61"
+        android:drawableTop="@drawable/iconoqr1"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/btnGestionEnfermedades"
+        app:layout_constraintStart_toEndOf="@id/btnGestionProductos"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

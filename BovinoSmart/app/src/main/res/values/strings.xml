@@ -1,0 +1,26 @@
+<resources>
+    <!-- Nombre de la aplicación -->
+    <string name="app_name">BovinoSmart</string>
+
+    <!-- Títulos y botones -->
+    <string name="title_activity_menu">Menú</string>
+    <string name="dummy_button">Botón de Prueba</string>
+    <string name="dummy_content">CONTENIDO\nPRUEBA</string>
+
+    <!-- Valores adicionales para el Spinner de sexo de los animales -->
+    <string-array name="sexos">
+        <item>Vaca</item>
+        <item>Toro</item>
+    </string-array>
+
+    <!-- Otros valores comunes -->
+    <string name="nombre_animal">Nombre del animal</string>
+    <string name="codigo_id">Código ID</string>
+    <string name="sexo">Sexo</string>
+    <string name="raza">Raza</string>
+    <string name="peso_actual">Peso actual</string>
+    <string name="fecha_nacimiento">Fecha de nacimiento</string>
+    <string name="seleccionar_imagen">Seleccionar Imagen</string>
+    <string name="guardar">Guardar</string>
+    <string name="buscar_animales">Buscar animales</string>
+</resources>

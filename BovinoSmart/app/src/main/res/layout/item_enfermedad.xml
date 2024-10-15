@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/green_border"
+    android:padding="10dp"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:id="@+id/nombreEnfermedad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre de la Enfermedad"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-medium"
+        android:paddingBottom="10dp" />
+
+    <ImageView
+        android:id="@+id/imagenEnfermedad"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop" />
+</LinearLayout>

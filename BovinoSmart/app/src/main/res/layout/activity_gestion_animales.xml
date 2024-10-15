@@ -1,0 +1,254 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f9f9f9"
+    tools:context=".animales.GestionAnimalesActivity">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Gestión de Animales"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Campo de búsqueda para filtrar animales -->
+    <EditText
+        android:id="@+id/searchInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Buscar animales"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintWidth_percent="0.9" />
+
+    <!-- Botones para separar vacas y toros -->
+    <LinearLayout
+        android:id="@+id/animalButtonsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchInput">
+
+        <Button
+            android:id="@+id/vacasButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vacas" />
+
+        <Button
+            android:id="@+id/torosButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Toros" />
+    </LinearLayout>
+
+    <!-- ScrollView para el formulario -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/animalButtonsContainer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Nombre del animal -->
+            <EditText
+                android:id="@+id/nombreAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre del animal"
+                android:padding="10dp" />
+
+            <!-- Código ID del animal -->
+            <EditText
+                android:id="@+id/codigoAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Código ID"
+                android:padding="10dp" />
+
+            <!-- Raza del animal -->
+            <EditText
+                android:id="@+id/razaAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Raza"
+                android:padding="10dp" />
+
+            <!-- Peso nacimiento del animal -->
+            <EditText
+                android:id="@+id/pesoNacimientoAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Peso nacimiento"
+                android:inputType="numberDecimal"
+                android:padding="10dp" />
+
+            <!-- Peso destete del animal -->
+            <EditText
+                android:id="@+id/pesoDesteteAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Peso destete"
+                android:inputType="numberDecimal"
+                android:padding="10dp" />
+
+            <!-- Peso actual del animal -->
+            <EditText
+                android:id="@+id/pesoActualAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Peso actual"
+                android:inputType="numberDecimal"
+                android:padding="10dp" />
+
+            <!-- Fecha de nacimiento del animal -->
+            <EditText
+                android:id="@+id/fechaNacimientoAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha de nacimiento"
+                android:padding="10dp" />
+
+            <!-- Selección de sexo con RadioButton en Horizontal -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Sexo"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/sexoRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioVaca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vaca" />
+
+                <RadioButton
+                    android:id="@+id/radioToro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="Toro" />
+            </RadioGroup>
+
+            <!-- Estado del animal (vivo o muerto) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Estado"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/estadoSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Inseminación (sí o no) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Inseminación"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/inseminacionSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Observaciones -->
+            <EditText
+                android:id="@+id/observacionesAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:hint="Observaciones"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:padding="10dp" />
+
+            <!-- Botón para seleccionar la imagen -->
+            <Button
+                android:id="@+id/selectImageButtonAnimal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Seleccionar Imagen" />
+
+            <!-- Vista de la imagen del animal -->
+            <ImageView
+                android:id="@+id/imageViewAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <!-- Botón para guardar animal -->
+            <Button
+                android:id="@+id/guardarAnimalButton1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Guardar" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- RecyclerView para listar animales -->
+
+    <!-- Botón para agregar animal -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewAnimales1"
+        android:layout_width="398dp"
+        android:layout_height="563dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/animalButtonsContainer"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/addButtonAnimal1"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="20dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Agregar Animal"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/nombreProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del producto"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/tipoProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tipo de producto"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/dosisProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Dosis recomendada"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/frecuenciaProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Frecuencia de aplicación"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/motivoProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Motivo"
+        android:padding="10dp" />
+
+    <CheckBox
+        android:id="@+id/esTratamientoCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Es tratamiento" />
+
+    <ImageView
+        android:id="@+id/imageViewProducto"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="10dp" />
+
+</LinearLayout>
