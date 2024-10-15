@@ -173,17 +173,21 @@ function AnimalList() {
     };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target; // Obtener el nombre y el valor del campo de entrada
-        const [field, subfield] = name.split('.'); // Dividir el nombre de entrada en partes
+        const { name, value } = e.target;
+        const [field, index, subfield] = name.split('.'); // Dividimos el nombre del campo
     
-        if (field === 'estadoReproductivo') {
-            setEditAnimal((prevAnimal) => ({
-                ...prevAnimal,
-                estadoReproductivo: {
-                    ...prevAnimal.estadoReproductivo,
-                    [subfield]: value,
-                },
-            }));
+        if (index !== undefined) {
+            setEditAnimal((prevAnimal) => {
+                const newArray = [...prevAnimal[field]]; // Creamos una copia del array de enfermedades o productos
+                newArray[index] = {
+                    ...newArray[index],
+                    [subfield]: value, // Actualizamos el subcampo (por ejemplo, id o fecha)
+                };
+                return {
+                    ...prevAnimal,
+                    [field]: newArray, // Actualizamos el array completo en el estado
+                };
+            });
         } else {
             setEditAnimal((prevAnimal) => ({
                 ...prevAnimal,

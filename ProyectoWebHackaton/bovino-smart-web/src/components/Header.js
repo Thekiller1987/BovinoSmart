@@ -92,6 +92,13 @@ function Header() {
                                     <Nav.Link as={Link} to="/GestionUsuarios" className="link-unstyled">
                                         Gestionar usuarios
                                     </Nav.Link>
+
+
+
+
+                                    <Nav.Link as={Link} to="/Graficos" className="link-unstyled">
+                                        Graficos
+                                    </Nav.Link>
                                 </>
                             )}
 
@@ -164,6 +171,12 @@ function Header() {
                                 <Nav.Link as={Link} to="/GestionUsuarios" className="link-unstyled">
                                     Gestionar usuarios
                                 </Nav.Link>
+
+
+                                
+                                <Nav.Link as={Link} to="/Graficos" className="link-unstyled">
+                                        Graficos
+                                    </Nav.Link>
                             </>
                         )}
                         <Button variant="outline-dark" onClick={handleLogout}>

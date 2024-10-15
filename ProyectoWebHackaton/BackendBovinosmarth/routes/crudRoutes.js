@@ -1190,6 +1190,19 @@ module.exports = (db) => {
 
 
 
+//Graficos
+
+router.get('/produccion_leche', (req, res) => {
+    const query = 'SELECT fecha, cantidad FROM Produccion_Leche';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al obtener la producción de leche:', err);
+            res.status(500).send({ error: 'Error al obtener la producción de leche' });
+        } else {
+            res.json(results);  // Devuelve todos los resultados de producción
+        }
+    });
+});
 
 
     
