@@ -13,6 +13,8 @@
   background-color: #f4f4f4; /* Color de fondo del encabezado */
 }
 
+
+
 /* Resetea el estilo para todos los elementos en la página de inicio de sesión */
 .login-page * {
   box-sizing: border-box;
@@ -20,44 +22,50 @@
   padding: 0;
 }
 
-/* Estilos principales de la página de inicio de sesión */
+/* Estilos para la página de login */
 .login-page {
   font-family: 'Kaisei Decol', sans-serif;
   background-color: #ffffff;
+  position: fixed; /* Fija el contenedor de login en la pantalla */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Asegura que ocupe todo el ancho de la pantalla */
+  height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Ocupa toda la altura de la ventana */
-  overflow: hidden;
-  background-image: url('../diseño/Hojafon2.png'); /* Imagen de fondo */
-  background-repeat: repeat; /* Repite la imagen en todo el fondo */
-  background-size: auto; /* Ajusta el tamaño del patrón de fondo */
+  overflow: hidden; /* Evita cualquier desbordamiento interno */
+  z-index: 999; /* Asegura que esté encima de otros elementos */
 }
 
-/* Estilos para las hojas decorativas en la página de inicio de sesión */
-.hoja {
+
+/* Ajustar la imagen decorativa para que no se desborde */
+.login-page .decorative-image-1 {
   position: absolute;
-  z-index: 105; /* Coloca las hojas por encima del contenedor de login */
-  opacity: 0.8; /* Ajusta la opacidad para un efecto suave */
+  top: 12vh; /* Posición ajustable relativa a la altura de la pantalla */
+  right: -7vw; /* Ajusta el valor de right para mover más a la derecha sin desbordarse */
+  z-index: 1;
+  background-image: url('../diseño/manchas1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 15vw; /* Ajusta el tamaño de manera relativa al ancho de la pantalla */
+  height: 15vw; /* Mantiene la proporción del tamaño */
 }
 
-.hoja-1 {
-  top: 130px; /* Ajusta la posición superior */
-  left: 25%; /* Ajusta la posición izquierda */
-  width: 40px; /* Tamaño de la hoja */
+
+/* Añadir imágenes decorativas */
+.login-page .decorative-image-2 {
+  position: absolute;
+  top: 78vh; /* Ajusta la posición superior */
+  right: 80vw; /* Ajusta la posición derecha */
+  z-index: 1; /* Asegura que la imagen esté detrás de otros elementos */
+  background-image: url('../diseño/Manchas2.png');
+  background-size: contain; /* Ajusta la imagen para que no se deforme */
+  background-repeat: no-repeat;
+  width: 20vw; /* Ajusta el tamaño de manera relativa al ancho de la pantalla */
+  height: 20vw;
 }
 
-.hoja-2 {
-  top: 20%; /* Ajusta la posición superior */
-  right: 400px; /* Ajusta la posición derecha */
-  width: 40px; /* Tamaño de la hoja */
-}
-
-.hoja-3 {
-  bottom: 150px; /* Ajusta la posición inferior */
-  left: 30%; /* Ajusta la posición izquierda */
-  width: 35px; /* Tamaño de la hoja */
-}
 
 /* Estilos para los títulos y textos de la página de inicio de sesión */
 .login-page h1, 

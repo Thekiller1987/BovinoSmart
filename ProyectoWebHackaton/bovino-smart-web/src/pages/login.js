@@ -107,9 +107,10 @@ const Login = () => {
     <div>
       <HeaderLogin />
       <div className="login-page">
-        <img src={hoja1} alt="Hoja decorativa 1" className="hoja hoja-1" />
-        <img src={hoja2} alt="Hoja decorativa 2" className="hoja hoja-2" />
-        <img src={hoja3} alt="Hoja decorativa 3" className="hoja hoja-3" />
+      
+      <div className="decorative-image-1"></div> {/* Primera imagen decorativa */}
+      <div className="decorative-image-2"></div> {/* Segunda imagen decorativa */}
+
 
         <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`} id="container">
           {/* Formulario de registro */}

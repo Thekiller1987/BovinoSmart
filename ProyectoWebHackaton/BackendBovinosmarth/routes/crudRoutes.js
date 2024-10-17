@@ -9,9 +9,6 @@ const { client } = require('../paypal'); // Importa la configuración de PayPal
 
 
 module.exports = (db) => {
-
-
-
     // Middleware de autenticación
     const authenticateToken = (req, res, next) => {
         const authHeader = req.headers['authorization'];
@@ -25,8 +22,6 @@ module.exports = (db) => {
             next();
         });
     };
-
-
 
     router.post('/crear-pedido', authenticateToken, async (req, res) => {
         const { idLicencia } = req.body; // ID de la licencia seleccionada
@@ -74,12 +69,6 @@ module.exports = (db) => {
         });
     });
 
-
-
-
-
-
-
     router.post('/capturar-pago', authenticateToken, async (req, res) => {
         const { orderID } = req.body; // El ID del pedido de PayPal
         const { id } = req.user; // ID del usuario autenticado
@@ -112,15 +101,6 @@ module.exports = (db) => {
         }
     });
 
-
-
-
-
-
-
-
-
-
     // Ruta para obtener todas las licencias
     router.get('/licencias', (req, res) => {
         const sql = 'SELECT * FROM Licencias';
@@ -132,8 +112,6 @@ module.exports = (db) => {
             res.status(200).json(results);
         });
     });
-
-
 
     router.post('/update-licencia', authenticateToken, (req, res) => {
         const { tipoLicencia } = req.body;
@@ -164,12 +142,6 @@ module.exports = (db) => {
         });
     });
 
-
-
-
-
-
-
     // Asegurar rutas con el middleware
     router.get('/ruta-protegida', authenticateToken, (req, res) => {
         res.json({ message: 'Acceso permitido porque estás autenticado' });
@@ -187,8 +159,6 @@ module.exports = (db) => {
         });
     });
 
-
-
     router.get('/productos', (req, res) => {
         const sql = 'SELECT * FROM Productos';
 
@@ -201,8 +171,6 @@ module.exports = (db) => {
         });
     });
 
-
-
     router.get('/Produccion_Leche', (req, res) => {
         const sql = 'SELECT * FROM Produccion_Leche';
 
@@ -214,11 +182,6 @@ module.exports = (db) => {
             res.status(200).json(results);
         });
     });
-
-
-
-
-
 
     // Ruta para registrar un nuevo animal
     router.post('/createAnimal', (req, res) => {
@@ -416,7 +379,7 @@ module.exports = (db) => {
                 Animales A
             LEFT JOIN Estado_Reproductivo ER ON A.idAnimal = ER.idAnimal
         `;
-    
+
         db.query(sql, (err, result) => {
             if (err) {
                 console.error('Error al recuperar registros de Animales:', err);
@@ -426,7 +389,7 @@ module.exports = (db) => {
             }
         });
     });
-    
+
 
     router.put('/updateAnimal/:id', async (req, res) => {
         const id = req.params.id;
@@ -558,7 +521,7 @@ module.exports = (db) => {
             console.error('El valor de estadoReproductivo no es un objeto válido:', estadoReproductivo);
             return;
         }
-    
+
         // Extraer los valores del objeto estadoReproductivo
         const {
             ciclo_celo,
@@ -570,10 +533,10 @@ module.exports = (db) => {
             uso_programa_inseminacion,
             resultado_prueba_reproductiva
         } = estadoReproductivo;
-    
+
         // Convertir las fechas al formato adecuado (YYYY-MM-DD)
         const formattedFechaUltimoCelo = fecha_ultimo_celo ? new Date(fecha_ultimo_celo).toISOString().split('T')[0] : null;
-    
+
         const sqlEstadoReproductivo = `
             UPDATE Estado_Reproductivo SET 
             ciclo_celo = ?,
@@ -586,7 +549,7 @@ module.exports = (db) => {
             resultado_prueba_reproductiva = ?
             WHERE idAnimal = ?
         `;
-    
+
         const valuesEstadoReproductivo = [
             ciclo_celo || null,
             formattedFechaUltimoCelo,
@@ -598,7 +561,7 @@ module.exports = (db) => {
             resultado_prueba_reproductiva || null,
             idAnimal
         ];
-    
+
         try {
             await db.query(sqlEstadoReproductivo, valuesEstadoReproductivo);
             console.log('Estado reproductivo actualizado correctamente.');
@@ -608,12 +571,9 @@ module.exports = (db) => {
         }
     }
 
-
-
-
     router.delete('/deleteAnimal/:id', async (req, res) => {
         const id = req.params.id;
-    
+
         // Lista de consultas SQL para eliminar los registros relacionados
         const queries = [
             { sql: 'DELETE FROM Estado_Reproductivo WHERE idAnimal = ?', params: [id] },
@@ -624,19 +584,19 @@ module.exports = (db) => {
             { sql: 'DELETE FROM Inseminaciones WHERE idAnimal = ?', params: [id] },
             { sql: 'DELETE FROM Animales WHERE idAnimal = ?', params: [id] }
         ];
-    
+
         try {
             // Iniciar una transacción
             await startTransaction();
-    
+
             // Ejecutar todas las consultas de eliminación de forma secuencial
             for (const query of queries) {
                 await executeQuery(query.sql, query.params);
             }
-    
+
             // Si todas las consultas se ejecutan correctamente, confirmar la transacción
             await commitTransaction();
-    
+
             res.status(200).json({ message: 'Registro de animal eliminado con éxito' });
         } catch (err) {
             console.error('Error al eliminar registros:', err);
@@ -645,7 +605,7 @@ module.exports = (db) => {
             res.status(500).json({ error: 'Error al eliminar registros' });
         }
     });
-    
+
     // Función para ejecutar consultas SQL
     const executeQuery = (sql, params) => {
         return new Promise((resolve, reject) => {
@@ -658,7 +618,7 @@ module.exports = (db) => {
             });
         });
     };
-    
+
     // Funciones para manejar transacciones
     const startTransaction = () => {
         return new Promise((resolve, reject) => {
@@ -671,7 +631,7 @@ module.exports = (db) => {
             });
         });
     };
-    
+
     const commitTransaction = () => {
         return new Promise((resolve, reject) => {
             db.commit((err) => {
@@ -683,7 +643,7 @@ module.exports = (db) => {
             });
         });
     };
-    
+
     const rollbackTransaction = () => {
         return new Promise((resolve, reject) => {
             db.rollback(() => {
@@ -691,8 +651,6 @@ module.exports = (db) => {
             });
         });
     };
-    
-
 
     //Apartado de enfermedades
 
@@ -784,8 +742,6 @@ module.exports = (db) => {
 
     //Productos
 
-
-
     // Crear un nuevo producto
     router.post('/productos', (req, res) => {
         const { nombre, tipo, dosis_recomendada, frecuencia_aplicacion, notas, es_tratamiento, motivo, imagen } = req.body; // Añadido 'imagen'
@@ -810,8 +766,6 @@ module.exports = (db) => {
             res.status(201).json({ message: 'Producto creado con éxito', id: result.insertId });
         });
     });
-
-
 
     // Leer todos los productos
     router.get('/productos', (req, res) => {
@@ -871,8 +825,6 @@ module.exports = (db) => {
         });
     });
 
-
-
     // Borrar un producto por ID
     router.delete('/productos/:id', (req, res) => {
         const id = req.params.id;
@@ -888,10 +840,6 @@ module.exports = (db) => {
             res.status(200).json({ message: 'Producto borrado con éxito' });
         });
     });
-
-
-
-
 
     // Ruta para registrar un nuevo usuario
     router.post('/register', (req, res) => {
@@ -919,8 +867,6 @@ module.exports = (db) => {
             res.json({ message: 'Usuario registrado correctamente' });
         });
     });
-
-
 
     router.post('/login', (req, res) => {
         const { nombre_usuario, contrasena } = req.body;
@@ -952,11 +898,6 @@ module.exports = (db) => {
         });
     });
 
-
-
-
-
-
     const verificarPermisos = (funcionalidad) => {
         return (req, res, next) => {
             const { idLicencia } = req.user;  // Asume que la información del usuario se almacena en req.user
@@ -986,9 +927,6 @@ module.exports = (db) => {
     router.get('/gestion-finca', verificarPermisos('gestion_finca'), (req, res) => {
         res.json({ message: 'Acceso a la gestión de la finca permitido' });
     });
-
-
-
 
     // Ruta para obtener todos los usuarios
     router.get('/usuarios', authenticateToken, (req, res) => {
@@ -1034,9 +972,6 @@ module.exports = (db) => {
         });
     });
 
-
-
-
     // Ruta para actualizar la contraseña de un usuario
     router.put('/usuarios/:id/password', authenticateToken, (req, res) => {
         const id = req.params.id;
@@ -1060,9 +995,6 @@ module.exports = (db) => {
     });
 
     //---------------------------------------------------------------------------------------------------------------------
-
-
-
 
     router.post('/estado-reproductivo', authenticateToken, (req, res) => {
         const {
@@ -1185,27 +1117,32 @@ module.exports = (db) => {
         });
     });
 
+    //Graficos
 
-
-
-
-
-//Graficos
-
-router.get('/produccion_leche', (req, res) => {
-    const query = 'SELECT fecha, cantidad FROM Produccion_Leche';
-    db.query(query, (err, results) => {
-        if (err) {
-            console.error('Error al obtener la producción de leche:', err);
-            res.status(500).send({ error: 'Error al obtener la producción de leche' });
-        } else {
-            res.json(results);  // Devuelve todos los resultados de producción
-        }
+    router.get('/produccion_leche', (req, res) => {
+        const query = 'SELECT fecha, cantidad FROM Produccion_Leche';
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error al obtener la producción de leche:', err);
+                res.status(500).send({ error: 'Error al obtener la producción de leche' });
+            } else {
+                res.json(results);  // Devuelve todos los resultados de producción
+            }
+        });
     });
-});
 
-
-    
+    // Ruta para obtener los datos del peso de los animales
+    router.get('/peso_animales', (req, res) => {
+        const query = 'SELECT idAnimal, nombre, peso_actual FROM Animales';
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error al obtener los datos del peso de los animales:', err);
+                res.status(500).send({ error: 'Error al obtener los datos del peso de los animales' });
+            } else {
+                res.json(results);
+            }
+        });
+    });
 
     return router;
 };

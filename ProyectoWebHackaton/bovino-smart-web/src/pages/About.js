@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component'; // Importa el componente para lazy loading.
 import 'react-lazy-load-image-component/src/effects/blur.css'; // Importa el estilo para el efecto blur.
 import HeaderLogin from '../components/HeaderLogin'; // Importa el componente HeaderLogin.
-import './About.css'; // Importa los estilos específicos de la página About.
+import '../styles/About.css'; // Importa los estilos específicos de la página About.
 import Typed from 'typed.js'; // Importa la biblioteca Typed.js para la animación de texto.
 
 const About = () => {
