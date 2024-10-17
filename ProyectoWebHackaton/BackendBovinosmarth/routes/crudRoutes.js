@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 
-const { client } = require('../paypal'); // Importa la configuración de PayPal
+
 
 
 
@@ -23,83 +23,7 @@ module.exports = (db) => {
         });
     };
 
-    router.post('/crear-pedido', authenticateToken, async (req, res) => {
-        const { idLicencia } = req.body; // ID de la licencia seleccionada
-        const { id } = req.user; // ID del usuario autenticado
-
-        // Consulta para obtener los detalles de la licencia seleccionada
-        const query = 'SELECT * FROM Licencias WHERE idLicencia = ?';
-        db.query(query, [idLicencia], async (err, results) => {
-            if (err) {
-                console.error('Error al obtener detalles de la licencia:', err);
-                return res.status(500).json({ error: 'Error al obtener detalles de la licencia' });
-            }
-
-            if (results.length === 0) {
-                return res.status(404).json({ error: 'Licencia no encontrada' });
-            }
-
-            const licencia = results[0];
-
-            // Crear el pedido con PayPal
-            const request = new checkoutNodeJssdk.orders.OrdersCreateRequest();
-            request.prefer("return=representation");
-            request.requestBody({
-                intent: 'CAPTURE',
-                purchase_units: [{
-                    amount: {
-                        currency_code: 'USD',
-                        value: licencia.costo.toString() // Costo de la licencia
-                    },
-                    description: licencia.descripcion
-                }],
-                application_context: {
-                    return_url: `${process.env.FRONTEND_URL}/success`,
-                    cancel_url: `${process.env.FRONTEND_URL}/cancel`
-                }
-            });
-
-            try {
-                const order = await client().execute(request);
-                res.json({ id: order.result.id });
-            } catch (error) {
-                console.error('Error al crear el pedido en PayPal:', error);
-                res.status(500).json({ error: 'Error al crear el pedido' });
-            }
-        });
-    });
-
-    router.post('/capturar-pago', authenticateToken, async (req, res) => {
-        const { orderID } = req.body; // El ID del pedido de PayPal
-        const { id } = req.user; // ID del usuario autenticado
-
-        const request = new checkoutNodeJssdk.orders.OrdersCaptureRequest(orderID);
-        request.requestBody({});
-
-        try {
-            const capture = await client().execute(request);
-
-            if (capture.result.status === 'COMPLETED') {
-                const idLicencia = capture.result.purchase_units[0].description; // Obtener el ID de licencia desde la descripción del pedido
-
-                // Actualizar la licencia del usuario en la base de datos
-                const query = 'UPDATE Usuarios SET idLicencia = ? WHERE idUsuario = ?';
-                db.query(query, [idLicencia, id], (err, result) => {
-                    if (err) {
-                        console.error('Error al actualizar la licencia del usuario:', err);
-                        return res.status(500).json({ error: 'Error al actualizar la licencia' });
-                    }
-
-                    res.status(200).json({ message: 'Pago capturado y licencia actualizada correctamente' });
-                });
-            } else {
-                res.status(400).json({ error: 'Pago no completado' });
-            }
-        } catch (error) {
-            console.error('Error al capturar el pago de PayPal:', error);
-            res.status(500).json({ error: 'Error al capturar el pago' });
-        }
-    });
+   
 
     // Ruta para obtener todas las licencias
     router.get('/licencias', (req, res) => {
@@ -894,7 +818,7 @@ module.exports = (db) => {
             const token = jwt.sign({ id: user.idUsuario, rol: user.rol, idLicencia: user.idLicencia }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
             // Devolver el token y el rol
-            res.json({ message: 'Inicio de sesión exitoso', token, rol: user.rol, idLicencia: user.idLicencia });
+            res.json({ message: 'Inicio de sesión exitoso', token, rol: user.rol, idLicencia: user.idLicencia, idUsuario: user.idUsuario });
         });
     });
 
@@ -1144,5 +1068,66 @@ module.exports = (db) => {
         });
     });
 
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    router.post('/validar-codigo', (req, res) => {
+        const { codigo, idUsuario } = req.body;
+    
+        // Verificar el código en la base de datos
+        const query = 'SELECT idLicencia FROM CodigosLicencias WHERE codigo = ? AND estado = "Activo"';
+        db.query(query, [codigo], (err, results) => {
+            if (err) {
+                console.error('Error al verificar el código:', err);
+                return res.status(500).json({ error: 'Error al verificar el código' });
+            }
+    
+            if (results.length === 0) {
+                return res.status(400).json({ error: 'El código es inválido o ya ha sido utilizado' });
+            }
+    
+            const idLicencia = results[0].idLicencia;
+    
+            // Determinar el nuevo rol basado en el código
+            let nuevoRol = codigo.includes('SGGL') ? 'Ganadero' : (codigo.includes('PREM') ? 'Ganadero' : null);
+    
+            if (!nuevoRol) {
+                return res.status(400).json({ error: 'Código de licencia no válido' });
+            }
+    
+            // Actualizar el usuario con la nueva licencia y rol
+            const updateUsuarioQuery = 'UPDATE Usuarios SET idLicencia = ?, rol = ? WHERE idUsuario = ?';
+    
+            db.query(updateUsuarioQuery, [idLicencia, nuevoRol, idUsuario], (err) => {
+                if (err) {
+                    console.error('Error al actualizar el usuario:', err);
+                    return res.status(500).json({ error: 'Error al actualizar el usuario' });
+                }
+    
+                // Actualizar el estado del código
+                const updateCodigoQuery = 'UPDATE CodigosLicencias SET estado = "Usado" WHERE codigo = ?';
+                db.query(updateCodigoQuery, [codigo], (err) => {
+                    if (err) {
+                        console.error('Error al actualizar el estado del código:', err);
+                    }
+                    res.status(200).json({ message: 'Licencia activada y usuario actualizado correctamente' });
+                });
+            });
+        });
+    });
+    
+      
     return router;
 };

@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/login.css';
-import hoja1 from '../diseño/fi-rr-leaf.png';
-import hoja2 from '../diseño/fi-rr-feather.png';
-import hoja3 from '../diseño/fi-rr-leaf.png';
 import HeaderLogin from '../components/HeaderLogin';
 
 const Login = () => {
@@ -83,6 +80,7 @@ const Login = () => {
         const data = await response.json();
         localStorage.setItem('token', data.token); // Guarda el token en el almacenamiento local
         localStorage.setItem('userRol', data.rol); // Guarda el rol del usuario
+        localStorage.setItem('userId', data.idUsuario); // Asegúrate de que `idUsuario` esté incluido en la respuesta
         alert('Inicio de sesión exitoso');
         window.location.href = '/AnimalList'; // Redirige a la página para seleccionar y pagar la licencia
       } else {

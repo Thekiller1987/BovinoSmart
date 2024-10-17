@@ -1,0 +1,49 @@
+.activar-licencia-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.activar-licencia-container h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.activar-licencia-container input {
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.activar-licencia-container button {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.activar-licencia-container button:hover {
+  background-color: #45a049;
+}
+
+.mensaje {
+  margin-top: 15px;
+  color: #4CAF50; /* Color verde para mensajes de éxito */
+}
+
+.mensaje-error {
+  margin-top: 15px;
+  color: #d9534f; /* Color rojo para mensajes de error */
+}

@@ -86,14 +86,14 @@ function Header() {
                                         </NavDropdown.Item>
                                     </NavDropdown>
 
-                                    <Nav.Link as={Link} to="/select-licencia" className="link-unstyled">
-                                        Actualizar Licencia
-                                    </Nav.Link>
+                                 
                                     <Nav.Link as={Link} to="/GestionUsuarios" className="link-unstyled">
                                         Gestionar usuarios
                                     </Nav.Link>
 
-
+                                    <Nav.Link as={Link} to="/ActivarLicencia" className="link-unstyled">
+                                        Activacion Licencia
+                                    </Nav.Link>
 
 
                                     <Nav.Link as={Link} to="/Graficos" className="link-unstyled">
@@ -117,6 +117,10 @@ function Header() {
                                     </Nav.Link>
                                     <Nav.Link as={Link} to="/control-banos" className="link-unstyled">
                                         Control de Baños
+                                    </Nav.Link>
+
+                                    <Nav.Link as={Link} to="/ActivarLicencia" className="link-unstyled">
+                                        Activacion Licencia
                                     </Nav.Link>
                                 </>
                             )}
@@ -165,9 +169,7 @@ function Header() {
                                         Listar Productos
                                     </NavDropdown.Item>
                                 </NavDropdown>
-                                <Nav.Link as={Link} to="/select-licencia" className="link-unstyled">
-                                    Actualizar Licencia
-                                </Nav.Link>
+                         
                                 <Nav.Link as={Link} to="/GestionUsuarios" className="link-unstyled">
                                     Gestionar usuarios
                                 </Nav.Link>
