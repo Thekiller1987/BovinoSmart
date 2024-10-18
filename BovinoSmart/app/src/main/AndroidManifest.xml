@@ -92,6 +92,12 @@
             android:label="Control de Baños"
             android:screenOrientation="portrait" />
 
+        <!-- Actividad produccion de leche -->
+        <activity
+            android:name=".ProduccionLeche.GestionProduccionLecheActivity"
+            android:exported="false"
+            android:label="produccion de leche"
+            android:screenOrientation="portrait" />
 
     </application>
 

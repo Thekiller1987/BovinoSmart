@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/fechaTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fecha: "
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/cantidadTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cantidad: " />
+
+    <TextView
+        android:id="@+id/calidadTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calidad: " />
+
+</LinearLayout>

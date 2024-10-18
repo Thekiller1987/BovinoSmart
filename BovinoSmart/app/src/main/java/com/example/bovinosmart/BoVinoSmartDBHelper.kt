@@ -1,4 +1,3 @@
-// BoVinoSmartDBHelper.kt
 package com.example.bovinosmart.database
 
 import android.content.Context
@@ -9,11 +8,14 @@ class BoVinoSmartDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
 
     companion object {
         const val DATABASE_NAME = "BoVinoSmartBD.db"
-        const val DATABASE_VERSION = 3  // Aumenta la versión para forzar la actualización
+        const val DATABASE_VERSION = 4  // Aumenta la versión para forzar la actualización si agregas nuevas tablas o columnas
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        // Crear las tablas aquí usando IF NOT EXISTS para evitar errores si ya existen
+        createTables(db)
+    }
+
+    private fun createTables(db: SQLiteDatabase?) {
         db?.execSQL(
             """
             CREATE TABLE IF NOT EXISTS Ganaderos (
@@ -102,7 +104,6 @@ class BoVinoSmartDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
             """
         )
 
-        // Corregir la creación de la tabla Control_Banos para incluir idProducto
         db?.execSQL(
             """
             CREATE TABLE IF NOT EXISTS Control_Banos (
@@ -117,6 +118,7 @@ class BoVinoSmartDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
             """
         )
 
+        // Producción de Leche con validación de calidad entre 1 y 5
         db?.execSQL(
             """
             CREATE TABLE IF NOT EXISTS Produccion_Leche (
@@ -124,7 +126,21 @@ class BoVinoSmartDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
                 idAnimal INTEGER,
                 fecha DATE,
                 cantidad REAL,
-                calidad TEXT,
+                calidad INTEGER CHECK(calidad >= 1 AND calidad <= 5),
+                FOREIGN KEY (idAnimal) REFERENCES Animales(idAnimal)
+            );
+            """
+        )
+
+        // Historial de Producción de Leche para llevar el registro
+        db?.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS Historial_Produccion_Leche (
+                idHistorialLeche INTEGER PRIMARY KEY AUTOINCREMENT,
+                idAnimal INTEGER,
+                fecha DATE,
+                cantidad REAL,
+                calidad INTEGER CHECK(calidad >= 1 AND calidad <= 5),
                 FOREIGN KEY (idAnimal) REFERENCES Animales(idAnimal)
             );
             """
@@ -139,6 +155,19 @@ class BoVinoSmartDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
                 tipo_inseminacion TEXT,
                 resultado TEXT,
                 observaciones TEXT,
+                FOREIGN KEY (idAnimal) REFERENCES Animales(idAnimal)
+            );
+            """
+        )
+
+        db?.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS Control_Vacunacion (
+                idControlVacunacion INTEGER PRIMARY KEY AUTOINCREMENT,
+                idAnimal INTEGER,
+                vacuna TEXT,
+                fecha DATE,
+                dosis REAL,
                 FOREIGN KEY (idAnimal) REFERENCES Animales(idAnimal)
             );
             """
@@ -169,7 +198,7 @@ class BoVinoSmartDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
                 tipo TEXT,
                 descripcion TEXT,
                 costo REAL,
-                caracteristicas TEXT  -- Almacenado como JSON
+                caracteristicas TEXT
             );
             """
         )
@@ -192,21 +221,8 @@ class BoVinoSmartDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        // Eliminar tablas existentes si la versión anterior es menor que la nueva
-        if (oldVersion < 3) {
-            db?.execSQL("DROP TABLE IF EXISTS Control_Banos")
-            db?.execSQL("DROP TABLE IF EXISTS Ganaderos")
-            db?.execSQL("DROP TABLE IF EXISTS Animales")
-            db?.execSQL("DROP TABLE IF EXISTS Enfermedades")
-            db?.execSQL("DROP TABLE IF EXISTS Historial_Enfermedades")
-            db?.execSQL("DROP TABLE IF EXISTS Productos")
-            db?.execSQL("DROP TABLE IF EXISTS Historial_Productos")
-            db?.execSQL("DROP TABLE IF EXISTS Produccion_Leche")
-            db?.execSQL("DROP TABLE IF EXISTS Inseminaciones")
-            db?.execSQL("DROP TABLE IF EXISTS Estado_Reproductivo")
-            db?.execSQL("DROP TABLE IF EXISTS Licencias")
-            db?.execSQL("DROP TABLE IF EXISTS Usuarios")
-            onCreate(db)
+        if (oldVersion < DATABASE_VERSION) {
+            createTables(db) // Actualizar la estructura sin eliminar tablas
         }
     }
 }

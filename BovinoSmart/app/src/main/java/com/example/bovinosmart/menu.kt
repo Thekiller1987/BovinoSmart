@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.bovinosmart.Enfermedades.GestionEnfermedades
+import com.example.bovinosmart.ProduccionLeche.GestionProduccionLecheActivity
 import com.example.bovinosmart.controlbanos.GestionControlBanosActivity
 
 class menu : AppCompatActivity() {
@@ -57,7 +58,7 @@ class menu : AppCompatActivity() {
         // Configurar clic para el nuevo botón
         pruebaFuncionalidadesButton.setOnClickListener {
             // Aquí puedes añadir la acción que quieras realizar para probar nuevas funcionalidades
-            val intent = Intent(this,GestionControlBanosActivity::class.java) // Crea esta actividad si es necesario
+            val intent = Intent(this,GestionProduccionLecheActivity::class.java) // Crea esta actividad si es necesario
             startActivity(intent)
 
         escanerQRButton.setOnClickListener {
