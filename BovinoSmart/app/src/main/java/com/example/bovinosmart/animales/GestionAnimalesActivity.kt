@@ -68,10 +68,13 @@ class GestionAnimalesActivity : AppCompatActivity() {
         }
 
         // Configuración de los Spinners (Estado e Inseminación)
+        setupSpinners()
+    }
+
+    private fun setupSpinners() {
         val estadoSpinner: Spinner = findViewById(R.id.estadoSpinner)
         val inseminacionSpinner: Spinner = findViewById(R.id.inseminacionSpinner)
 
-        // Adaptador para el Spinner de Estado
         val estadoAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
@@ -80,7 +83,6 @@ class GestionAnimalesActivity : AppCompatActivity() {
         estadoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         estadoSpinner.adapter = estadoAdapter
 
-        // Adaptador para el Spinner de Inseminación
         val inseminacionAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
@@ -133,19 +135,16 @@ class GestionAnimalesActivity : AppCompatActivity() {
         val inseminacionSpinner: Spinner = findViewById(R.id.inseminacionSpinner)
         val observacionesEditText: EditText = findViewById(R.id.observacionesAnimal)
 
-        // Obtener el valor seleccionado en el RadioGroup
         val selectedSexoId = sexoRadioGroup.checkedRadioButtonId
         val sexo = when (selectedSexoId) {
             R.id.radioVaca -> "vaca"
             R.id.radioToro -> "toro"
-            else -> "" // Valor por defecto si no se selecciona nada
+            else -> ""
         }
 
-        // Obtener valores de los Spinners
         val estado = estadoSpinner.selectedItem.toString()
         val inseminacion = inseminacionSpinner.selectedItem.toString() == "Sí"
 
-        // Validaciones para asegurar que todos los campos están completos
         if (nombreEditText.text.isNullOrEmpty() || codigoEditText.text.isNullOrEmpty() ||
             sexo.isEmpty() || razaEditText.text.isNullOrEmpty() ||
             pesoActualEditText.text.isNullOrEmpty() || fechaNacimientoEditText.text.isNullOrEmpty()
@@ -154,20 +153,17 @@ class GestionAnimalesActivity : AppCompatActivity() {
             return
         }
 
-        // Validar si hay imagen seleccionada
         val drawable = imageView.drawable
         if (drawable == null || (drawable is BitmapDrawable && drawable.bitmap == null)) {
             Toast.makeText(this, "Selecciona una imagen", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Convertir la imagen a base64 para guardarla en la base de datos
         val bitmap = (drawable as BitmapDrawable).bitmap
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outputStream) // Reduce calidad para evitar problemas de tamaño
         val imageBase64 = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
 
-        // Crear el objeto Animal con los valores ingresados
         val nuevoAnimal = Animal(
             nombre = nombreEditText.text.toString(),
             sexo = sexo,
@@ -185,7 +181,6 @@ class GestionAnimalesActivity : AppCompatActivity() {
 
         val db = dbHelper.writableDatabase
 
-        // Insertar o actualizar el animal en la base de datos
         if (currentAnimal == null) {
             db.insert("Animales", null, nuevoAnimal.toContentValues())
             Toast.makeText(this, "Animal guardado", Toast.LENGTH_SHORT).show()
@@ -197,17 +192,14 @@ class GestionAnimalesActivity : AppCompatActivity() {
         loadAnimales()
     }
 
-    // Función para eliminar un animal
     private fun deleteAnimal(animal: Animal) {
         val db = dbHelper.writableDatabase
         db.delete("Animales", "idAnimal = ?", arrayOf(animal.idAnimal.toString()))
         Toast.makeText(this, "Animal eliminado", Toast.LENGTH_SHORT).show()
-        loadAnimales() // Recargar la lista de animales después de la eliminación
+        loadAnimales()
     }
 
-    // Función para mostrar el formulario de un animal (ya sea nuevo o existente)
     private fun showAnimalForm(animal: Animal?) {
-        // Ocultar RecyclerView y otros elementos
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewAnimales1)
         val searchInput: EditText = findViewById(R.id.searchInput)
         val animalButtonsContainer: LinearLayout = findViewById(R.id.animalButtonsContainer)
@@ -244,20 +236,15 @@ class GestionAnimalesActivity : AppCompatActivity() {
             pesoActualEditText.setText(animal.pesoActual.toString())
             fechaNacimientoEditText.setText(animal.fechaNacimiento)
 
-            // Configurar el RadioGroup de sexo
             when (animal.sexo) {
                 "vaca" -> sexoRadioGroup.check(R.id.radioVaca)
                 "toro" -> sexoRadioGroup.check(R.id.radioToro)
             }
 
-            // Configurar spinners de estado e inseminación
             estadoSpinner.setSelection(if (animal.estado == "Vivo") 0 else 1)
             inseminacionSpinner.setSelection(if (animal.inseminacion) 0 else 1)
-
-            // Asegúrate de cargar correctamente las observaciones
             observacionesEditText.setText(animal.observaciones)
 
-            // Imagen del animal
             val imageBytes = Base64.decode(animal.imagen, Base64.DEFAULT)
             val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             imageView.setImageBitmap(bitmap)
@@ -279,11 +266,9 @@ class GestionAnimalesActivity : AppCompatActivity() {
     }
 
     private fun closeAnimalForm() {
-        // Ocultar el formulario
         val formContainer: ScrollView = findViewById(R.id.scrollView)
         formContainer.visibility = View.GONE
 
-        // Mostrar los elementos de búsqueda, botones y lista de animales
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewAnimales1)
         val searchInput: EditText = findViewById(R.id.searchInput)
         val animalButtonsContainer: LinearLayout = findViewById(R.id.animalButtonsContainer)
@@ -295,7 +280,6 @@ class GestionAnimalesActivity : AppCompatActivity() {
         titleTextView.visibility = View.VISIBLE
     }
 
-    // Manejar la selección de imagen desde la galería
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == REQUEST_IMAGE_PICK) {
@@ -311,7 +295,6 @@ class GestionAnimalesActivity : AppCompatActivity() {
         }
     }
 
-    // Mostrar el DatePickerDialog para seleccionar la fecha de nacimiento
     private fun showDatePicker(fechaEditText: EditText) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -327,7 +310,6 @@ class GestionAnimalesActivity : AppCompatActivity() {
     }
 }
 
-// Función de extensión para convertir un objeto Animal a ContentValues para la base de datos
 fun Animal.toContentValues(): ContentValues {
     return ContentValues().apply {
         put("nombre", nombre)

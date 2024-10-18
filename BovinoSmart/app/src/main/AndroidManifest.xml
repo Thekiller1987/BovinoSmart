@@ -34,7 +34,7 @@
         <activity
             android:name=".animales.GestionAnimalesActivity"
             android:exported="false"
-            android:label="Gestión de animales"
+            android:label="Gestión de Animales"
             android:screenOrientation="portrait" />
 
         <!-- Actividad de gestión de enfermedades -->
@@ -84,6 +84,15 @@
             android:exported="false"
             android:label="Historial de Productos"
             android:screenOrientation="portrait" />
+
+        <!-- Actividad control de baños -->
+        <activity
+            android:name=".controlbanos.GestionControlBanosActivity"
+            android:exported="false"
+            android:label="Control de Baños"
+            android:screenOrientation="portrait" />
+
+
     </application>
 
 </manifest>
