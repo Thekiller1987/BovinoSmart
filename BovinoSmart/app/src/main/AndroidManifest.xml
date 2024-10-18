@@ -77,6 +77,13 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.BovinoSmart"
             android:screenOrientation="portrait" />
+
+        <!-- Actividad Historial Producto -->
+        <activity
+            android:name=".Productos.GestionHistorialProductos"
+            android:exported="false"
+            android:label="Historial de Productos"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

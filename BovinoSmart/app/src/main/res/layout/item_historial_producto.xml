@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/textViewAnimal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID Animal"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewProducto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID Producto"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewDosis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dosis"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewTratamiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Es tratamiento"
+        android:textSize="16sp" />
+
+</LinearLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <Spinner
+        android:id="@+id/spinnerAnimal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Seleccionar Animal" />
+
+    <Spinner
+        android:id="@+id/spinnerProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Seleccionar Producto"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:id="@+id/inputDosis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Dosis"
+        android:layout_marginTop="10dp" />
+
+    <Switch
+        android:id="@+id/switchTratamiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Es un tratamiento?"
+        android:layout_marginTop="10dp" />
+
+    <DatePicker
+        android:id="@+id/datePickerFecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
+
+</LinearLayout>
