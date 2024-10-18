@@ -23,6 +23,10 @@
     </string-array>
 
 
+
+        <string name="seleccione_animal">Seleccione un animal</string>
+
+
     <!-- Otros valores comunes -->
     <string name="nombre_animal">Nombre del animal</string>
     <string name="codigo_id">Código ID</string>

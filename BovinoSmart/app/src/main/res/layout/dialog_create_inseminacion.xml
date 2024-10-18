@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Spinner
+        android:id="@+id/spinnerAnimal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:prompt="@string/seleccione_animal"/>
+
+    <EditText
+        android:id="@+id/editTextFechaInseminacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha de Inseminación"
+        android:inputType="date"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editTextTipoInseminacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tipo de Inseminación"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editTextResultadoInseminacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Resultado"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editTextObservacionesInseminacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Observaciones"
+        android:layout_marginBottom="8dp"/>
+
+</LinearLayout>
