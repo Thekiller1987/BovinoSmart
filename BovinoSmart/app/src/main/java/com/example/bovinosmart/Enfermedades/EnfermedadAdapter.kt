@@ -1,6 +1,7 @@
 package com.example.bovinosmart.Enfermedades
 
 
+import Enfermedad
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View

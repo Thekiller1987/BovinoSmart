@@ -1,4 +1,4 @@
- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -15,6 +15,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Descripción" />
+
+    <EditText
+        android:id="@+id/sintomasEnfermedad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Síntomas" />
+
+    <EditText
+        android:id="@+id/modoTransmisionEnfermedad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Modo de Transmisión" />
 
     <Button
         android:id="@+id/selectImageButton"

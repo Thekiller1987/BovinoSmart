@@ -1,6 +1,6 @@
 package com.example.bovinosmart.Enfermedades
 
-
+import Enfermedad
 import android.content.ContentValues
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
@@ -66,8 +66,10 @@ class GestionEnfermedades : AppCompatActivity() {
                 val id = cursor.getInt(cursor.getColumnIndexOrThrow("idEnfermedades"))
                 val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
                 val descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"))
+                val sintomas = cursor.getString(cursor.getColumnIndexOrThrow("sintomas"))
+                val modoTransmision = cursor.getString(cursor.getColumnIndexOrThrow("modotrasmision"))
                 val imagenBase64 = cursor.getString(cursor.getColumnIndexOrThrow("imagen"))
-                enfermedadesList.add(Enfermedad(id, nombre, descripcion, imagenBase64))
+                enfermedadesList.add(Enfermedad(id, nombre, descripcion, sintomas, modoTransmision, imagenBase64))
             } while (cursor.moveToNext())
         }
         cursor.close()
@@ -80,6 +82,8 @@ class GestionEnfermedades : AppCompatActivity() {
 
         val nombreInput = dialogView?.findViewById<EditText>(R.id.nombreEnfermedad)
         val descripcionInput = dialogView?.findViewById<EditText>(R.id.descripcionEnfermedad)
+        val sintomasInput = dialogView?.findViewById<EditText>(R.id.sintomasEnfermedad)
+        val modoTransmisionInput = dialogView?.findViewById<EditText>(R.id.modoTransmisionEnfermedad)
         val selectImageButton = dialogView?.findViewById<Button>(R.id.selectImageButton)
         val imageView = dialogView?.findViewById<ImageView>(R.id.imageView)
 
@@ -92,16 +96,35 @@ class GestionEnfermedades : AppCompatActivity() {
         builder.setPositiveButton("Guardar") { _, _ ->
             val nombre = nombreInput?.text.toString()
             val descripcion = descripcionInput?.text.toString()
+            val sintomas = sintomasInput?.text.toString()
+            val modoTransmision = modoTransmisionInput?.text.toString()
 
+            // Validar que los campos no estén vacíos
+            if (nombre.isBlank() || descripcion.isBlank() || sintomas.isBlank() || modoTransmision.isBlank()) {
+                Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton
+            }
+
+            // Crear los valores para insertar en la base de datos
             val values = ContentValues().apply {
                 put("nombre", nombre)
                 put("descripcion", descripcion)
-                put("imagen", imageBase64 ?: "") // Guardar la imagen codificada en Base64
+                put("sintomas", sintomas)
+                put("modotrasmision", modoTransmision)
+                put("imagen", imageBase64 ?: "") // Guardar la imagen codificada en Base64 si existe
             }
 
-            db.insert("Enfermedades", null, values)
-            loadEnfermedadesFromDatabase()
-            adapter.notifyDataSetChanged()
+            // Insertar en la base de datos
+            val newRowId = db.insert("Enfermedades", null, values)
+
+            if (newRowId == -1L) {
+                Toast.makeText(this, "Error al guardar la enfermedad", Toast.LENGTH_SHORT).show()
+            } else {
+                // Cargar los datos nuevamente y actualizar la lista
+                loadEnfermedadesFromDatabase()
+                adapter.notifyDataSetChanged()
+                Toast.makeText(this, "Enfermedad guardada con éxito", Toast.LENGTH_SHORT).show()
+            }
         }
         builder.setNegativeButton("Cancelar", null)
         builder.show()
@@ -129,6 +152,7 @@ class GestionEnfermedades : AppCompatActivity() {
 
             } catch (e: Exception) {
                 e.printStackTrace()
+                Toast.makeText(this, "Error al seleccionar la imagen", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -162,11 +186,15 @@ class GestionEnfermedades : AppCompatActivity() {
 
         val nombreInput = dialogView?.findViewById<EditText>(R.id.nombreEnfermedad)
         val descripcionInput = dialogView?.findViewById<EditText>(R.id.descripcionEnfermedad)
+        val sintomasInput = dialogView?.findViewById<EditText>(R.id.sintomasEnfermedad)
+        val modoTransmisionInput = dialogView?.findViewById<EditText>(R.id.modoTransmisionEnfermedad)
         val imageView = dialogView?.findViewById<ImageView>(R.id.imageView)
 
         // Mostrar los datos actuales de la enfermedad
         nombreInput?.setText(enfermedad.nombre)
         descripcionInput?.setText(enfermedad.descripcion)
+        sintomasInput?.setText(enfermedad.sintomas)
+        modoTransmisionInput?.setText(enfermedad.modoTransmision)
 
         // Mostrar la imagen si existe
         if (enfermedad.imagenBase64.isNotEmpty()) {
@@ -184,10 +212,20 @@ class GestionEnfermedades : AppCompatActivity() {
         builder.setPositiveButton("Actualizar") { _, _ ->
             val nombre = nombreInput?.text.toString()
             val descripcion = descripcionInput?.text.toString()
+            val sintomas = sintomasInput?.text.toString()
+            val modoTransmision = modoTransmisionInput?.text.toString()
+
+            // Validar que los campos no estén vacíos
+            if (nombre.isBlank() || descripcion.isBlank() || sintomas.isBlank() || modoTransmision.isBlank()) {
+                Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton
+            }
 
             val values = ContentValues().apply {
                 put("nombre", nombre)
                 put("descripcion", descripcion)
+                put("sintomas", sintomas)
+                put("modotrasmision", modoTransmision)
                 put("imagen", imageBase64 ?: enfermedad.imagenBase64) // Actualiza la imagen solo si se ha seleccionado una nueva
             }
 
