@@ -27,18 +27,28 @@
         <activity
             android:name=".producto.GestionProductos"
             android:exported="false"
-            android:label="Gestión de Productos" />
+            android:label="Gestión de Productos"
+            android:screenOrientation="portrait" />
 
         <!-- Actividad de gestión de animales -->
         <activity
             android:name=".animales.GestionAnimalesActivity"
             android:exported="false"
-            android:label="Gestión de animales" />
+            android:label="Gestión de animales"
+            android:screenOrientation="portrait" />
 
         <!-- Actividad de gestión de enfermedades -->
         <activity
             android:name=".Enfermedades.GestionEnfermedades"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Actividad de gestión del historial de enfermedades -->
+        <activity
+            android:name=".Enfermedades.GestionHistorialEnfermedades"
+            android:exported="false"
+            android:label="Historial de Enfermedades"
+            android:screenOrientation="portrait" />
 
         <!-- Actividad de menú -->
         <activity
@@ -46,12 +56,14 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_menu"
-            android:theme="@style/Theme.BovinoSmart.Fullscreen" />
+            android:theme="@style/Theme.BovinoSmart.Fullscreen"
+            android:screenOrientation="portrait" />
 
         <!-- Actividad de login -->
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -63,7 +75,8 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.BovinoSmart" />
+            android:theme="@style/Theme.BovinoSmart"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

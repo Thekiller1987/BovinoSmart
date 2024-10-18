@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.bovinosmart.Enfermedades.GestionEnfermedades
+import com.example.bovinosmart.Enfermedades.GestionHistorialEnfermedades
 
 class menu : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +30,7 @@ class menu : AppCompatActivity() {
         val gestionEnfermedadesButton = findViewById<Button>(R.id.btnGestionEnfermedades)
         val gestionProductosButton = findViewById<Button>(R.id.btnGestionProductos)
         val escanerQRButton = findViewById<Button>(R.id.btnEscanerQR)
+        val pruebaFuncionalidadesButton = findViewById<Button>(R.id.btnPruebaFuncionalidades) // Nuevo botón
 
         // Configurar los clics de los botones para navegar o realizar acciones
         gestionAnimalesButton.setOnClickListener {
@@ -51,8 +53,16 @@ class menu : AppCompatActivity() {
 
         }
 
+
+        // Configurar clic para el nuevo botón
+        pruebaFuncionalidadesButton.setOnClickListener {
+            // Aquí puedes añadir la acción que quieras realizar para probar nuevas funcionalidades
+            val intent = Intent(this, GestionHistorialEnfermedades::class.java) // Crea esta actividad si es necesario
+            startActivity(intent)
+
         escanerQRButton.setOnClickListener {
             // Acción para escanear QR
+            }
         }
     }
 }

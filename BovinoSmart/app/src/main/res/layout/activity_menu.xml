@@ -98,4 +98,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="10dp" />
 
+
+
+    <!-- Botón para prueba de funcionalidades futuras -->
+    <Button
+        android:id="@+id/btnPruebaFuncionalidades"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:text="Prueba de Funcionalidades"
+        android:textColor="@android:color/black"
+        android:backgroundTint="#FFA726"
+        android:drawableTop="@drawable/mas"
+    android:drawablePadding="8dp"
+    android:gravity="center"
+    app:layout_constraintTop_toBottomOf="@id/btnEscanerQR"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_margin="10dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
