@@ -1,45 +1,115 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#A8D08D">
 
-    <EditText
-        android:id="@+id/nombreEnfermedad"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nombre de la enfermedad" />
+        android:padding="16dp"
+        android:background="@drawable/rounded_background"
+        android:layout_gravity="center_horizontal">
 
-    <EditText
-        android:id="@+id/descripcionEnfermedad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Descripción" />
+        <ImageView
+            android:id="@+id/imageViewEnfermedad"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_upload"
+            android:background="@drawable/rounded_image_background"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Seleccionar Imagen" />
 
-    <EditText
-        android:id="@+id/sintomasEnfermedad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Síntomas" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre de la enfermedad:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
 
-    <EditText
-        android:id="@+id/modoTransmisionEnfermedad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Modo de Transmisión" />
+        <EditText
+            android:id="@+id/nombreEnfermedad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre de la enfermedad"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="8dp"
+            android:textColor="#000000"
+            android:layout_marginBottom="12dp" />
 
-    <Button
-        android:id="@+id/selectImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seleccionar Imagen"
-        android:layout_marginTop="10dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="Vista previa de la imagen" />
-</LinearLayout>
+        <EditText
+            android:id="@+id/descripcionEnfermedad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descripción"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="8dp"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Síntomas:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/sintomasEnfermedad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Síntomas"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="8dp"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modo de transmisión:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/modoTransmisionEnfermedad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Modo de transmisión"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="8dp"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/guardarButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:background="@drawable/rounded_button"
+            android:textColor="#ffffff"
+            android:layout_marginTop="24dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/eliminarButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eliminar"
+            android:background="@drawable/rounded_button"
+            android:textColor="#ff0000"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

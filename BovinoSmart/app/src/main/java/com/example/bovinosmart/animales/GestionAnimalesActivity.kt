@@ -61,42 +61,61 @@ class GestionAnimalesActivity : AppCompatActivity() {
         val btnFiltrarToros: Button = findViewById(R.id.torosButton1)
 
         addButton.setOnClickListener {
-            menuDesplegable.visibility = if (menuDesplegable.visibility == View.GONE) View.VISIBLE else View.GONE
+            if (menuDesplegable.visibility == View.GONE) {
+                menuDesplegable.visibility = View.VISIBLE
+            } else {
+                menuDesplegable.visibility = View.GONE
+            }
         }
 
-        findViewById<Button>(R.id.btnHistorialProductos).setOnClickListener {
-            startActivity(Intent(this, GestionHistorialProductos::class.java))
+        val btnHistorialProductos: Button = findViewById(R.id.btnHistorialProductos)
+        val btnHistorialEnfermedades: Button = findViewById(R.id.btnHistorialEnfermedades)
+        val btnControlBanos: Button = findViewById(R.id.btnControlBanos)
+        val btnInseminacion: Button = findViewById(R.id.btnInseminacion)
+        val btnCrearAnimal: Button = findViewById(R.id.btnCrearAnimal)
+        val btnProduccionLeche: Button = findViewById(R.id.btnProduccionLeche)
+
+        btnHistorialProductos.setOnClickListener {
+            val intent = Intent(this, GestionHistorialProductos::class.java)
+            startActivity(intent)
         }
 
-        findViewById<Button>(R.id.btnHistorialEnfermedades).setOnClickListener {
-            startActivity(Intent(this, GestionHistorialEnfermedades::class.java))
+        btnHistorialEnfermedades.setOnClickListener {
+            val intent = Intent(this, GestionHistorialEnfermedades::class.java)
+            startActivity(intent)
         }
 
-        findViewById<Button>(R.id.btnControlBanos).setOnClickListener {
-            startActivity(Intent(this, GestionControlBanosActivity::class.java))
+        btnControlBanos.setOnClickListener {
+            val intent = Intent(this, GestionControlBanosActivity::class.java)
+            startActivity(intent)
         }
 
-        findViewById<Button>(R.id.btnInseminacion).setOnClickListener {
-            startActivity(Intent(this, GestionInseminacionesActivity::class.java))
+        btnInseminacion.setOnClickListener {
+            val intent = Intent(this, GestionInseminacionesActivity::class.java)
+            startActivity(intent)
         }
 
-        findViewById<Button>(R.id.btnProduccionLeche).setOnClickListener {
-            startActivity(Intent(this, GestionProduccionLecheActivity::class.java))
+        btnProduccionLeche.setOnClickListener {
+            val intent = Intent(this, GestionProduccionLecheActivity::class.java)
+            startActivity(intent)
         }
 
-        findViewById<Button>(R.id.btnCrearAnimal).setOnClickListener {
+        btnCrearAnimal.setOnClickListener {
             showAnimalForm(null)
         }
 
+        // Agregar TextWatcher para búsqueda
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                filterAnimals(s.toString())
+                val query = s.toString().trim()
+                filterAnimals(query)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        // Configurar botones para filtrar por vacas y toros
         btnFiltrarVacas.setOnClickListener {
             btnFiltrarVacas.setBackgroundColor(resources.getColor(R.color.green))
             btnFiltrarToros.setBackgroundColor(resources.getColor(R.color.default_button_color))
@@ -141,6 +160,7 @@ class GestionAnimalesActivity : AppCompatActivity() {
         animalAdapter.notifyDataSetChanged()
     }
 
+    // Filtrar animales por nombre o ID
     private fun filterAnimals(query: String) {
         val filteredList = animalesList.filter { animal ->
             animal.nombre.contains(query, ignoreCase = true) ||
@@ -149,6 +169,7 @@ class GestionAnimalesActivity : AppCompatActivity() {
         animalAdapter.updateList(filteredList)
     }
 
+    // Filtrar animales por sexo
     private fun filterAnimalsBySexo(sexo: String) {
         val filteredList = animalesList.filter { animal ->
             animal.sexo.equals(sexo, ignoreCase = true)

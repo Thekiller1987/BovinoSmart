@@ -5,6 +5,7 @@ import com.example.bovinosmart.producto.GestionProductos
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,11 +28,12 @@ class menu : AppCompatActivity() {
         }
 
         // Configurar los botones
-        val gestionAnimalesButton = findViewById<Button>(R.id.btnGestionAnimales)
-        val gestionEnfermedadesButton = findViewById<Button>(R.id.btnGestionEnfermedades)
-        val gestionProductosButton = findViewById<Button>(R.id.btnGestionProductos)
-        val escanerQRButton = findViewById<Button>(R.id.btnEscanerQR)
-        val pruebaFuncionalidadesButton = findViewById<Button>(R.id.btnPruebaFuncionalidades) // Nuevo botón
+        val gestionAnimalesButton = findViewById<LinearLayout>(R.id.btnGestionAnimales)
+        val gestionEnfermedadesButton = findViewById<LinearLayout>(R.id.btnGestionEnfermedades)
+        val gestionProductosButton = findViewById<LinearLayout>(R.id.btnGestionProductos)
+        val escanerQRButton = findViewById<LinearLayout>(R.id.btnEscanerQR)
+
+
 
         // Configurar los clics de los botones para navegar o realizar acciones
         gestionAnimalesButton.setOnClickListener {
@@ -55,15 +57,8 @@ class menu : AppCompatActivity() {
         }
 
 
-        // Configurar clic para el nuevo botón
-        pruebaFuncionalidadesButton.setOnClickListener {
-            // Aquí puedes añadir la acción que quieras realizar para probar nuevas funcionalidades
-            val intent = Intent(this,GestionInseminacionesActivity::class.java) // Crea esta actividad si es necesario
-            startActivity(intent)
-
         escanerQRButton.setOnClickListener {
             // Acción para escanear QR
             }
         }
     }
-}

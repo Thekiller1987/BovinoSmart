@@ -48,7 +48,7 @@ class ProductoAdapter(
                 val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
                 imagenView.setImageBitmap(bitmap)
             } else {
-                imagenView.setImageResource(android.R.color.darker_gray) // Placeholder
+                imagenView.setImageResource(android.R.color.darker_gray)
             }
         }
     }

@@ -13,7 +13,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bovinosmart.R
 import com.example.bovinosmart.database.BoVinoSmartDBHelper
@@ -23,12 +23,12 @@ class GestionEnfermedades : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var addButton: ImageButton
-
     private val enfermedadesList = mutableListOf<Enfermedad>()
     private lateinit var dbHelper: BoVinoSmartDBHelper
     private lateinit var db: SQLiteDatabase
     private var imageBase64: String? = null
     private var dialogView: View? = null
+    private lateinit var adapter: EnfermedadAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,15 +45,17 @@ class GestionEnfermedades : AppCompatActivity() {
         loadEnfermedadesFromDatabase()
 
         // Configurar RecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = EnfermedadAdapter(enfermedadesList) { enfermedad ->
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        adapter = EnfermedadAdapter(enfermedadesList, { enfermedad ->
             showEditDialog(enfermedad)
-        }
+        }, { enfermedad ->
+            deleteEnfermedad(enfermedad)
+        })
         recyclerView.adapter = adapter
 
         // Agregar nueva enfermedad
         addButton.setOnClickListener {
-            showCreateDialog(adapter)
+            showCreateDialog()
         }
     }
 
@@ -75,81 +77,146 @@ class GestionEnfermedades : AppCompatActivity() {
         cursor.close()
     }
 
-    private fun showCreateDialog(adapter: EnfermedadAdapter) {
+    private fun showCreateDialog() {
         val builder = AlertDialog.Builder(this)
         dialogView = layoutInflater.inflate(R.layout.dialog_create_enfermedad, null)
         builder.setView(dialogView)
+        val alertDialog = builder.create()
 
         val nombreInput = dialogView?.findViewById<EditText>(R.id.nombreEnfermedad)
         val descripcionInput = dialogView?.findViewById<EditText>(R.id.descripcionEnfermedad)
         val sintomasInput = dialogView?.findViewById<EditText>(R.id.sintomasEnfermedad)
         val modoTransmisionInput = dialogView?.findViewById<EditText>(R.id.modoTransmisionEnfermedad)
-        val selectImageButton = dialogView?.findViewById<Button>(R.id.selectImageButton)
-        val imageView = dialogView?.findViewById<ImageView>(R.id.imageView)
+        val imageView = dialogView?.findViewById<ImageView>(R.id.imageViewEnfermedad)
+        val guardarButton = dialogView?.findViewById<Button>(R.id.guardarButton)
 
-        // Lógica para seleccionar una imagen
-        selectImageButton?.setOnClickListener {
+        dialogView?.findViewById<Button>(R.id.eliminarButton)?.visibility = View.GONE
+
+        imageView?.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, REQUEST_IMAGE_PICK)
         }
 
-        builder.setPositiveButton("Guardar") { _, _ ->
+        guardarButton?.setOnClickListener {
             val nombre = nombreInput?.text.toString()
             val descripcion = descripcionInput?.text.toString()
             val sintomas = sintomasInput?.text.toString()
             val modoTransmision = modoTransmisionInput?.text.toString()
 
-            // Validar que los campos no estén vacíos
             if (nombre.isBlank() || descripcion.isBlank() || sintomas.isBlank() || modoTransmision.isBlank()) {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
-                return@setPositiveButton
+                return@setOnClickListener
             }
 
-            // Crear los valores para insertar en la base de datos
             val values = ContentValues().apply {
                 put("nombre", nombre)
                 put("descripcion", descripcion)
                 put("sintomas", sintomas)
                 put("modotrasmision", modoTransmision)
-                put("imagen", imageBase64 ?: "") // Guardar la imagen codificada en Base64 si existe
+                put("imagen", imageBase64 ?: "")
             }
 
-            // Insertar en la base de datos
             val newRowId = db.insert("Enfermedades", null, values)
 
             if (newRowId == -1L) {
                 Toast.makeText(this, "Error al guardar la enfermedad", Toast.LENGTH_SHORT).show()
             } else {
-                // Cargar los datos nuevamente y actualizar la lista
                 loadEnfermedadesFromDatabase()
                 adapter.notifyDataSetChanged()
                 Toast.makeText(this, "Enfermedad guardada con éxito", Toast.LENGTH_SHORT).show()
+                alertDialog.dismiss()
             }
         }
-        builder.setNegativeButton("Cancelar", null)
-        builder.show()
+
+        alertDialog.show()
+    }
+
+    private fun showEditDialog(enfermedad: Enfermedad) {
+        val builder = AlertDialog.Builder(this)
+        dialogView = layoutInflater.inflate(R.layout.dialog_create_enfermedad, null)
+        builder.setView(dialogView)
+        val alertDialog = builder.create()
+
+        val nombreInput = dialogView?.findViewById<EditText>(R.id.nombreEnfermedad)
+        val descripcionInput = dialogView?.findViewById<EditText>(R.id.descripcionEnfermedad)
+        val sintomasInput = dialogView?.findViewById<EditText>(R.id.sintomasEnfermedad)
+        val modoTransmisionInput = dialogView?.findViewById<EditText>(R.id.modoTransmisionEnfermedad)
+        val imageView = dialogView?.findViewById<ImageView>(R.id.imageViewEnfermedad)
+        val guardarButton = dialogView?.findViewById<Button>(R.id.guardarButton)
+        val eliminarButton = dialogView?.findViewById<Button>(R.id.eliminarButton)
+
+        nombreInput?.setText(enfermedad.nombre)
+        descripcionInput?.setText(enfermedad.descripcion)
+        sintomasInput?.setText(enfermedad.sintomas)
+        modoTransmisionInput?.setText(enfermedad.modoTransmision)
+
+        if (enfermedad.imagenBase64.isNotEmpty()) {
+            val byteArray = Base64.decode(enfermedad.imagenBase64, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+            imageView?.setImageBitmap(bitmap)
+        }
+
+        imageView?.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, REQUEST_IMAGE_PICK)
+        }
+
+        guardarButton?.setOnClickListener {
+            val nombre = nombreInput?.text.toString()
+            val descripcion = descripcionInput?.text.toString()
+            val sintomas = sintomasInput?.text.toString()
+            val modoTransmision = modoTransmisionInput?.text.toString()
+
+            if (nombre.isBlank() || descripcion.isBlank() || sintomas.isBlank() || modoTransmision.isBlank()) {
+                Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val values = ContentValues().apply {
+                put("nombre", nombre)
+                put("descripcion", descripcion)
+                put("sintomas", sintomas)
+                put("modotrasmision", modoTransmision)
+                put("imagen", imageBase64 ?: enfermedad.imagenBase64)
+            }
+
+            db.update("Enfermedades", values, "idEnfermedades = ?", arrayOf(enfermedad.id.toString()))
+            loadEnfermedadesFromDatabase()
+            adapter.notifyDataSetChanged()
+            alertDialog.dismiss()
+        }
+
+        eliminarButton?.setOnClickListener {
+            deleteEnfermedad(enfermedad)
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
             val selectedImageUri: Uri? = data.data
-            val imageView = dialogView?.findViewById<ImageView>(R.id.imageView)
+            val imageView = dialogView?.findViewById<ImageView>(R.id.imageViewEnfermedad)
 
             try {
-                val inputStream = selectedImageUri?.let { contentResolver.openInputStream(it) }
-                val bitmap = BitmapFactory.decodeStream(inputStream)
+                selectedImageUri?.let {
+                    val inputStream = contentResolver.openInputStream(it)
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
 
-                // Redimensionar la imagen para evitar que sea demasiado grande
-                val resizedBitmap = resizeBitmap(bitmap, 500, 500) // Ajustar tamaño máximo a 500x500 píxeles
-                imageView?.setImageBitmap(resizedBitmap)
+                    // Redimensionar la imagen para evitar que sea demasiado grande
+                    val resizedBitmap = resizeBitmap(bitmap, 500, 500)
+                    imageView?.setImageBitmap(resizedBitmap)
 
-                // Codificar la imagen redimensionada a Base64
-                val outputStream = ByteArrayOutputStream()
-                resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, outputStream) // Usar 85% de calidad
-                val byteArray = outputStream.toByteArray()
-                imageBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    // Codificar la imagen redimensionada a Base64
+                    val outputStream = ByteArrayOutputStream()
+                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, outputStream)
+                    val byteArray = outputStream.toByteArray()
+                    imageBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
+                    inputStream?.close()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "Error al seleccionar la imagen", Toast.LENGTH_SHORT).show()
@@ -157,7 +224,6 @@ class GestionEnfermedades : AppCompatActivity() {
         }
     }
 
-    // Función para redimensionar la imagen
     private fun resizeBitmap(bitmap: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap {
         val width = bitmap.width
         val height = bitmap.height
@@ -175,70 +241,18 @@ class GestionEnfermedades : AppCompatActivity() {
         return Bitmap.createScaledBitmap(bitmap, finalWidth, finalHeight, true)
     }
 
-    companion object {
-        const val REQUEST_IMAGE_PICK = 1
+    private fun deleteEnfermedad(enfermedad: Enfermedad) {
+        val rowsDeleted = db.delete("Enfermedades", "idEnfermedades = ?", arrayOf(enfermedad.id.toString()))
+        if (rowsDeleted > 0) {
+            Toast.makeText(this, "Enfermedad eliminada", Toast.LENGTH_SHORT).show()
+            loadEnfermedadesFromDatabase()
+            adapter.notifyDataSetChanged()
+        } else {
+            Toast.makeText(this, "Error al eliminar la enfermedad", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun showEditDialog(enfermedad: Enfermedad) {
-        val builder = AlertDialog.Builder(this)
-        dialogView = layoutInflater.inflate(R.layout.dialog_create_enfermedad, null)
-        builder.setView(dialogView)
-
-        val nombreInput = dialogView?.findViewById<EditText>(R.id.nombreEnfermedad)
-        val descripcionInput = dialogView?.findViewById<EditText>(R.id.descripcionEnfermedad)
-        val sintomasInput = dialogView?.findViewById<EditText>(R.id.sintomasEnfermedad)
-        val modoTransmisionInput = dialogView?.findViewById<EditText>(R.id.modoTransmisionEnfermedad)
-        val imageView = dialogView?.findViewById<ImageView>(R.id.imageView)
-
-        // Mostrar los datos actuales de la enfermedad
-        nombreInput?.setText(enfermedad.nombre)
-        descripcionInput?.setText(enfermedad.descripcion)
-        sintomasInput?.setText(enfermedad.sintomas)
-        modoTransmisionInput?.setText(enfermedad.modoTransmision)
-
-        // Mostrar la imagen si existe
-        if (enfermedad.imagenBase64.isNotEmpty()) {
-            val byteArray = Base64.decode(enfermedad.imagenBase64, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-            imageView?.setImageBitmap(bitmap)
-        }
-
-        val selectImageButton = dialogView?.findViewById<Button>(R.id.selectImageButton)
-        selectImageButton?.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, REQUEST_IMAGE_PICK)
-        }
-
-        builder.setPositiveButton("Actualizar") { _, _ ->
-            val nombre = nombreInput?.text.toString()
-            val descripcion = descripcionInput?.text.toString()
-            val sintomas = sintomasInput?.text.toString()
-            val modoTransmision = modoTransmisionInput?.text.toString()
-
-            // Validar que los campos no estén vacíos
-            if (nombre.isBlank() || descripcion.isBlank() || sintomas.isBlank() || modoTransmision.isBlank()) {
-                Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
-                return@setPositiveButton
-            }
-
-            val values = ContentValues().apply {
-                put("nombre", nombre)
-                put("descripcion", descripcion)
-                put("sintomas", sintomas)
-                put("modotrasmision", modoTransmision)
-                put("imagen", imageBase64 ?: enfermedad.imagenBase64) // Actualiza la imagen solo si se ha seleccionado una nueva
-            }
-
-            db.update("Enfermedades", values, "idEnfermedades = ?", arrayOf(enfermedad.id.toString()))
-            loadEnfermedadesFromDatabase()
-            recyclerView.adapter?.notifyDataSetChanged()
-        }
-
-        builder.setNegativeButton("Eliminar") { _, _ ->
-            db.delete("Enfermedades", "idEnfermedades = ?", arrayOf(enfermedad.id.toString()))
-            loadEnfermedadesFromDatabase()
-            recyclerView.adapter?.notifyDataSetChanged()
-        }
-        builder.show()
+    companion object {
+        const val REQUEST_IMAGE_PICK = 1
     }
 }
