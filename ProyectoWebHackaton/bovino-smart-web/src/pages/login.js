@@ -174,12 +174,7 @@ const Login = () => {
                 />
               </div>
 
-              <div className="content">
-                <div className="checkbox">
-                  <input type="checkbox" id="checkbox" />
-                  <label>Recuérdame</label>
-                </div>
-              </div>
+              
 
               <button className='botIniSesion' type="submit" disabled={isLoading}>
                 {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}

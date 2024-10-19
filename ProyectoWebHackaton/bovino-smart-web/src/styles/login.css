@@ -250,14 +250,47 @@
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 0px 10px rgba(0, 0, 0, 0.22);
   position: relative;
   overflow: hidden;
-  width: 768px;
+  width: 50%; /* Reduce el ancho al 40% */
   max-width: 100%;
-  min-height: 500px;
+  min-height: 400px; /* Reduce la altura mínima */
   display: flex;
-  z-index: 100; /* Asegura que el contenedor esté encima de la superposición */
-  border: 3px solid #3E7B31; /* Añade un borde verde oscuro */
+  z-index: 100;
+  border: 3px solid #3E7B31;
+  margin-top: 100px;
 }
 
+/* Ajusta el tamaño de los contenedores de formulario */
+.login-page .form-container {
+  padding: 10px; /* Reduce el padding */
+  width: 45%; /* Ajusta el ancho del contenedor */
+}
+
+/* Ajusta el tamaño de los inputs */
+.login-page input {
+  font-size: 14px; /* Reduce el tamaño de la fuente */
+  padding: 8px 0; /* Reduce el padding */
+}
+
+.login-page button {
+  font-size: 13px; /* Reduce el tamaño de la fuente */
+  padding: 8px 40px; /* Reduce el tamaño del botón */
+}
+
+
+/* Ajusta los títulos */
+.login-page h1 {
+  font-size: 24px; /* Reduce el tamaño del título */
+}
+
+/* Ajusta el tamaño del panel de superposición */
+.login-page .overlay-container {
+  width: 45%; /* Reduce el ancho del panel de superposición */
+}
+
+/* Ajusta los paneles de superposición */
+.login-page .overlay-panel {
+  width: 90%; /* Ajusta el ancho de los paneles para que coincidan con el nuevo tamaño */
+}
 /* Estilos para los contenedores de formulario */
 .login-page .form-container {
   position: absolute;
@@ -474,7 +507,7 @@
 /* Estilos específicos para el texto de inicio de sesión */
 .login-page .LetIniciaSe {
   font-size: 30px;
-  margin-top: -215px;
+  margin-top: -170px;
   z-index: 104;
 }
 

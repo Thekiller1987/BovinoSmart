@@ -1,212 +1,301 @@
 :root {
-    --primary-color: #4caf50; /* Color primario usado en elementos como encabezados y botones */
-    --secondary-color: #ffffff; /* Color secundario, generalmente usado para texto en fondos oscuros */
-    --background-color: #f0f4f7; /* Color de fondo general de la aplicación */
-    --text-color: #333; /* Color de texto principal */
-    --border-radius: 10px; /* Radio de los bordes redondeados de varios elementos */
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para elementos elevados */
-    --card-background: #ffffff; /* Color de fondo de las tarjetas */
-    --header-gradient: linear-gradient(90deg, #4caf50, #81c784); /* Gradiente para encabezados */
-    --font-family: 'Roboto', sans-serif; /* Fuente principal de la aplicación */
-    --detail-panel-border: 4px solid #000000; /* Borde del panel de detalles */
-    --card-border: 2px solid #000000; /* Borde de las tarjetas */
-    --line-color: #e0e0e0; /* Color de las líneas divisorias en las tablas */
+    --primary-color: #4caf50;
+    --secondary-color: #ffffff;
+    --background-color: #f0f4f7;
+    --text-color: #333;
+    --border-radius: 10px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --card-background: #ffffff;
+    --header-gradient: linear-gradient(90deg, #4caf50, #81c784);
+    --font-family: 'Roboto', sans-serif;
+    --card-border: 2px solid #000000;
+    --line-color: #e0e0e0;
 }
 
-/* Estilo principal del cuerpo de la lista de productos */
-.body-producto-list {
-    background-color: var(--background-color); /* Fondo claro para contraste */
-    font-family: var(--font-family); /* Fuente consistente */
-    color: var(--text-color); /* Color de texto general */
-    margin: 0; /* Elimina márgenes predeterminados */
-    padding: 0; /* Elimina padding predeterminado */
-}
 
-/* Estilo del encabezado de la lista de productos */
+/* Estilo del encabezado */
 .header-producto-list {
-    background: var(--header-gradient); /* Gradiente de color para el fondo */
-    padding: 20px; /* Espaciado interno */
-    color: white; /* Color del texto en el encabezado */
-    text-align: center; /* Centra el texto del encabezado */
-    border-radius: var(--border-radius); /* Bordes redondeados */
-    margin-bottom: 20px; /* Espacio inferior para separación */
-    box-shadow: var(--box-shadow); /* Sombra para efecto de elevación */
-    position: sticky; /* Fija el encabezado al principio de la página */
-    top: 0; /* Posición en la parte superior */
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    background: var(--header-gradient);
+    padding: 20px;
+    color: white;
+    text-align: center;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.header-producto-list h1 {
-    margin: 0; /* Elimina márgenes */
-    font-size: 2.5em; /* Tamaño de fuente grande */
+/* Barra de búsqueda */
+.search-containers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 35px;
+    margin-bottom: 85px;
 }
 
-/* Contenedor de la tabla */
-.table-container {
-    background-color: var(--card-background); /* Fondo blanco */
-    border-radius: var(--border-radius); /* Bordes redondeados */
-    box-shadow: var(--box-shadow); /* Sombra para efecto de elevación */
-    overflow-x: auto; /* Desplazamiento horizontal en tablas largas */
-    padding: 20px; /* Espaciado interno */
+.search-input {
+    width: 100%;
+    height: 90%;
+    padding: 12px 20px;
+    border-radius: 5px;
+    border: 1px solid #3e7b31;
+    background-color: #d9d9d9;
+    font-size: 1em;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
 }
 
-.table-container table {
-    width: 100%; /* Ancho total */
-    min-width: 600px; /* Mínimo ancho de la tabla */
-    border-collapse: collapse; /* Colapsa bordes para eliminar espacios */
+.search-input-wrapper {
+    position: relative;
+    width: 1217px;
+    height: 64px;
 }
 
-.table-container th, .table-container td {
-    padding: 12px; /* Espaciado interno en celdas */
-    text-align: left; /* Alinea el texto a la izquierda */
-    border-bottom: 1px solid var(--line-color); /* Línea divisoria inferior */
-    font-size: 0.9em; /* Tamaño de fuente reducido */
+.search-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
 }
 
-.table-container th {
-    background-color: var(--primary-color); /* Fondo de los encabezados de tabla */
-    color: var(--secondary-color); /* Color del texto en los encabezados */
+.search-input:focus {
+    outline: none;
+    border: 2px solid rgb(138, 200, 121);
+    box-shadow: 0 0 10px rgba(138, 200, 121, 0.5);
 }
 
-.table-container tr:hover {
-    background-color: var(--background-color); /* Fondo de fila al pasar el ratón */
+.search-containers button {
+    width: 115px;
+    height: 45px;
+    background-color: #507f8b;
+    color: #000000;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 24px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-family: 'Kaisei Decol';
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Contenedor de búsqueda */
-.search-container {
-    display: flex; /* Flexbox para centrar contenido */
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-    margin-bottom: 20px; /* Margen inferior */
-    gap: 10px; /* Espacio entre elementos */
-    padding: 10px; /* Espaciado interno */
-    background: var(--primary-color); /* Fondo de la barra de búsqueda */
-    border-radius: var(--border-radius); /* Bordes redondeados */
-    box-shadow: var(--box-shadow); /* Sombra */
+.search-containers button:hover {
+    background-color: #3f646d;
 }
 
-.search-container input {
-    width: 100%; /* Ancho completo */
-    max-width: 500px; /* Ancho máximo */
-    padding: 12px 20px; /* Espaciado interno */
-    border-radius: var(--border-radius); /* Bordes redondeados */
-    border: none; /* Sin borde */
-    font-size: 1em; /* Tamaño de fuente */
-    transition: all 0.3s ease; /* Transiciones suaves */
-    background-color: #f9f9f9; /* Fondo claro */
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra interna */
+.search-containers button:active {
+    transform: scale(0.98);
 }
 
-.search-container input:focus {
-    outline: none; /* Sin contorno al enfocar */
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 10px rgba(76, 175, 80, 0.5); /* Sombra adicional al enfocar */
-    background-color: #ffffff; /* Fondo blanco al enfocar */
+/* Estilo para las tarjetas */
+.productos-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    font-family: 'Kaisei Decol';
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
 }
 
-.search-container button {
-    background-color: var(--secondary-color); /* Fondo blanco */
-    color: var(--primary-color); /* Color de texto primario */
-    border: none; /* Sin borde */
-    border-radius: var(--border-radius); /* Bordes redondeados */
-    padding: 12px 20px; /* Espaciado interno */
-    font-size: 1em; /* Tamaño de fuente */
-    cursor: pointer; /* Puntero al pasar el ratón */
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Transición de color y tamaño */
-    box-shadow: var(--box-shadow); /* Sombra */
+.producto-card {
+    border: 4px solid #3e7b31;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease;
+    background-color: var(--card-background);
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.search-container button:hover {
-    background-color: #e0e0e0; /* Fondo gris claro al pasar el ratón */
+.producto-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 2px solid #3e7b31;
 }
 
-.search-container button:active {
-    transform: scale(0.95); /* Efecto de escala al hacer clic */
+.producto-card .card-body {
+    text-align: left;
+    padding: 15px;
+    background-color: #8ac879;
+    flex-grow: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.button-container {
-    display: flex; /* Flexbox para disposición de botones */
-    gap: 10px; /* Espacio entre botones */
+.producto-card .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.button-container .btn-warning, .button-container .btn-danger {
-    padding: 5px 10px; /* Espaciado interno */
-    font-size: 14px; /* Tamaño de fuente de los botones */
-    border-radius: var(--border-radius); /* Bordes redondeados */
-    box-shadow: var(--box-shadow); /* Sombra */
+.producto-card:hover {
+    transform: scale(1.05);
 }
 
-.modal-header {
-    background: var(--primary-color); /* Fondo del encabezado del modal */
-    color: var(--secondary-color); /* Color de texto del modal */
+/* Modal personalizado */
+.modal-custom .modal-content-custom {
+    background-color: #8ac879;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    margin: auto;
 }
 
-.modal-header .close {
-    color: var(--secondary-color); /* Color del botón de cierre del modal */
+.modal-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    padding: 15px 20px;
+    font-family: 'Kaisei Decol', sans-serif;
 }
 
-.modal-body {
-    padding: 20px; /* Espaciado interno del cuerpo del modal */
+.modal-footer-custom {
+    margin-top: 20px;
+    text-align: center;
+    padding: 15px 0;
 }
 
-.modal-body .form-control, .modal-body .form-select {
-    margin-bottom: 15px; /* Margen inferior en controles de formulario */
+.modal-body-custom {
+    margin-top: 20px;
+    padding: 10px;
 }
 
-.alert {
-    margin-top: 20px; /* Margen superior de alertas */
+/* Sección del modal */
+.producto-modal-section-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-top: 10px;
 }
 
-.card-title {
-    margin-bottom: 20px; /* Margen inferior de títulos de tarjeta */
+.producto-modal-section {
+    position: relative;
+    flex: 1;
+    background-color: transparent;
+    border-radius: 15px;
+    text-align: center;
+    font-family: 'Kaisei Decol', sans-serif;
+    height: 350px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
 }
 
-.card-body {
-    padding: 20px; /* Espaciado interno del cuerpo de la tarjeta */
+.producto-title {
+    font-size: 1.2em;
+    color: #000000;
+    margin-bottom: 10px;
+    white-space: nowrap;
 }
 
-/* Responsividad para pantallas pequeñas */
-@media (max-width: 576px) {
-    .table-container table, 
-    .table-container th, 
-    .table-container td {
-        font-size: 0.8em; /* Tamaño de fuente más pequeño en pantallas pequeñas */
-    }
-    .search-container input {
-        font-size: 0.9em; /* Tamaño de fuente más pequeño en input */
-        padding: 10px 15px; /* Espaciado reducido en input */
-    }
-
-    .search-container button {
-        font-size: 0.9em; /* Tamaño de fuente más pequeño en botón */
-        padding: 10px 15px; /* Espaciado reducido en botón */
-    }
-
-    .button-container .btn-warning, 
-    .button-container .btn-danger {
-        font-size: 12px; /* Tamaño de fuente más pequeño en botones */
-        padding: 4px 8px; /* Espaciado reducido en botones */
-    }
-
-    .modal-body .form-control, 
-    .modal-body .form-select {
-        font-size: 0.9em; /* Tamaño de fuente más pequeño en formularios */
-    }
+.producto-info-box {
+    background-color: #e0e0e0;
+    color: #333;
+    border: 4px solid #3e7b31;
+    border-radius: 20px;
+    padding: 20px;
+    height: 100%;
+    width: 108%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    text-align: justify;
 }
 
-@media (max-width: 576px) {
-    .header-producto-list h1 {
-        font-size: 2em; /* Tamaño de fuente reducido para encabezados */
-    }
+/* Botones en el modal */
+.btn-edit {
+    background-color: #507f8b;
+    border: none;
+    color: #000000;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    .search-container input {
-        width: 100%; /* Ancho completo en pantallas pequeñas */
-    }
+.btn-edit:hover {
+    background-color: #3f646d;
+}
 
-    .table-container {
-        padding: 15px; /* Espaciado interno reducido */
-    }
+.btn-update {
+    background-color: #4caf50;
+    border: none;
+    color: #000000;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    .table-container th, .table-container td {
-        padding: 8px; /* Espaciado reducido en celdas */
-    }
+.btn-update:hover {
+    background-color: #388e3c;
+}
+
+.modal-buttons-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Estilo para mensaje de "No se encontraron productos" */
+.no-productos {
+    text-align: center;
+    color: #587a83;
+    font-family: 'Kaisei Decol', sans-serif;
+    font-size: 4em;
+    margin-top: 200px;
+    -webkit-text-stroke: 0.5px #000000;
+    white-space: nowrap;
+}
+
+
+/* Añadir estilos para la imagen decorativa */
+.decorative-image-2 {
+    position: fixed;
+    bottom: -45vh; /* Ajusta la posición superior */
+    right: 60vw; /* Ajusta la posición derecha */
+    background-image: url('../diseño/Manchas2.png');
+    background-size: contain; /* Ajusta la imagen para que no se deforme */
+    background-repeat: no-repeat;
+    width: 43vw; /* Ajusta el tamaño de manera relativa al ancho de la pantalla */
+    height: 43vw;
+    z-index: -1;
+
+}
+
+
+/* Añadir estilos para la imagen decorativa */
+.decorative-image-3 {
+    position: absolute;
+    top: -30vh; /* Ajusta la posición superior */
+    right: 0vw; /* Ajusta la posición derecha */
+    z-index: -1; /* Asegura que la imagen esté detrás de otros elementos */
+    background-image: url('../diseño/Manchas2.png');
+    background-size: contain; /* Ajusta la imagen para que no se deforme */
+    background-repeat: no-repeat;
+    width: 30vw; /* Ajusta el tamaño de manera relativa al ancho de la pantalla */
+    height: 30vw;
+   
+    transform: scaleX(-1) scaleY(-1); /* Voltea la imagen vertical y horizontalmente */
 }

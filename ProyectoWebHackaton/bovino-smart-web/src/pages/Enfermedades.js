@@ -59,7 +59,10 @@ function Enfermedades() {
 
     return (
         <div>
+            
             <Header /> {/* Renderiza el componente Header */}
+            <div className="decorative-image-2"></div> {/* Segunda imagen decorativa */}
+            <div className="decorative-image-3"></div> {/* Segunda imagen decorativa */}
             <Container className="container-enfermedad">
                 <h2 className="titulo-enfermedad">Nueva Enfermedad:</h2>
                 <form className="formulario-enfermedad" onSubmit={handleSubmit}>
@@ -77,8 +80,7 @@ function Enfermedades() {
                     </div>
                     <div className="campo-enfermedad">
                         <label>Nombre:</label>
-                        <input
-                            type="text"
+                        <textarea className='textxd'
                             value={nombre}
                             onChange={(e) => setNombre(e.target.value)}
                             required
@@ -100,15 +102,17 @@ function Enfermedades() {
                             required
                         />
                     </div>
-                    <div className="campo-enfermedad">
+                    <div className="campo-trasmision">
                         <label>Modo de Transmisión:</label>
-                        <textarea
+                        <input 
+                            type="text"
                             value={modotrasmision}
                             onChange={(e) => setModoTransmision(e.target.value)}
                             required
                         />
                     </div>
-                    <div className="center-button">
+
+                    <div className="center-buttons">
                         <Button variant="primary" type="submit" className="custom-button" size="lg">
                             Registrar Enfermedad
                         </Button>

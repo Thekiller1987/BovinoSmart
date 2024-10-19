@@ -11,7 +11,7 @@ import ProductoList from './pages/ProductoList'; // Importa la página ProductoL
 import Login from './pages/login'; // Importa la página Login
 import PreguntaForm from './pages/PreguntasIA'; // Importa la página PreguntasIA
 import PrivateRoute from './pages/PrivateRoute'; // Importa el componente de rutas privadas
-import GestionUsuarios from './pages/GestionUsuario';
+
 import Graficos from './pages/EstadisticasBovinoSmart';
 import ActivarLicencia from './pages/Activacionlicencia';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importa los estilos de Font Awesome
@@ -40,7 +40,7 @@ function App() {
         <Route path="/Productos" element={<PrivateRoute element={Productos} />} />
         <Route path="/ProductoList" element={<PrivateRoute element={ProductoList} />} />
         <Route path="/PreguntaIA" element={<PrivateRoute element={PreguntaForm} />} />
-        <Route path="/GestionUsuarios" element={<GestionUsuarios />} />
+
         <Route path="/Graficos" element={<Graficos />} />
         <Route path="/ActivarLicencia" element={<PrivateRoute element={ActivarLicencia} />} />
       </Routes>

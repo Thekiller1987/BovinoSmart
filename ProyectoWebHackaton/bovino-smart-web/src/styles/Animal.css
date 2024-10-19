@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Junge&family=Kaisei+Decol&display=swap');
+
+/* Estilo para los cuadros verdes */
+.green-cards {
+    background-color: #8AC879; /* Fondo verde claro */
+    border: 6px solid #4caf50; /* Borde verde */
+    border-radius: 8px; /* Bordes redondeados */
+    font-family: kaisei;
+}
+
+
+/* Estilo para los cuadros verdes */
+.green-card {
+    background-color: #8AC879; /* Fondo verde claro */
+    border: 6px solid #4caf50; /* Borde verde */
+    border-radius: 8px; /* Bordes redondeados */
+    font-family: kaisei;
+}
+
+/* Estilo para el botón centralizado y por encima de todo */
+.center-button {
+    position: absolute; /* O usa position: fixed si quieres que se mantenga siempre en pantalla */
+    top: 310%;
+    left: 80%; /* Centra horizontalmente */
+    transform: translateX(-50%); /* Ajusta para centrar el botón */
+    z-index: 1000; /* Asegura que el botón esté por encima de otros elementos */
+    padding-bottom: 3%;
+}
+
+/* Estilo para el botón personalizado */
+.custom-button {
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.custom-button:hover {
+    background-color: #45a049; /* Efecto hover para el botón */
+}
+
+/* Estilo para los títulos */
+.card-title {
+    color: #333;
+ 
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+
+
+
+/* Contenedor de grid para el formulario */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas iguales */
+    gap: 10px; /* Espacio entre los elementos */
+    margin-bottom: 20px; /* Espacio en la parte inferior */
+}
+
+
+
+
+/* Ajuste de ancho para las cajas de texto */
+.animalNormal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 900px; /* Ancho máximo del formulario */
+    margin-left: 300px; /* Ajusta este valor según lo que necesites */
+}
+
+/* Reducir la distancia entre las cajas de texto */
+.g-3 > .col {
+    padding-bottom: 80px; /* Ajusta este valor para acortar la distancia */
+}
+
+
+
+/* Estilo para la sección de subida de imagen */
+.upload-imageA {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -350px;
+    /* Usa un margen negativo para subirlo más arriba */
+    margin-left: -250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #8AC879;
+    /* Fondo transparente */
+    border-radius: 10px;
+    border: 4px solid #3E7B31;
+    /* Borde verde oscuro */
+    padding: 20px;
+    /* Aumentado para darle más espacio interno */
+    height: 150px;
+    /* Incrementado para hacerlo más alto */
+    width: 150px;
+    /* Incrementado para hacerlo más ancho */
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo para el checkbox de inseminación */
+.large-checkbox {
+    transform: scale(1.8); /* Aumenta el tamaño del checkbox */
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+/* Ajuste de margen para moverlo hacia la izquierda */
+.large-checkbox .form-check {
+    margin-left: -38vh; /* Ajusta este valor según sea necesario */
+}
+
+.TituloAnimal{
+    font-family: kaisei;
+    margin-left: 0vh;
+}
+
+.letras {
+    font-size: 30px;
+    text-align: center; /* Centra el texto horizontalmente */
+    margin-left: 0;     /* Elimina el margen izquierdo */
+}
+
+/* Estilo para las cajas de texto, select y textarea dentro de .animalNormal */
+.animalNormal input,
+.animalNormal select,
+.animalNormal textarea {
+    border: 2px solid #3E7B31; /* Borde de 2px con color verde */
+    border-radius: 4px; /* Redondea las esquinas del borde */
+    padding: 8px; /* Espacio interior */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+
+
+
+
+
+/* Estilo para aplicar la tipografía y tamaño de letra dentro de green-card */
+.green-card {
+    font-family: 'Kaisei Decol', sans-serif; /* Aplica la fuente Kaisei */
+    font-size: 15px; /* Tamaño de letra para el contenido dentro de green-card */
+}
+
+/* Ajuste específico para los títulos dentro de .green-card */
+.green-card .card-title {
+    font-size: 2.5em; /* Tamaño del título */
+   
+}
+
+/* Estilo para los labels dentro de .green-card */
+.green-card .form-label {
+    font-size: 20px; /* Ajusta el tamaño de letra para los labels */
+}
+
+/* Estilo para inputs, selects y textareas dentro de .green-card */
+.green-card input,
+.green-card select,
+.green-card textarea {
+    font-size: 18px; /* Ajusta el tamaño de letra para las entradas */
+}
+
+/* Estilo para los botones dentro de .green-card */
+.green-card .btn {
+    font-size: 18px; /* Tamaño de letra para los botones */
+}
+
+
+/* Añadir estilos para la imagen decorativa */
+.decorative-image-2 {
+    position: fixed;
+    bottom: -45vh; /* Ajusta la posición superior */
+    right: 60vw; /* Ajusta la posición derecha */
+    z-index: 1; /* Asegura que la imagen esté detrás de otros elementos */
+    background-image: url('../diseño/Manchas2.png');
+    background-size: contain; /* Ajusta la imagen para que no se deforme */
+    background-repeat: no-repeat;
+    width: 43vw; /* Ajusta el tamaño de manera relativa al ancho de la pantalla */
+    height: 43vw;
+    z-index: -1;
+
+}
+
+
+/* Añadir estilos para la imagen decorativa */
+.decorative-image-3 {
+    position: absolute;
+    top: -30vh; /* Ajusta la posición superior */
+    right: 0vw; /* Ajusta la posición derecha */
+    z-index: 1; /* Asegura que la imagen esté detrás de otros elementos */
+    background-image: url('../diseño/Manchas2.png');
+    background-size: contain; /* Ajusta la imagen para que no se deforme */
+    background-repeat: no-repeat;
+    width: 30vw; /* Ajusta el tamaño de manera relativa al ancho de la pantalla */
+    height: 30vw;
+    z-index: -1;
+    transform: scaleX(-1) scaleY(-1); /* Voltea la imagen vertical y horizontalmente */
+}

@@ -1,164 +1,131 @@
 @import url('https://fonts.googleapis.com/css2?family=Junge&family=Kaisei+Decol&display=swap');
 
-/* Contenedor principal de la enfermedad */
-.container-enfermedad {
-    background-color: #8AC879;
-    /* Color de fondo verde */
+/* Contenedor principal del producto */
+.container-producto {
+    background-color: #8AC879; /* Color de fondo verde */
     border-radius: 20px;
     padding: 40px;
     margin: 20px auto;
     position: relative;
     overflow: hidden;
-    border: 5px solid #3E7B31;
-    /* Borde alrededor del cuadro, color verde oscuro */
-    max-width: 90%;
-    /* Limita el ancho del contenedor */
-    max-height: 500px;
-    /* Limita la altura máxima del contenedor */
-    margin-top: 55px
-    
+    border: 5px solid #3E7B31; /* Borde alrededor del cuadro, color verde oscuro */
+    max-width: 90%; /* Limita el ancho del contenedor */
+    height: 500px; /* Ajusta la altura del contenedor a 1200px */
+    margin-top: 200px;
 }
-
 /* Título */
-.titulo-enfermedad {
-    font-family: 'kaesei';
-    /* Aplica la fuente Junge */
+.titulo-producto {
+    font-family: 'kaisei'; /* Aplica la fuente Junge */
     font-size: 40px;
     text-align: left;
     margin-bottom: 30px;
-    color: #000000;
-    /* Color más oscuro para el título */
-  top: -35px;
+    color: #000000; /* Color más oscuro para el título */
+    top: -35px;
 }
 
 /* Estilo del formulario */
-.formulario-enfermedad {
+.formulario-producto {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    /* Cuatro columnas de igual tamaño */
-    gap: 20px;
-    /* Espacio entre columnas */
+    grid-template-columns: repeat(4, 1fr); /* Cuatro columnas de igual tamaño */
+    gap: 50px; /* Espacio entre columnas */
     align-items: center;
 }
 
-
-
-
 /* Estilo de cada campo */
-.campo-enfermedad {
+.campo-producto {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    font-family: 'kaesei';
-    /* Aplica la fuente Junge */
+    font-family: 'kaisei'; 
     font-size: 20px;
-
+    margin-left: 30px;
+    margin-top: 20px;
 }
 
-
-.campo-enfermedad label {
+.campo-producto label {
     margin-bottom: 8px;
     text-align: center;
-   margin-top: -80px;
-   font-size: 25px;
+    margin-top: -80px;
+    font-size: 25px;
 }
 
-/* Estilo de cada campo */
-.campo-trasmision {
+/* Estilo de cada campo de tratamiento */
+.campo-tratamiento {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    font-family: 'kaesei';    /* Aplica la fuente kaesei */
+    font-family: 'kaisei'; /* Aplica la fuente kaisei */
     font-size: 20px;
     margin-top: -300px;
     margin-right: 40px;
 }
 
-.campo-trasmision label {
+.campo-tratamiento label {
     margin-bottom: 8px;
     font-weight: bold;
     text-align: center;
 }
 
-
-.campo-trasmision input {
-    background-color: #f2f2f2;    /* Fondo blanco */
-    color: #000000;    /* Texto en color negro */
-    border: 5px solid #3E7B31;    /* Borde verde oscuro */
+.campo-tratamiento input {
+    background-color: #f2f2f2; /* Fondo blanco */
+    color: #000000; /* Texto en color negro */
+    border: 5px solid #3E7B31; /* Borde verde oscuro */
     border-radius: 6px;
     padding: 20px;
     font-size: 16px;
 }
 
-.campo-enfermedad input,
-.campo-enfermedad textarea {
-   /* margin-top: -110px;*/
-    width: 100%;
-    /* El campo ocupa el 100% del contenedor */
+/* Estilo de los campos de producto */
+.campo-producto input {
+    width: 100%; /* El campo ocupa el 100% del contenedor */
     padding: 10px;
     border-radius: 10px;
-    border: 3px solid #3E7B31;
-    /* Borde verde oscuro */
+    border: 3px solid #3E7B31; /* Borde verde oscuro */
     background-color: #f2f2f2;
     font-size: 16px;
-    height: 380px;
-    /* Tamaño uniforme para todos los cuadros */
-    box-sizing: border-box;
-    /* Incluye el padding y el borde dentro del tamaño total */
-}
-
-.campo-enfermedad textarea {
-    resize: none;
-    /* Evita que el usuario pueda redimensionar el cuadro */
+    height: 60px; /* Tamaño uniforme para todos los cuadros */
+    box-sizing: border-box; /* Incluye el padding y el borde dentro del tamaño total */
 }
 
 /* Estilo para la sección de imagen */
-.upload-image {
-    margin-top: -240px;
-    /* Usa un margen negativo para subirlo más arriba */
+.upload-image-producto {
+    margin-top: -20px; /* Usa un margen negativo para subirlo más arriba */
     margin-left: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #8AC879;
-    /* Fondo transparente */
+    background-color: #8AC879; /* Fondo transparente */
     border-radius: 10px;
-    border: 4px solid #3E7B31;
-    /* Borde verde oscuro */
-    padding: 20px;
-    /* Aumentado para darle más espacio interno */
-    height: 150px;
-    /* Incrementado para hacerlo más alto */
-    width: 150px;
-    /* Incrementado para hacerlo más ancho */
+    border: 4px solid #3E7B31; /* Borde verde oscuro */
+    padding: 20px; /* Aumentado para darle más espacio interno */
+    height: 150px; /* Incrementado para hacerlo más alto */
+    width: 150px; /* Incrementado para hacerlo más ancho */
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s ease;
 }
 
-
-.upload-image:hover {
+.upload-image-producto:hover {
     background-color: rgba(255, 255, 255, 0.7);
 }
 
-.upload-label {
+.upload-label-producto {
     cursor: pointer;
 }
 
-.upload-icon {
+.upload-icon-producto {
     width: 100%;
     height: auto;
 }
 
 /* Ocultar el input de archivo */
-.hidden-input {
+.hidden-input-producto {
     display: none;
 }
 
 /* Estilo del botón */
-.custom-button {
-    background-color: #4CAF50;
-    /* Color verde */
+.custom-button-producto {
+    background-color: #4CAF50; /* Color verde */
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
@@ -168,21 +135,21 @@
     transition: background-color 0.3s ease;
 }
 
-.custom-button:hover {
-    background-color: #45a049;
-    /* Color al pasar el cursor */
+.custom-button-producto:hover {
+    background-color: #45a049; /* Color al pasar el cursor */
 }
 
-.center-buttons {
+/* Centrar el botón */
+.center-button-producto {
     grid-column: 1 / -1; /* Para que el botón ocupe toda la fila */
     text-align: center;
-    margin-top: -100px;
+    margin-top: -30px;
     margin-right: auto; /* Para que el margen derecho sea automático */
-    margin-left: -30%; /* Para centrar el botón horizontalmente */
+    margin-left: 10%; /* Para centrar el botón horizontalmente */
     width: 80%; /* Ajusta el ancho en porcentaje para que sea responsive */
 }
 
-/* Añadir estilos para la imagen decorativa */
+/* Estilo para la imagen decorativa */
 .decorative-image-2 {
     position: fixed;
     bottom: -45vh; /* Ajusta la posición superior */
@@ -194,11 +161,9 @@
     width: 43vw; /* Ajusta el tamaño de manera relativa al ancho de la pantalla */
     height: 43vw;
     z-index: -1;
-
 }
 
-
-/* Añadir estilos para la imagen decorativa */
+/* Estilo para la imagen decorativa */
 .decorative-image-3 {
     position: absolute;
     top: -30vh; /* Ajusta la posición superior */
@@ -213,4 +178,22 @@
     transform: scaleX(-1) scaleY(-1); /* Voltea la imagen vertical y horizontalmente */
 }
 
+.campo-productoAplicacion{
+ display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'kaisei'; /* Aplica la fuente kaisei */
+    font-size: 20px;
+    margin-top: -50px;
+    margin-left: 40px;
+    
+}
 
+.campo-productoAplicacion input {
+    background-color: #f2f2f2; /* Fondo blanco */
+    color: #000000; /* Texto en color negro */
+    border: 5px solid #3E7B31; /* Borde verde oscuro */
+    border-radius: 6px;
+    padding: 20px;
+    font-size: 16px;
+}

@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react'; 
-import { Modal, Button, Form, Row, Col, FloatingLabel, Accordion } from 'react-bootstrap'; 
-import '../styles/AnimalList.css'; 
-import Header from '../components/Header'; 
-import deleteIcon from '../Iconos/trash3.svg'; 
-import EditIcon from '../Iconos/pencil.svg'; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
-import { faStethoscope, faSyringe, faShower, faTint, faSeedling } from '@fortawesome/free-solid-svg-icons'; 
+import React, { useEffect, useState } from 'react';
+import { Modal, Button, Form, Row, Col, FloatingLabel, Accordion } from 'react-bootstrap';
+import '../styles/AnimalList.css';
+import Header from '../components/Header';
+import deleteIcon from '../Iconos/trash3.svg';
+import EditIcon from '../Iconos/pencil.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStethoscope, faSyringe, faShower, faTint, faSeedling } from '@fortawesome/free-solid-svg-icons';
 
 function AnimalList() {
     // Estados para la lista de animales y el manejo de la interfaz.
-    const [animales, setAnimales] = useState([]); 
-    const [selectedAnimal, setSelectedAnimal] = useState(null); 
-    const [editAnimal, setEditAnimal] = useState(null); 
-    const [error, setError] = useState(null); 
-    const [deleting, setDeleting] = useState(false); 
-    const [showEditModal, setShowEditModal] = useState(false); 
-    const [listaEnfermedades, setListaEnfermedades] = useState([]); 
-    const [listaProductos, setListaProductos] = useState([]); 
-    const [searchQuery, setSearchQuery] = useState(''); 
-    const [showReproductiveModal, setShowReproductiveModal] = useState(false); 
+    const [animales, setAnimales] = useState([]);
+    const [selectedAnimal, setSelectedAnimal] = useState(null);
+    const [editAnimal, setEditAnimal] = useState(null);
+    const [error, setError] = useState(null);
+    const [deleting, setDeleting] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [listaEnfermedades, setListaEnfermedades] = useState([]);
+    const [listaProductos, setListaProductos] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [showReproductiveModal, setShowReproductiveModal] = useState(false);
 
     const [userRoles, setUserRoles] = useState([]);
     useEffect(() => {
@@ -32,56 +32,56 @@ function AnimalList() {
     // Función para cargar la lista de animales desde el servidor.
     const fetchData = async () => {
         try {
-            const response = await fetch('http://localhost:5000/crud/listarAnimales'); 
+            const response = await fetch('http://localhost:5000/crud/listarAnimales');
             if (response.ok) {
-                const data = await response.json(); 
-                setAnimales(data); 
+                const data = await response.json();
+                setAnimales(data);
             } else {
-                throw new Error('Error al recuperar los datos'); 
+                throw new Error('Error al recuperar los datos');
             }
         } catch (error) {
-            setError(error.message); 
+            setError(error.message);
         }
     };
 
     // Función para cargar las listas de enfermedades y productos desde el servidor.
     const fetchLists = async () => {
         try {
-            const enfermedadesResponse = await fetch('http://localhost:5000/crud/enfermedades'); 
-            const productosResponse = await fetch('http://localhost:5000/crud/productos'); 
+            const enfermedadesResponse = await fetch('http://localhost:5000/crud/enfermedades');
+            const productosResponse = await fetch('http://localhost:5000/crud/productos');
 
             if (enfermedadesResponse.ok && productosResponse.ok) {
-                const enfermedadesData = await enfermedadesResponse.json(); 
-                const productosData = await productosResponse.json(); 
+                const enfermedadesData = await enfermedadesResponse.json();
+                const productosData = await productosResponse.json();
 
-                setListaEnfermedades(enfermedadesData); 
-                setListaProductos(productosData); 
+                setListaEnfermedades(enfermedadesData);
+                setListaProductos(productosData);
             } else {
-                throw new Error('Error al recuperar las listas'); 
+                throw new Error('Error al recuperar las listas');
             }
         } catch (error) {
-            setError(error.message); 
+            setError(error.message);
         }
     };
 
     useEffect(() => {
-        fetchData(); 
-        fetchLists(); 
+        fetchData();
+        fetchLists();
     }, []);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.key === 'Escape') {
-                handleClosePanel(); 
+                handleClosePanel();
             }
         };
 
-        document.addEventListener('keydown', handleKeyDown); 
+        document.addEventListener('keydown', handleKeyDown);
         return () => {
-            document.removeEventListener('keydown', handleKeyDown); 
+            document.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
-    
+
     const formatDate = (dateString) => {
         if (!dateString) return ''; // Manejar si la fecha es nula o indefinida
         const date = new Date(dateString);
@@ -90,10 +90,10 @@ function AnimalList() {
         }
         return date.toISOString().split('T')[0]; // Convertir al formato YYYY-MM-DD
     };
-    
+
 
     const handleCardClick = (animal) => {
-        setSelectedAnimal(animal); 
+        setSelectedAnimal(animal);
     };
 
     const handleEditClick = (animal) => {
@@ -139,43 +139,43 @@ function AnimalList() {
         });
         setShowEditModal(true); // Mostrar el modal de edición.
     };
-    
-    
-    
+
+
+
     const getCardClass = (estado) => {
         switch (estado) {
             case 'Muerto':
-                return 'card-animal-list dead-animal'; 
+                return 'card-animal-list dead-animal';
             case 'Enfermo':
-                return 'card-animal-list sick-animal'; 
+                return 'card-animal-list sick-animal';
             default:
-                return 'card-animal-list'; 
+                return 'card-animal-list';
         }
     };
 
     const getIconForState = (estado) => {
         switch (estado) {
             case 'Muerto':
-                return '❌'; 
+                return '❌';
             case 'Enfermo':
-                return '⚠️'; 
+                return '⚠️';
             default:
-                return ''; 
+                return '';
         }
     };
 
     const handleClosePanel = () => {
-        setSelectedAnimal(null); 
+        setSelectedAnimal(null);
     };
 
     const handleCloseEditModal = () => {
-        setShowEditModal(false); 
+        setShowEditModal(false);
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         const [field, index, subfield] = name.split('.'); // Dividimos el nombre del campo
-    
+
         if (index !== undefined) {
             setEditAnimal((prevAnimal) => {
                 const newArray = [...prevAnimal[field]]; // Creamos una copia del array de enfermedades o productos
@@ -195,22 +195,22 @@ function AnimalList() {
             }));
         }
     };
-    
-    
-    
+
+
+
 
     const handleImagenChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = () => {
-            const base64String = reader.result; 
+            const base64String = reader.result;
             setEditAnimal((prevAnimal) => ({
                 ...prevAnimal,
                 imagen: base64String
             }));
         };
         if (file) {
-            reader.readAsDataURL(file); 
+            reader.readAsDataURL(file);
         }
     };
 
@@ -223,21 +223,21 @@ function AnimalList() {
 
     const handleDeleteAnimal = async (idAnimal) => {
         try {
-            setDeleting(true); 
+            setDeleting(true);
             const response = await fetch(`http://localhost:5000/crud/deleteAnimal/${idAnimal}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
                 setTimeout(() => {
-                    setAnimales(animales.filter(animal => animal.idAnimal !== idAnimal)); 
+                    setAnimales(animales.filter(animal => animal.idAnimal !== idAnimal));
                     setSelectedAnimal(null);
-                    setDeleting(false); 
-                }, 1000); 
+                    setDeleting(false);
+                }, 1000);
             } else {
-                throw new Error('Error al eliminar el animal'); 
+                throw new Error('Error al eliminar el animal');
             }
         } catch (error) {
-            setError(error.message); 
+            setError(error.message);
             setDeleting(false);
         }
     };
@@ -268,10 +268,10 @@ function AnimalList() {
             setError(error.message); // Maneja errores de la solicitud.
         }
     };
-    
+
 
     const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value); 
+        setSearchQuery(e.target.value);
     };
 
     const filteredAnimales = animales.filter((animal) => {
@@ -285,10 +285,12 @@ function AnimalList() {
             (animal.enfermedades && animal.enfermedades.toLowerCase().includes(search))
         );
     });
-    
+
     return (
         <div className="body-animal-list">
-            <Header /> 
+            <div className="decorative-image-5"></div> {/* Segunda imagen decorativa */}
+            <div className="decorative-image-6"></div> {/* Segunda imagen decorativa */}
+            <Header />
             <div className="search-container">
                 <FloatingLabel controlId="search" label="Buscar">
                     <Form.Control
@@ -336,18 +338,29 @@ function AnimalList() {
                         <div className="detail-column">
                             <h3>{selectedAnimal.nombre}</h3>
                             <div className="detail-section">
+                                <h4>Información General</h4>
                                 <p><span className="attribute">Sexo:</span> <span className="value">{selectedAnimal.sexo}</span></p>
                                 <p><span className="attribute">Código ID:</span> <span className="value">{selectedAnimal.codigo_idVaca}</span></p>
                                 <p><span className="attribute">Fecha de Nacimiento:</span> <span className="value">{formatDate(selectedAnimal.fecha_nacimiento)}</span></p>
                                 <p><span className="attribute">Raza:</span> <span className="value">{selectedAnimal.raza}</span></p>
-                                <p><span className="attribute">Observaciones:</span> <span className="value">{selectedAnimal.observaciones}</span></p>
-                                <p><span className="attribute">Peso Nacimiento:</span> <span className="value">{selectedAnimal.peso_nacimiento} kg</span></p>
-                                <p><span className="attribute">Peso Destete:</span> <span className="value">{selectedAnimal.peso_destete} kg</span></p>
-                                <p><span className="attribute">Peso Actual:</span> <span className="value">{selectedAnimal.peso_actual} kg</span></p>
+                            </div>
+                            <div className="detail-section">
+                                <h4>Estado del Animal</h4>
                                 <p><span className="attribute">Estado:</span> <span className="value">{selectedAnimal.estado}</span></p>
                                 <p><span className="attribute">Inseminación:</span> <span className="value">{selectedAnimal.inseminacion ? 'Sí' : 'No'}</span></p>
                             </div>
+                            <div className="detail-section">
+                                <h4>Pesos</h4>
+                                <p><span className="attribute">Peso Nacimiento:</span> <span className="value">{selectedAnimal.peso_nacimiento} kg</span></p>
+                                <p><span className="attribute">Peso Destete:</span> <span className="value">{selectedAnimal.peso_destete} kg</span></p>
+                                <p><span className="attribute">Peso Actual:</span> <span className="value">{selectedAnimal.peso_actual} kg</span></p>
+                            </div>
+                            <div className="detail-section">
+                                <h4>Observaciones</h4>
+                                <p><span className="attribute">Observaciones:</span> <span className="value">{selectedAnimal.observaciones}</span></p>
+                            </div>
                         </div>
+
                         <div className="detail-column">
                             <Accordion defaultActiveKey="0">
                                 {/* Historial de Enfermedades */}
@@ -519,7 +532,7 @@ function AnimalList() {
                         <Row className="g-3">
                             {/* Campos accesibles para el ganadero */}
 
-                           
+
 
                             {userRoles.includes('Ganadero') && (
                                 <>
@@ -918,116 +931,116 @@ function AnimalList() {
 
                             {/* Estado Reproductivo - Solo accesible para el ganadero */}
                             {userRoles.includes('Ganadero') && (
-    <Col sm="12">
-        <h5>Estado Reproductivo</h5>
-        {editAnimal?.sexo === 'Hembra' ? (
-            <>
-                <FloatingLabel controlId="cicloCelo" label="Ciclo de Celo">
-                    <Form.Select
-                        name="estadoReproductivo.ciclo_celo"
-                        value={editAnimal?.estadoReproductivo?.ciclo_celo || ''}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Seleccione el ciclo</option>
-                        <option value="18 días">18 días</option>
-                        <option value="21 días">21 días</option>
-                        <option value="24 días">24 días</option>
-                        <option value="28 días">28 días</option>
-                    </Form.Select>
-                </FloatingLabel>
+                                <Col sm="12">
+                                    <h5>Estado Reproductivo</h5>
+                                    {editAnimal?.sexo === 'Hembra' ? (
+                                        <>
+                                            <FloatingLabel controlId="cicloCelo" label="Ciclo de Celo">
+                                                <Form.Select
+                                                    name="estadoReproductivo.ciclo_celo"
+                                                    value={editAnimal?.estadoReproductivo?.ciclo_celo || ''}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <option value="">Seleccione el ciclo</option>
+                                                    <option value="18 días">18 días</option>
+                                                    <option value="21 días">21 días</option>
+                                                    <option value="24 días">24 días</option>
+                                                    <option value="28 días">28 días</option>
+                                                </Form.Select>
+                                            </FloatingLabel>
 
-                <FloatingLabel controlId="fechaUltimoCelo" label="Fecha del Último Celo">
-                    <Form.Control
-                        type="date"
-                        name="estadoReproductivo.fecha_ultimo_celo"
-                        value={editAnimal?.estadoReproductivo?.fecha_ultimo_celo || ''}
-                        onChange={handleInputChange}
-                    />
-                </FloatingLabel>
+                                            <FloatingLabel controlId="fechaUltimoCelo" label="Fecha del Último Celo">
+                                                <Form.Control
+                                                    type="date"
+                                                    name="estadoReproductivo.fecha_ultimo_celo"
+                                                    value={editAnimal?.estadoReproductivo?.fecha_ultimo_celo || ''}
+                                                    onChange={handleInputChange}
+                                                />
+                                            </FloatingLabel>
 
-                <FloatingLabel controlId="serviciosRealizados" label="Servicios Realizados">
-                    <Form.Select
-                        name="estadoReproductivo.servicios_realizados"
-                        value={editAnimal?.estadoReproductivo?.servicios_realizados || ''}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Seleccione</option>
-                        {[...Array(10).keys()].map((num) => (
-                            <option key={num} value={num}>{num}</option>
-                        ))}
-                    </Form.Select>
-                </FloatingLabel>
+                                            <FloatingLabel controlId="serviciosRealizados" label="Servicios Realizados">
+                                                <Form.Select
+                                                    name="estadoReproductivo.servicios_realizados"
+                                                    value={editAnimal?.estadoReproductivo?.servicios_realizados || ''}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <option value="">Seleccione</option>
+                                                    {[...Array(10).keys()].map((num) => (
+                                                        <option key={num} value={num}>{num}</option>
+                                                    ))}
+                                                </Form.Select>
+                                            </FloatingLabel>
 
-                <FloatingLabel controlId="numeroGestaciones" label="Número de Gestaciones">
-                    <Form.Select
-                        name="estadoReproductivo.numero_gestaciones"
-                        value={editAnimal?.estadoReproductivo?.numero_gestaciones || ''}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Seleccione</option>
-                        {[...Array(10).keys()].map((num) => (
-                            <option key={num} value={num}>{num}</option>
-                        ))}
-                    </Form.Select>
-                </FloatingLabel>
+                                            <FloatingLabel controlId="numeroGestaciones" label="Número de Gestaciones">
+                                                <Form.Select
+                                                    name="estadoReproductivo.numero_gestaciones"
+                                                    value={editAnimal?.estadoReproductivo?.numero_gestaciones || ''}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <option value="">Seleccione</option>
+                                                    {[...Array(10).keys()].map((num) => (
+                                                        <option key={num} value={num}>{num}</option>
+                                                    ))}
+                                                </Form.Select>
+                                            </FloatingLabel>
 
-                <FloatingLabel controlId="partosRealizados" label="Partos Realizados">
-                    <Form.Select
-                        name="estadoReproductivo.partos_realizados"
-                        value={editAnimal?.estadoReproductivo?.partos_realizados || ''}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Seleccione</option>
-                        {[...Array(10).keys()].map((num) => (
-                            <option key={num} value={num}>{num}</option>
-                        ))}
-                    </Form.Select>
-                </FloatingLabel>
+                                            <FloatingLabel controlId="partosRealizados" label="Partos Realizados">
+                                                <Form.Select
+                                                    name="estadoReproductivo.partos_realizados"
+                                                    value={editAnimal?.estadoReproductivo?.partos_realizados || ''}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <option value="">Seleccione</option>
+                                                    {[...Array(10).keys()].map((num) => (
+                                                        <option key={num} value={num}>{num}</option>
+                                                    ))}
+                                                </Form.Select>
+                                            </FloatingLabel>
 
-                <FloatingLabel controlId="resultadosLactancia" label="Resultados de la Lactancia">
-                    <Form.Select
-                        name="estadoReproductivo.resultados_lactancia"
-                        value={editAnimal?.estadoReproductivo?.resultados_lactancia || ''}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Seleccione</option>
-                        <option value="Alta producción">Alta producción</option>
-                        <option value="Producción normal">Producción normal</option>
-                        <option value="Baja producción">Baja producción</option>
-                    </Form.Select>
-                </FloatingLabel>
-            </>
-        ) : (
-            <>
-                <FloatingLabel controlId="usoProgramaInseminacion" label="Uso en Programas de Inseminación">
-                    <Form.Select
-                        name="estadoReproductivo.uso_programa_inseminacion"
-                        value={editAnimal?.estadoReproductivo?.uso_programa_inseminacion || ''}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Seleccione</option>
-                        <option value="Frecuente">Frecuente</option>
-                        <option value="Ocasional">Ocasional</option>
-                        <option value="Nunca">Nunca</option>
-                    </Form.Select>
-                </FloatingLabel>
+                                            <FloatingLabel controlId="resultadosLactancia" label="Resultados de la Lactancia">
+                                                <Form.Select
+                                                    name="estadoReproductivo.resultados_lactancia"
+                                                    value={editAnimal?.estadoReproductivo?.resultados_lactancia || ''}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <option value="">Seleccione</option>
+                                                    <option value="Alta producción">Alta producción</option>
+                                                    <option value="Producción normal">Producción normal</option>
+                                                    <option value="Baja producción">Baja producción</option>
+                                                </Form.Select>
+                                            </FloatingLabel>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FloatingLabel controlId="usoProgramaInseminacion" label="Uso en Programas de Inseminación">
+                                                <Form.Select
+                                                    name="estadoReproductivo.uso_programa_inseminacion"
+                                                    value={editAnimal?.estadoReproductivo?.uso_programa_inseminacion || ''}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <option value="">Seleccione</option>
+                                                    <option value="Frecuente">Frecuente</option>
+                                                    <option value="Ocasional">Ocasional</option>
+                                                    <option value="Nunca">Nunca</option>
+                                                </Form.Select>
+                                            </FloatingLabel>
 
-                <FloatingLabel controlId="resultadoPruebaReproductiva" label="Resultado de la Prueba Reproductiva">
-                    <Form.Select
-                        name="estadoReproductivo.resultado_prueba_reproductiva"
-                        value={editAnimal?.estadoReproductivo?.resultado_prueba_reproductiva || ''}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Seleccione</option>
-                        <option value="Positivo">Positivo</option>
-                        <option value="Negativo">Negativo</option>
-                        <option value="Pendiente">Pendiente</option>
-                    </Form.Select>
-                </FloatingLabel>
-            </>
-        )}
-    </Col>
-)}
+                                            <FloatingLabel controlId="resultadoPruebaReproductiva" label="Resultado de la Prueba Reproductiva">
+                                                <Form.Select
+                                                    name="estadoReproductivo.resultado_prueba_reproductiva"
+                                                    value={editAnimal?.estadoReproductivo?.resultado_prueba_reproductiva || ''}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <option value="">Seleccione</option>
+                                                    <option value="Positivo">Positivo</option>
+                                                    <option value="Negativo">Negativo</option>
+                                                    <option value="Pendiente">Pendiente</option>
+                                                </Form.Select>
+                                            </FloatingLabel>
+                                        </>
+                                    )}
+                                </Col>
+                            )}
 
 
                         </Row>

@@ -24,7 +24,7 @@ const ActivarLicencia = () => {
 
       const data = await response.json();
       console.log(data); // Agregado para verificar la respuesta del servidor
-      
+
       // Verificar si hay un error en la respuesta
       if (response.ok) {
         setMensaje(data.message); // Mostrar mensaje de éxito
@@ -47,19 +47,22 @@ const ActivarLicencia = () => {
 
   return (
     <div>
-              <Header/>
-    <div className="activar-licencia-container">
-      <h1>Activar Licencia</h1>
-      <input
-        type="text"
-        value={codigo}
-        onChange={(e) => setCodigo(e.target.value)}
-        placeholder="Introduce el código de activación"
-      />
-      <button onClick={handleActivacion}>Activar</button>
-      {mensaje && <p className="mensaje">{mensaje}</p>}
-      {mensajeError && <p className="mensaje-error">{mensajeError}</p>} {/* Mostrar mensaje de error */}
-    </div>
+
+      <Header />
+      <div className="decorative-image-2"></div> {/* Segunda imagen decorativa */}
+      <div className="decorative-image-3"></div> {/* Segunda imagen decorativa */}
+      <div className="activar-licencia-container">
+        <h1>Activar Licencia</h1>
+        <input
+          type="text"
+          value={codigo}
+          onChange={(e) => setCodigo(e.target.value)}
+          placeholder="Introduce el código de activación"
+        />
+        <button onClick={handleActivacion}>Activar</button>
+        {mensaje && <p className="mensaje">{mensaje}</p>}
+        {mensajeError && <p className="mensaje-error">{mensajeError}</p>} {/* Mostrar mensaje de error */}
+      </div>
 
     </div>
   );

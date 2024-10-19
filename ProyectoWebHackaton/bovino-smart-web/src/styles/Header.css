@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Junge&display=swap'); /* Fuente Junge */
+@import url('https://fonts.googleapis.com/css2?family=Junge&family=Kaisei+Decol&display=swap');
+
 
 /* Estilo del Navbar principal */
 .navbar-color {
@@ -9,7 +10,7 @@
     top: 0;
     z-index: 1000;
     height: 80px;
-    font-family: 'Junge', sans-serif; /* Mismas tipografías */
+    font-family: 'Kaisei'; /* Mismas tipografías */
 }
 
 /* Estilo para el nombre del proyecto en el Navbar */
@@ -46,7 +47,7 @@
     color: #ffffff !important;
     text-decoration: none;
     font-size: 18px;
-    margin-right: 20px; /* Ajusta el margen entre enlaces */
+    margin-right: 2px; /* Ajusta el margen entre enlaces */
     transition: color 0.3s;
 }
 
@@ -197,5 +198,36 @@
 
     .offcanvas-body .btn {
         padding: 8px 12px; /* Ajustar el padding de los botones */
+    }
+}
+
+
+/* Responsividad para pantallas grandes */
+@media (min-width: 1920px) {
+    .navbar-color {
+        height: 90px;
+    }
+
+    .navbar-logo {
+        height: 130px;
+    }
+
+    .navbar-brand {
+        font-size: 28px;
+        gap: 15px;
+    }
+
+    .link-unstyled {
+        font-size: 20px;
+        margin-right: 25px;
+    }
+
+    .btn-circle {
+        width: 70px;
+        height: 70px;
+    }
+
+    .icono-cerrar-sesion {
+        transform: scale(2);
     }
 }

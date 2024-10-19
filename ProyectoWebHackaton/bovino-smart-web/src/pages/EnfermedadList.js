@@ -94,6 +94,30 @@ function EnfermedadList() {
         }
     };
 
+    const handleDeleteClick = async () => {
+        if (!editableEnfermedad) return;
+
+        try {
+            const response = await fetch(`http://localhost:5000/crud/enfermedades/${editableEnfermedad.idEnfermedades}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                setEnfermedades((prev) =>
+                    prev.filter((enfermedad) => enfermedad.idEnfermedades !== editableEnfermedad.idEnfermedades)
+                );
+                setShowModal(false);
+            } else {
+                throw new Error('Error al eliminar la enfermedad');
+            }
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
     const filteredEnfermedades = enfermedades.filter((enfermedad) =>
         enfermedad.nombre.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -215,10 +239,14 @@ function EnfermedadList() {
                     </div>
                     <div className="modal-buttons-container">
                         {isEditing ? (
-                            <Button className="btn-update" onClick={handleUpdateClick}>Actualizar</Button>
+                            <>
+                                <Button className="btn-update" onClick={handleUpdateClick}>Actualizar</Button>
+                                <Button variant="danger" className="btn-delete" onClick={handleDeleteClick}>Eliminar</Button>
+                            </>
                         ) : (
                             <Button className="btn-edit" onClick={handleEditClick}>Editar</Button>
                         )}
+                         <Button variant="danger" className="btn-delete" onClick={handleDeleteClick}>Eliminar</Button>
                     </div>
                 </CustomModal>
 

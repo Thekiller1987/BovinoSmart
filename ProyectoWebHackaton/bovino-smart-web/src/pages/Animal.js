@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'; // Importa React y los hooks
 import { Form, Row, Col, Container, FloatingLabel, Card, Button } from 'react-bootstrap'; // Importa componentes de React Bootstrap.
 import Header from '../components/Header'; // Importa el componente Header personalizado.
 import '../styles/App.css'; // Importa los estilos CSS personalizados.
+import '../styles/Animal.css'; // Importa los estilos CSS personalizados.
+import FlechaIcon from '../Iconos/Vector.png'; // Importa la imagen de la flecha
 
 function Animal() {
     // Estados para los datos del formulario.
@@ -166,12 +168,12 @@ function Animal() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         if (!nombre || !sexo || !codigo_idVaca || !fecha_nacimiento || !raza) {
             alert('Por favor, complete todos los campos obligatorios.');
             return;
         }
-    
+
         const estadoReproductivoData = sexo === 'Hembra' ? {
             ciclo_celo: estadoReproductivo.ciclo_celo,
             fecha_ultimo_celo: estadoReproductivo.fecha_ultimo_celo ? new Date(estadoReproductivo.fecha_ultimo_celo).toISOString().split('T')[0] : null,
@@ -183,7 +185,7 @@ function Animal() {
             uso_programa_inseminacion: estadoReproductivo.uso_programa_inseminacion,
             resultado_prueba_reproductiva: estadoReproductivo.resultado_prueba_reproductiva
         } : {};
-    
+
         const formData = {
             nombre,
             sexo,
@@ -204,7 +206,7 @@ function Animal() {
             inseminaciones,
             estadoReproductivo: estadoReproductivoData
         };
-    
+
         try {
             const response = await fetch('http://localhost:5000/crud/createAnimal', {
                 method: 'POST',
@@ -213,7 +215,7 @@ function Animal() {
                 },
                 body: JSON.stringify(formData),
             });
-    
+
             if (response.ok) {
                 alert('Animal registrado exitosamente');
                 resetForm();
@@ -225,19 +227,23 @@ function Animal() {
             alert('Error en la solicitud al servidor');
         }
     };
-    
+
     return (
         <div>
             <Header /> {/* Renderiza el componente Header */}
+            <div className="decorative-image-2"></div> {/* Segunda imagen decorativa */}
+            <div className="decorative-image-3"></div> {/* Segunda imagen decorativa */}
             <Container>
-                <Card className="mt-3">
+                {/* Primer cuadro verde - Registro de Animal */}
+                <Card className="mt-1 green-cards">
                     <Card.Body>
-                        <Card.Title>Registro de Animal</Card.Title>
-                        <Form className="mt-3" onSubmit={handleSubmit}>
+                        <Card.Title className='TituloAnimal' >Registro de Animal</Card.Title>
+                        <Form className="animalNormal" onSubmit={handleSubmit}>
                             <Row className="g-3">
-                                {/* Información básica del animal */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="nombre" label="Nombre">
+                                {/* Información básica del animal, organizado en filas de 3 en 3 */}
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Nombre del animal</Form.Label> 
+                                    <FloatingLabel controlId="nombre" >
                                         <Form.Control
                                             type="text"
                                             placeholder="Ingrese el nombre del animal"
@@ -247,9 +253,9 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
-                                {/* Campo para el sexo del animal */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="sexo" label="Sexo">
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Sexo</Form.Label>
+                                    <FloatingLabel controlId="sexo" >
                                         <Form.Select
                                             value={sexo}
                                             onChange={(e) => setSexo(e.target.value)}
@@ -261,20 +267,9 @@ function Animal() {
                                         </Form.Select>
                                     </FloatingLabel>
                                 </Col>
-                                {/* Campo para la imagen del animal */}
-                                <Col sm="12" md="6" lg="6">
-                                    <Form.Group controlId="imagen" className="">
-                                        <Form.Control
-                                            type="file"
-                                            accept=".jpg, .png, .jpeg"
-                                            size="lg"
-                                            onChange={handleImagenChange}
-                                        />
-                                    </Form.Group>
-                                </Col>
-                                {/* Campo para el código ID de la vaca */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="codigo_idVaca" label="Código ID Vaca">
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Código ID Vaca</Form.Label>
+                                    <FloatingLabel controlId="codigo_idVaca" >
                                         <Form.Control
                                             type="text"
                                             placeholder="Ingrese el código ID de la vaca"
@@ -284,9 +279,10 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
-                                {/* Campo para la fecha de nacimiento del animal */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="fecha_nacimiento" label="Fecha de Nacimiento">
+
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Fecha de nacimiento</Form.Label>
+                                    <FloatingLabel controlId="fecha_nacimiento" >
                                         <Form.Control
                                             type="date"
                                             placeholder="Ingrese la fecha de nacimiento"
@@ -296,9 +292,9 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
-                                {/* Campo para la raza del animal */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="raza" label="Raza">
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Raza</Form.Label>
+                                    <FloatingLabel controlId="raza">
                                         <Form.Control
                                             type="text"
                                             placeholder="Ingrese la raza del animal"
@@ -308,20 +304,9 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
-                                {/* Campo para observaciones adicionales */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="observaciones" label="Observaciones">
-                                        <Form.Control
-                                            as="textarea"
-                                            placeholder="Ingrese observaciones"
-                                            value={observaciones}
-                                            onChange={(e) => setObservaciones(e.target.value)}
-                                        />
-                                    </FloatingLabel>
-                                </Col>
-                                {/* Campo para el peso al nacer */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="peso_nacimiento" label="Peso al Nacer (kg)">
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Peso al nacer</Form.Label>
+                                    <FloatingLabel controlId="peso_nacimiento" label="(kg)">
                                         <Form.Control
                                             type="number"
                                             placeholder="Ingrese el peso al nacer"
@@ -331,9 +316,10 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
-                                {/* Campo para el peso al destete */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="peso_destete" label="Peso al Destete (kg)">
+
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Peso destete</Form.Label>
+                                    <FloatingLabel controlId="peso_destete" label="(kg)">
                                         <Form.Control
                                             type="number"
                                             placeholder="Ingrese el peso al destete"
@@ -343,9 +329,9 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
-                                {/* Campo para el peso actual del animal */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="peso_actual" label="Peso Actual (kg)">
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Peso actual</Form.Label>
+                                    <FloatingLabel controlId="peso_actual" label="(kg)">
                                         <Form.Control
                                             type="number"
                                             placeholder="Ingrese el peso actual"
@@ -355,10 +341,38 @@ function Animal() {
                                         />
                                     </FloatingLabel>
                                 </Col>
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Observaciones</Form.Label>
+                                    <FloatingLabel controlId="observaciones" >
+                                        <Form.Control
+                                            as="textarea"
+                                            placeholder="Ingrese observaciones"
+                                            value={observaciones}
+                                            onChange={(e) => setObservaciones(e.target.value)}
+                                        />
+                                    </FloatingLabel>
+                                </Col>
 
-                                {/* Sección de Estado del animal */}
-                                <Col sm="12" md="6" lg="6">
-                                    <FloatingLabel controlId="estado" label="Estado">
+                                {/* Imagen del animal, separado del grupo de 3 en 3 */}
+                                <Col sm="12">
+                                    <div className="upload-imageA">
+                                        <input
+                                            type="file"
+                                            id="file-input"
+                                            accept=".jpg, .png, .jpeg"
+                                            onChange={handleImagenChange}
+                                            className="hidden-input"
+                                        />
+                                        <label htmlFor="file-input" className="upload-label">
+                                            <img src={FlechaIcon} alt="Subir" className="upload-icon" />
+                                        </label>
+                                    </div>
+                                </Col>
+
+                                {/* Estado del animal */}
+                                <Col sm="12" md="4" lg="4">
+                                <Form.Label className='letras'>Estado del animal</Form.Label>
+                                    <FloatingLabel controlId="estado" >
                                         <Form.Select
                                             value={estado}
                                             onChange={(e) => setEstado(e.target.value)}
@@ -373,8 +387,8 @@ function Animal() {
                                     </FloatingLabel>
                                 </Col>
 
-                                {/* Sección de Inseminación */}
-                                <Col sm="12" md="6" lg="6">
+                                {/* Inseminación */}
+                                <Col sm="12" md="4" lg="4" className="large-checkbox">
                                     <Form.Check
                                         type="checkbox"
                                         id="inseminacion"
@@ -384,6 +398,17 @@ function Animal() {
                                     />
                                 </Col>
 
+                            </Row>
+                        </Form>
+                    </Card.Body>
+                </Card>
+
+                {/* Segundo cuadro verde - Historial de Enfermedades */}
+                <Card className="mt-3 green-card">
+                    <Card.Body>
+                        <Card.Title>Historial de Enfermedades</Card.Title>
+                        <Form className="mt-3" onSubmit={handleSubmit}>
+                            <Row className="g-3">
                                 {/* Sección de Enfermedades */}
                                 <Col sm="12">
                                     <h5>Historial de Enfermedades</h5>
@@ -417,7 +442,17 @@ function Animal() {
                                     ))}
                                     <Button variant="link" onClick={addEnfermedad}>Añadir Enfermedad</Button>
                                 </Col>
+                            </Row>
+                        </Form>
+                    </Card.Body>
+                </Card>
 
+                {/* Tercer cuadro verde - Productos Aplicados */}
+                <Card className="mt-3 green-card">
+                    <Card.Body>
+                        <Card.Title>Productos Aplicados</Card.Title>
+                        <Form className="mt-3" onSubmit={handleSubmit}>
+                            <Row className="g-3">
                                 {/* Sección de Productos (incluyendo tratamientos) */}
                                 <Col sm="12">
                                     <h5>Productos Aplicados</h5>
@@ -445,7 +480,6 @@ function Animal() {
                                                         value={producto.dosis}
                                                         onChange={(e) => handleProductoChange(index, 'dosis', e.target.value)}
                                                     />
-
                                                 </FloatingLabel>
                                             </Col>
                                             <Col sm="4">
@@ -469,7 +503,17 @@ function Animal() {
                                     ))}
                                     <Button variant="link" onClick={addProducto}>Añadir Producto</Button>
                                 </Col>
+                            </Row>
+                        </Form>
+                    </Card.Body>
+                </Card>
 
+                {/* Cuarto cuadro verde - Control de Baños */}
+                <Card className="mt-3 green-card">
+                    <Card.Body>
+                        <Card.Title>Control de Baños</Card.Title>
+                        <Form className="mt-3" onSubmit={handleSubmit}>
+                            <Row className="g-3">
                                 {/* Sección de Control de Baños */}
                                 <Col sm="12">
                                     <h5>Control de Baños</h5>
@@ -497,7 +541,17 @@ function Animal() {
                                     ))}
                                     <Button variant="link" onClick={addBano}>Añadir Control de Baño</Button>
                                 </Col>
+                            </Row>
+                        </Form>
+                    </Card.Body>
+                </Card>
 
+                {/* Quinto cuadro verde - Producción de Leche */}
+                <Card className="mt-3 green-card">
+                    <Card.Body>
+                        <Card.Title>Producción de Leche</Card.Title>
+                        <Form className="mt-3" onSubmit={handleSubmit}>
+                            <Row className="g-3">
                                 {/* Sección de Producción de Leche */}
                                 <Col sm="12">
                                     <h5>Producción de Leche</h5>
@@ -535,7 +589,17 @@ function Animal() {
                                     ))}
                                     <Button variant="link" onClick={addProduccionLeche}>Añadir Producción de Leche</Button>
                                 </Col>
+                            </Row>
+                        </Form>
+                    </Card.Body>
+                </Card>
 
+                {/* Sexto cuadro verde - Inseminaciones */}
+                <Card className="mt-3 green-card">
+                    <Card.Body>
+                        <Card.Title>Historial de Inseminaciones</Card.Title>
+                        <Form className="mt-3" onSubmit={handleSubmit}>
+                            <Row className="g-3">
                                 {/* Sección de Inseminaciones */}
                                 <Col sm="12">
                                     <h5>Historial de Inseminaciones</h5>
@@ -550,7 +614,6 @@ function Animal() {
                                                     />
                                                 </FloatingLabel>
                                             </Col>
-
                                             <Col sm="3">
                                                 <FloatingLabel controlId={`inseminacion-tipo-${index}`} label="Tipo de Inseminación">
                                                     <Form.Select
@@ -564,7 +627,6 @@ function Animal() {
                                                     </Form.Select>
                                                 </FloatingLabel>
                                             </Col>
-
                                             <Col sm="3">
                                                 <FloatingLabel controlId={`inseminacion-resultado-${index}`} label="Resultado">
                                                     <Form.Control
@@ -589,8 +651,17 @@ function Animal() {
                                     ))}
                                     <Button variant="link" onClick={addInseminacion}>Añadir Inseminación</Button>
                                 </Col>
+                            </Row>
+                        </Form>
+                    </Card.Body>
+                </Card>
 
-
+                {/* Séptimo cuadro verde - Estado Reproductivo */}
+                <Card className="mt-3 green-card">
+                    <Card.Body>
+                        <Card.Title>Estado Reproductivo</Card.Title>
+                        <Form className="mt-3" onSubmit={handleSubmit}>
+                            <Row className="g-3">
                                 {/* Campos del estado reproductivo para hembras */}
                                 {sexo === 'Hembra' && (
                                     <>
@@ -649,7 +720,6 @@ function Animal() {
                                     </>
                                 )}
 
-
                                 {sexo === 'Macho' && (
                                     <>
                                         <Col sm="12">
@@ -674,20 +744,22 @@ function Animal() {
                                         </Col>
                                     </>
                                 )}
-
                             </Row>
-                            {/* Botón para enviar el formulario */}
-                            <div className="center-button">
-                                <Button variant="primary" type="submit" className="mt-3 custom-button" size="lg">
-                                    Registrar Animal
-                                </Button>
-                            </div>
                         </Form>
                     </Card.Body>
                 </Card>
+
+                {/* Botón para enviar todos los formularios */}
+                <div className="center-button">
+                    <Button variant="primary" type="submit" className="mt-3 custom-button" size="lg" onClick={handleSubmit}>
+                        Registrar Animal
+                    </Button>
+                </div>
             </Container>
         </div>
     );
+
+
 }
 
 export default Animal; // Exporta el componente Animal para ser utilizado en otras partes de la aplicación.

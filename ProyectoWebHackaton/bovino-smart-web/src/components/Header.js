@@ -45,7 +45,7 @@ function Header() {
                             alt="BoVinoSmart Logo"
                             className="navbar-logo"
                         />
-                        BoVinoSmart
+                        BovinoSmart
                     </Navbar.Brand>
                     <Navbar.Toggle
                         aria-controls="basic-navbar-nav"
@@ -87,10 +87,7 @@ function Header() {
                                     </NavDropdown>
 
                                  
-                                    <Nav.Link as={Link} to="/GestionUsuarios" className="link-unstyled">
-                                        Gestionar usuarios
-                                    </Nav.Link>
-
+                           
                                     <Nav.Link as={Link} to="/ActivarLicencia" className="link-unstyled">
                                         Activacion Licencia
                                     </Nav.Link>
@@ -170,10 +167,7 @@ function Header() {
                                     </NavDropdown.Item>
                                 </NavDropdown>
                          
-                                <Nav.Link as={Link} to="/GestionUsuarios" className="link-unstyled">
-                                    Gestionar usuarios
-                                </Nav.Link>
-
+                            
 
                                 
                                 <Nav.Link as={Link} to="/Graficos" className="link-unstyled">

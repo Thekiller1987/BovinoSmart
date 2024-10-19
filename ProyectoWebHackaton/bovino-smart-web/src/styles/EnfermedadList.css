@@ -209,6 +209,7 @@
     font-size: 4em; /* Tamaño de la fuente */
     margin-top: 200px; /* Margen superior */
     -webkit-text-stroke: 0.5px #000000; /* Borde negro alrededor del texto */
+    white-space: nowrap; /* Mantener el texto en una sola línea */
 }
 
 
@@ -285,13 +286,30 @@
     box-sizing: border-box;
     margin-bottom: 20px; /* Añadir espacio inferior para dar separación */
 }
-
+.enfermedad-info-boxImage{
+    background-color: #E0E0E0; /* Fondo gris claro */
+    color: #333; /* Texto oscuro */
+    border: 4px solid #3E7B31; /* Borde verde */
+    border-radius: 20px;
+    padding: 20px; /* Añadir más espacio interno para el texto */
+    height: 100%;
+    width: 110%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    overflow: auto; /* Permitir scroll si el contenido se desborda */
+    text-align: justify; /* Justificar el texto para mejorar la lectura */
+    -ms-overflow-style: none;  /* Para ocultar la barra de desplazamiento en IE y Edge */
+    scrollbar-width: none; /* Para ocultar la barra de desplazamiento en Firefox */
+    margin-bottom: 35px; /* Espacio entre cada caja */
+    margin-right: 30px
+ 
+}
 
 /* Título de cada sección */
 .enfermedad-title {
     font-size: 1.2em;
     color: #000000; /* Negro */
     margin-bottom: 10px;
+    white-space: nowrap;
 }
 
 /* Caja para la información dentro del modal */
@@ -302,11 +320,14 @@
     border-radius: 20px;
     padding: 20px; /* Añadir más espacio interno para el texto */
     height: 100%;
+    width: 110%;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     overflow: auto; /* Permitir scroll si el contenido se desborda */
     text-align: justify; /* Justificar el texto para mejorar la lectura */
     -ms-overflow-style: none;  /* Para ocultar la barra de desplazamiento en IE y Edge */
     scrollbar-width: none; /* Para ocultar la barra de desplazamiento en Firefox */
+    margin-bottom: 35px; /* Espacio entre cada caja */
+ 
 }
 
 

@@ -1,4 +1,5 @@
-/* Definición de variables CSS para facilitar la gestión de colores, fuentes y estilos generales */
+
+@import url('https://fonts.googleapis.com/css2?family=Junge&family=Kaisei+Decol&display=swap');/* Definición de variables CSS para facilitar la gestión de colores, fuentes y estilos generales */
 :root {
     --primary-color: #4caf50; /* Color principal, usado para botones y otros elementos destacados */
     --secondary-color: #ffffff; /* Color secundario, usado para textos y fondos secundarios */
@@ -14,14 +15,9 @@
     --line-color: #e0e0e0; /* Color de las líneas de separación */
 }
 
-/* Estilos generales para la lista de animales */
-.body-animal-list {
-    background-color: var(--background-color);
-    font-family: var(--font-family);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-}
+
+
+
 
 /* Estilo para el encabezado de la lista de animales */
 .header-animal-list {
@@ -189,7 +185,7 @@
 
 .detail-section p {
     margin: 5px 0;
-    font-size: 1.2em; /* Tamaño de texto ajustado */
+    font-size: 1.9em; /* Tamaño de texto ajustado */
 }
 .detail-section .line {
     border-top: 1px solid var(--line-color);
@@ -370,10 +366,11 @@
 /* Contenedor de botones */
 .buttons-container {
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     gap: 10px;
     margin-top: 20px;
+    margin-left: 29px;
 }
 
 /* Contenedor de búsqueda */
@@ -385,7 +382,7 @@
     gap: 10px;
     padding: 10px;
     background: var(--primary-color);
-    border-radius: var(--border-radius);
+
     box-shadow: var(--box-shadow);
 }
 
@@ -490,3 +487,82 @@
 }
 
 
+/* Ajustes para las secciones de detalle */
+.detail-section {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9; /* Fondo ligeramente gris para separar visualmente las secciones */
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* Título de cada sección */
+.detail-section h4 {
+    font-size: 1.4em;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+/* Ajuste para los atributos y valores */
+.detail-section .attribute {
+    font-weight: bold;
+    color: var(--text-color);
+    display: inline-block;
+    width: 160px;
+}
+
+.detail-section .value {
+    color: var(--text-color);
+    display: inline-block;
+}
+
+/* Ajuste para el espaciado entre líneas */
+.detail-section p {
+    margin: 8px 0;
+    font-size: 1.1em; /* Ajuste del tamaño del texto para mayor legibilidad */
+}
+
+/* Mejora de la animación de parpadeo para los estados especiales */
+.card-animal-list.sick-animal {
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+
+/* Añadir estilos para la imagen decorativa */
+.decorative-image-5 {
+    position: fixed;
+    bottom: -45vh; /* Ajusta la posición superior */
+    right: 60vw; /* Ajusta la posición derecha */
+    z-index: 1000; /* Asegura que la imagen esté detrás de otros elementos */
+    background-image: url('../diseño/Manchas2.png');
+    background-size: contain; /* Ajusta la imagen para que no se deforme */
+    background-repeat: no-repeat;
+    width: 43vw; /* Ajusta el tamaño de manera relativa al ancho de la pantalla */
+    height: 43vw;
+    z-index: -1;
+
+}
+
+
+/* Añadir estilos para la imagen decorativa */
+.decorative-image-6 {
+    position: absolute;
+    top: -31vh; /* Ajusta la posición superior */
+    right: 0vw; /* Ajusta la posición derecha */
+    z-index: 1; /* Asegura que la imagen esté detrás de otros elementos */
+    background-image: url('../diseño/Manchas2.png');
+    background-size: contain; /* Ajusta la imagen para que no se deforme */
+    background-repeat: no-repeat;
+    width: 30vw; /* Ajusta el tamaño de manera relativa al ancho de la pantalla */
+    height: 30vw;
+    z-index: 1;
+    transform: scaleX(-1) scaleY(-1); /* Voltea la imagen vertical y horizontalmente */
+}

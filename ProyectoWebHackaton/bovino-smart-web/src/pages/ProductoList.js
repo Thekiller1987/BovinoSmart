@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form, Row, Col, FloatingLabel, Container, Card, Table } from 'react-bootstrap';
+import { Button, Form, Container, Card } from 'react-bootstrap';
 import Header from '../components/Header';
 import '../styles/ProductoList.css';
+import SearchIcon from '../Iconos/fi-rr-search.png';
+import CustomModal from '../components/CustomModal';
 
 function ProductoList() {
-    // Estados
-    const [productos, setProductos] = useState([]); // Lista de productos
-    const [editProducto, setEditProducto] = useState(null); // Producto en edición
-    const [showEditModal, setShowEditModal] = useState(false); // Mostrar/ocultar modal de edición
-    const [error, setError] = useState(null); // Manejo de errores
-    const [searchQuery, setSearchQuery] = useState(''); // Consulta de búsqueda
+    const [productos, setProductos] = useState([]);
+    const [error, setError] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [selectedProducto, setSelectedProducto] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editableProducto, setEditableProducto] = useState(null);
 
-    // Función para obtener los productos del servidor
     const fetchProductos = async () => {
         try {
             const response = await fetch('http://localhost:5000/crud/productos');
@@ -26,60 +28,64 @@ function ProductoList() {
         }
     };
 
-    // useEffect para cargar los productos al montar el componente
     useEffect(() => {
         fetchProductos();
     }, []);
 
-    // Maneja el clic de edición
-    const handleEditClick = (producto) => {
-        // Convierte el valor de 'es_tratamiento' a booleano
-        setEditProducto({
-            ...producto,
-            es_tratamiento: producto.es_tratamiento === 1 || producto.es_tratamiento === true 
-        });
-        setShowEditModal(true); // Muestra el modal de edición
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
     };
 
-    // Cierra el modal de edición
-    const handleCloseEditModal = () => {
-        setShowEditModal(false);
+    const handleShowModal = (producto) => {
+        setSelectedProducto(producto);
+        setEditableProducto(producto);
+        setShowModal(true);
+        setIsEditing(false);
     };
 
-    // Maneja la eliminación de un producto
-    const handleDeleteClick = async (id) => {
-        if (window.confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-            try {
-                const response = await fetch(`http://localhost:5000/crud/productos/${id}`, {
-                    method: 'DELETE',
-                });
-                if (response.ok) {
-                    setProductos(productos.filter(prod => prod.idProductos !== id)); // Elimina el producto de la lista local
-                } else {
-                    throw new Error('Error al eliminar el producto');
-                }
-            } catch (error) {
-                setError(error.message);
-            }
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setEditableProducto((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            setEditableProducto((prev) => ({ ...prev, imagen: reader.result }));
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
         }
     };
 
-    // Maneja la actualización de un producto
-    const handleUpdateProducto = async (e) => {
-        e.preventDefault();
+    const handleUpdateClick = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/crud/productos/${editProducto.idProductos}`, {
+            const response = await fetch(`http://localhost:5000/crud/productos/${editableProducto.idProductos}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(editProducto),
+                body: JSON.stringify(editableProducto),
             });
+
             if (response.ok) {
-                const updatedProducto = await response.json();
-                setProductos(productos.map(prod => prod.idProductos === updatedProducto.idProductos ? updatedProducto : prod));
-                setShowEditModal(false);
-                await fetchProductos();
+                setProductos((prev) =>
+                    prev.map((producto) =>
+                        producto.idProductos === editableProducto.idProductos ? editableProducto : producto
+                    )
+                );
+                setIsEditing(false);
             } else {
                 throw new Error('Error al actualizar el producto');
             }
@@ -88,206 +94,168 @@ function ProductoList() {
         }
     };
 
-    // Maneja los cambios en los campos del formulario
-    const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setEditProducto(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
-    };
+    const handleDeleteClick = async () => {
+        if (!editableProducto) return;
 
-    // Maneja los cambios en la imagen
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = () => {
-            setEditProducto(prev => ({ ...prev, imagen: reader.result }));
-        };
-        if (file) {
-            reader.readAsDataURL(file);
+        try {
+            const response = await fetch(`http://localhost:5000/crud/productos/${editableProducto.idProductos}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                setProductos((prev) =>
+                    prev.filter((producto) => producto.idProductos !== editableProducto.idProductos)
+                );
+                setShowModal(false);
+            } else {
+                throw new Error('Error al eliminar el producto');
+            }
+        } catch (error) {
+            setError(error.message);
         }
     };
 
-    // Maneja los cambios en la barra de búsqueda
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
-    // Filtra los productos según la consulta de búsqueda
-    const filteredProductos = productos.filter(producto =>
+    const filteredProductos = productos.filter((producto) =>
         producto.nombre.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
         <div className="body-producto-list">
+            <div className="decorative-image-2"></div>
+            <div className="decorative-image-3"></div>
             <Header className="header-producto-list" />
+
             <Container>
-                <Card className="mt-3 table-container">
-                    <Card.Body>
-                        <Card.Title>Listado de Productos</Card.Title>
-                        <div className="search-container">
+                <div className="search-containers">
+                    <div className="search-input-wrapper">
+                        <img src={SearchIcon} alt="Buscar" className="search-icon" />
+                        <Form.Control
+                            type="text"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            className="search-input"
+                        />
+                    </div>
+                    <Button variant="primary" className="btn-primary">Buscar</Button>
+                </div>
+
+                <div className="productos-cards-container">
+                    {filteredProductos.length > 0 ? (
+                        filteredProductos.map((producto) => (
+                            <Card key={producto.idProductos} className="producto-card" onClick={() => handleShowModal(producto)}>
+                                <Card.Body>
+                                    <Card.Title>{producto.nombre}</Card.Title>
+                                    <Card.Img variant="bottom" src={producto.imagen} alt={producto.nombre} />
+                                </Card.Body>
+                            </Card>
+                        ))
+                    ) : (
+                        <p className="no-productos">No se encontraron productos.</p>
+                    )}
+                </div>
+
+                {/* Modal para mostrar detalles del producto */}
+                <CustomModal show={showModal} onClose={handleCloseModal}>
+                    <div className="titulo-producto">
+                        {isEditing ? (
                             <Form.Control
                                 type="text"
-                                placeholder="Buscar productos"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
+                                name="nombre"
+                                value={editableProducto?.nombre}
+                                onChange={handleInputChange}
                             />
-                            <Button variant="primary" className="btn-primary">Buscar</Button>
-                        </div>
-                        <div className="table-responsive">
-                            <Table striped bordered hover className="mt-3">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Tipo</th>
-                                        <th>Dosis Recomendada</th>
-                                        <th>Frecuencia de Aplicación</th>
-                                        <th>Es Tratamiento</th>
-                                        <th>Motivo</th>
-                                        <th>Notas</th>
-                                        <th>Imagen</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredProductos.map(producto => (
-                                        <tr key={producto.idProductos}>
-                                            <td>{producto.idProductos}</td>
-                                            <td>{producto.nombre}</td>
-                                            <td>{producto.tipo}</td>
-                                            <td>{producto.dosis_recomendada}</td>
-                                            <td>{producto.frecuencia_aplicacion}</td>
-                                            <td>{producto.es_tratamiento ? 'Sí' : 'No'}</td> {/* Mostrar "Sí" en lugar de 1 */}
-                                            <td>{producto.motivo}</td>
-                                            <td>{producto.notas}</td>
-                                            <td>
-                                                {producto.imagen && (
-                                                    <img src={producto.imagen} alt="Producto" style={{ width: '50px', height: '50px' }} />
-                                                )}
-                                            </td>
-                                            <td className="button-container">
-                                                <Button variant="warning" onClick={() => handleEditClick(producto)}>Editar</Button>
-                                                <Button variant="danger" onClick={() => handleDeleteClick(producto.idProductos)}>Eliminar</Button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                        </div>
-                        {error && <div className="alert alert-danger mt-3">{error}</div>}
-                    </Card.Body>
-                </Card>
-            </Container>
+                        ) : (
+                            <h4>{editableProducto?.nombre}</h4>
+                        )}
+                    </div>
 
-            <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
-                <Modal.Header closeButton className="modal-header">
-                    <Modal.Title>Editar Producto</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={handleUpdateProducto}>
-                        <Row className="g-3">
-                            <Col sm="12">
-                                <FloatingLabel controlId="nombre" label="Nombre">
+                    <div className="producto-modal-section-container">
+                        <div className="producto-modal-section">
+                            <h5 className="producto-title">Tipo:</h5>
+                            <div className="producto-info-box">
+                                {isEditing ? (
                                     <Form.Control
                                         type="text"
-                                        placeholder="Ingrese el nombre del producto"
-                                        name="nombre"
-                                        value={editProducto?.nombre || ''}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm="12">
-                                <FloatingLabel controlId="tipo" label="Tipo">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Ingrese el tipo del producto"
                                         name="tipo"
-                                        value={editProducto?.tipo || ''}
+                                        value={editableProducto?.tipo}
                                         onChange={handleInputChange}
-                                        required
                                     />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm="12">
-                                <FloatingLabel controlId="dosis_recomendada" label="Dosis Recomendada">
+                                ) : (
+                                    <p>{editableProducto?.tipo}</p>
+                                )}
+                            </div>
+                        </div>
+                        <div className="producto-modal-section">
+                            <h5 className="producto-title">Dosis Recomendada:</h5>
+                            <div className="producto-info-box">
+                                {isEditing ? (
                                     <Form.Control
                                         type="text"
-                                        placeholder="Ingrese la dosis recomendada"
                                         name="dosis_recomendada"
-                                        value={editProducto?.dosis_recomendada || ''}
+                                        value={editableProducto?.dosis_recomendada}
                                         onChange={handleInputChange}
                                     />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm="12">
-                                <FloatingLabel controlId="frecuencia_aplicacion" label="Frecuencia de Aplicación">
+                                ) : (
+                                    <p>{editableProducto?.dosis_recomendada}</p>
+                                )}
+                            </div>
+                        </div>
+                        <div className="producto-modal-section">
+                            <h5 className="producto-title">Frecuencia de Aplicación:</h5>
+                            <div className="producto-info-box">
+                                {isEditing ? (
                                     <Form.Control
                                         type="text"
-                                        placeholder="Ingrese la frecuencia de aplicación"
                                         name="frecuencia_aplicacion"
-                                        value={editProducto?.frecuencia_aplicacion || ''}
+                                        value={editableProducto?.frecuencia_aplicacion}
                                         onChange={handleInputChange}
                                     />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm="12">
-                                <Form.Check
-                                    type="checkbox"
-                                    id="es_tratamiento"
-                                    label="¿Es un tratamiento?"
-                                    name="es_tratamiento"
-                                    checked={editProducto?.es_tratamiento || false}
-                                    onChange={handleInputChange}
-                                />
-                            </Col>
-                            {editProducto?.es_tratamiento && (
-                                <Col sm="12">
-                                    <FloatingLabel controlId="motivo" label="Motivo del Tratamiento">
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Ingrese el motivo del tratamiento"
-                                            name="motivo"
-                                            value={editProducto?.motivo || ''}
-                                            onChange={handleInputChange}
-                                        />
-                                    </FloatingLabel>
-                                </Col>
-                            )}
-                            <Col sm="12">
-                                <FloatingLabel controlId="notas" label="Notas">
-                                    <Form.Control
-                                        as="textarea"
-                                        placeholder="Ingrese notas adicionales"
-                                        name="notas"
-                                        value={editProducto?.notas || ''}
-                                        onChange={handleInputChange}
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm="12">
-                                <Form.Group controlId="imagen" className="mb-3">
-                                    <Form.Label>Imagen del Producto</Form.Label>
+                                ) : (
+                                    <p>{editableProducto?.frecuencia_aplicacion}</p>
+                                )}
+                            </div>
+                        </div>
+                        {isEditing && (
+                            <div className="producto-modal-section">
+                                <h5 className="producto-title">Imagen:</h5>
+                                <div className="producto-info-box">
                                     <Form.Control
                                         type="file"
-                                        accept=".jpg, .png, .jpeg"
+                                        accept=".jpg, .jpeg, .png"
                                         onChange={handleImageChange}
                                     />
-                                </Form.Group>
-                                {editProducto?.imagen && (
-                                    <img src={editProducto.imagen} alt="Producto" style={{ width: '100px', height: '100px' }} />
-                                )}
-                            </Col>
-                        </Row>
-                        <Button variant="primary" type="submit" className="mt-3">
-                            Actualizar
-                        </Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
+                                    {editableProducto?.imagen && (
+                                        <img
+                                            src={editableProducto.imagen}
+                                            alt="Vista previa"
+                                            style={{ width: '100px', height: '100px', marginTop: '10px' }}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <div className="modal-buttons-container">
+    {isEditing ? (
+        <>
+            <Button className="btn-update" onClick={handleUpdateClick}>Actualizar</Button>
+            <Button variant="danger" className="btn-delete" onClick={handleDeleteClick}>Eliminar</Button>
+        </>
+    ) : (
+        <>
+            <Button className="btn-edit" onClick={handleEditClick}>Editar</Button>
+            <Button variant="danger" className="btn-delete" onClick={handleDeleteClick}>Eliminar</Button>
+        </>
+    )}
+</div>
+
+                </CustomModal>
+
+                {error && <div className="alert alert-danger mt-3">{error}</div>}
+            </Container>
         </div>
     );
 }
