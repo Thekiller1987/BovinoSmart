@@ -162,19 +162,6 @@ class BoVinoSmartDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
 
         db?.execSQL(
             """
-            CREATE TABLE IF NOT EXISTS Control_Vacunacion (
-                idControlVacunacion INTEGER PRIMARY KEY AUTOINCREMENT,
-                idAnimal INTEGER,
-                vacuna TEXT,
-                fecha DATE,
-                dosis REAL,
-                FOREIGN KEY (idAnimal) REFERENCES Animales(idAnimal)
-            );
-            """
-        )
-
-        db?.execSQL(
-            """
             CREATE TABLE IF NOT EXISTS Estado_Reproductivo (
                 idEstadoReproductivo INTEGER PRIMARY KEY AUTOINCREMENT,
                 idAnimal INTEGER,

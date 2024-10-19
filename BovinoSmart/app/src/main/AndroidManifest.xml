@@ -102,6 +102,7 @@
         <!-- Actividad de inseminacion-->
         <activity
             android:name=".inseminacion.GestionInseminacionesActivity"
+
             android:exported="false"
             android:label="Inseminacion"
             android:screenOrientation="portrait" />
