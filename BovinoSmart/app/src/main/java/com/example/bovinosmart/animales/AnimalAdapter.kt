@@ -5,47 +5,71 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bovinosmart.R
 
 class AnimalAdapter(
-    private val animales: List<Animal>, // Lista de animales
+    private var animales: List<Animal>, // Lista de animales
     private val onEdit: (Animal) -> Unit, // Función para manejar la edición
     private val onDelete: (Animal) -> Unit // Función para manejar la eliminación
 ) : RecyclerView.Adapter<AnimalAdapter.AnimalViewHolder>() {
 
-    // Clase interna para el ViewHolder
+    // ViewHolder para la vista de cada animal
     inner class AnimalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nombreTextView: TextView = itemView.findViewById(R.id.textViewNombreAnimal)
-        val sexoTextView: TextView = itemView.findViewById(R.id.textViewSexoAnimal)
         val imagenImageView: ImageView = itemView.findViewById(R.id.imageViewAnimalItem)
-        val editButton: ImageButton = itemView.findViewById(R.id.editButton)
-        val deleteButton: ImageButton = itemView.findViewById(R.id.deleteButton)
 
         // Función para enlazar el animal con los componentes de la vista
         fun bind(animal: Animal) {
             nombreTextView.text = animal.nombre
-            sexoTextView.text = animal.sexo
-            // Decodificar la imagen Base64 y establecerla en el ImageView
-            val imageBytes = Base64.decode(animal.imagen, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-            imagenImageView.setImageBitmap(bitmap)
 
-            // Configurar los botones de editar y eliminar
-            editButton.setOnClickListener {
-                onEdit(animal) // Ejecutar la función de edición cuando se pulsa el botón de editar
+            // Verifica si la imagen está disponible en Base64
+            if (animal.imagen.isNotEmpty()) {
+                // Decodifica la imagen Base64 y la establece en el ImageView
+                val imageBytes = Base64.decode(animal.imagen, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                imagenImageView.setImageBitmap(bitmap)
+            } else {
+                // Si no hay imagen, muestra un fondo gris o una imagen por defecto
+                imagenImageView.setImageResource(R.drawable.ic_upload)
             }
 
-            deleteButton.setOnClickListener {
-                onDelete(animal) // Ejecutar la función de eliminación cuando se pulsa el botón de eliminar
+            // Clic en el nombre o en la imagen para editar
+            nombreTextView.setOnClickListener {
+                onEdit(animal) // Ejecuta la función de edición
+            }
+
+            imagenImageView.setOnClickListener {
+                onEdit(animal) // Ejecuta la función de edición
+            }
+
+            // Clic largo en el nombre o en la imagen para eliminar
+            nombreTextView.setOnLongClickListener {
+                onDelete(animal) // Ejecuta la función de eliminación
+                true
+            }
+
+            imagenImageView.setOnLongClickListener {
+                onDelete(animal) // Ejecuta la función de eliminación
+                true
+            }
+
+            // Clic en todo el itemView para editar
+            itemView.setOnClickListener {
+                onEdit(animal) // Ejecuta la función de edición
+            }
+
+            // Clic largo en todo el itemView para eliminar
+            itemView.setOnLongClickListener {
+                onDelete(animal) // Ejecuta la función de eliminación
+                true
             }
         }
     }
 
-    // Inflar la vista para cada elemento del RecyclerView
+    // Inflar la vista de cada elemento del RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_animal, parent, false)
@@ -59,4 +83,10 @@ class AnimalAdapter(
 
     // Retornar el número total de elementos
     override fun getItemCount() = animales.size
+
+    // Función para actualizar la lista de animales y notificar los cambios
+    fun updateList(newAnimales: List<Animal>) {
+        animales = newAnimales
+        notifyDataSetChanged()
+    }
 }

@@ -3,76 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/black"
+    android:clickable="true"
+    android:focusable="true">
 
+    <!-- Borde verde oscuro alrededor del CardView -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/textViewNombreAnimal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombre"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
-            android:id="@+id/textViewSexoAnimal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sexo"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:id="@+id/textViewRazaAnimal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Raza"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:id="@+id/textViewPesoActual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Peso Actual"
-            android:textSize="14sp"/>
-
-        <ImageView
-            android:id="@+id/imageViewAnimalItem"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:background="@android:color/darker_gray"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/border_green_dark"
+        android:padding="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:gravity="end">
+            android:orientation="vertical"
+            android:padding="8dp">
 
-            <ImageButton
-                android:id="@+id/editButton"
+            <TextView
+                android:id="@+id/textViewNombreAnimal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_edit"
-                android:contentDescription="Editar Animal"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:text="Nombre del Animal"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/black" />
 
-            <ImageButton
-                android:id="@+id/deleteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_delete"
-                android:contentDescription="Eliminar Animal"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_marginStart="8dp" />
+            <ImageView
+                android:id="@+id/imageViewAnimalItem"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:background="@android:color/darker_gray"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

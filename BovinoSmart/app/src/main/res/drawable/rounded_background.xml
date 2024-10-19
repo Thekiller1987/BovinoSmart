@@ -1,13 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/rounded_background.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:radius="16dp" />
-    <solid android:color="#FFFFFF" />
-    <stroke
-        android:width="2dp"
-        android:color="#CCCCCC" />
-    <padding
-        android:left="8dp"
-        android:top="8dp"
-        android:right="8dp"
-        android:bottom="8dp" />
+    <solid android:color="#A8D08D"/> <!-- Color de fondo verde claro -->
+    <corners android:radius="16dp"/> <!-- Bordes redondeados -->
+    <stroke android:width="2dp" android:color="#587A83"/> <!-- Borde de color más oscuro -->
 </shape>

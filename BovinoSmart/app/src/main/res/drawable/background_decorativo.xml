@@ -1,4 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- background_decorativo.xml en res/drawable/ -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-</selector>
+    <!-- Capa para el fondo blanco principal -->
+    <item android:drawable="@android:color/white" />
+
+    <!-- Capa superior con la forma ondulada -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#5A7683" />
+            <pathData
+                android:pathData="M0,0 L1000,0 C750,150 250,150 0,0 Z"
+                android:fillColor="#5A7683"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"/>
+        </shape>
+    </item>
+
+    <!-- Capa decorativa en la esquina superior derecha -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#66A265" />
+            <pathData
+                android:pathData="M0,0 L100,0 C500,200 400,100 0,0 Z"
+                android:fillColor="#66A265"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|right"/>
+        </shape>
+    </item>
+
+    <!-- Capa decorativa en la esquina inferior izquierda -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#66A265" />
+            <pathData
+                android:pathData="M0,800 L300,800 C100,0 500,500 300,0 Z"
+                android:fillColor="#66A265"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|left"/>
+        </shape>
+    </item>
+</layer-list>
