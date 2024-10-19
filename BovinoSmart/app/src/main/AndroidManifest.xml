@@ -32,7 +32,7 @@
 
         <!-- Actividad de gestión de animales -->
         <activity
-            android:name=".animales.GestionAnimalesActivity"
+            android:name=".animal.GestionAnimalesActivity"
             android:exported="false"
             android:label="Gestión de Animales"
             android:screenOrientation="portrait" />

@@ -8,12 +8,12 @@
     <string name="dummy_content">CONTENIDO\nPRUEBA</string>
 
     <!-- Valores adicionales para el Spinner de sexo de los animales -->
-    <string-array name="sexos">
+    <string-array name="sexoanimal">
         <item>Vaca</item>
         <item>Toro</item>
     </string-array>
 
-
+    <!-- Valores para el Spinner de calidad -->
     <string-array name="calidad_array">
         <item>1</item>
         <item>2</item>
@@ -22,10 +22,7 @@
         <item>5</item>
     </string-array>
 
-
-
-        <string name="seleccione_animal">Seleccione un animal</string>
-
+    <string name="seleccione_animal">Seleccione un animal</string>
 
     <!-- Otros valores comunes -->
     <string name="nombre_animal">Nombre del animal</string>

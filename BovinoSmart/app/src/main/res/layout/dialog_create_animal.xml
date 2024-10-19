@@ -1,26 +1,29 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="#A8D08D">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp"
         android:background="@drawable/rounded_background"
         android:layout_gravity="center_horizontal">
 
         <ImageView
-            android:id="@+id/imageViewAnimal"
+            android:id="@+id/img_animal"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_upload"
             android:background="@drawable/rounded_image_background"
             android:padding="16dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Seleccionar Imagen" />
 
         <TextView
             android:layout_width="match_parent"
@@ -31,7 +34,7 @@
             android:layout_marginTop="8dp" />
 
         <EditText
-            android:id="@+id/editTextNombreAnimal"
+            android:id="@+id/edit_nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nombre del Animal"
@@ -43,48 +46,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Género:"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp" />
-
-        <Spinner
-            android:id="@+id/spinnerSexoAnimal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_spinner_background"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Código Único:"
+            android:text="Código ID:"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp" />
 
         <EditText
-            android:id="@+id/editTextCodigoIdVaca"
+            android:id="@+id/edit_codigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Código ID de la Vaca"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="8dp"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fecha de Nacimiento:"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp" />
-
-        <EditText
-            android:id="@+id/editTextFechaNacimiento"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Fecha de Nacimiento"
+            android:hint="Código ID"
             android:background="@drawable/rounded_edit_text"
             android:padding="8dp"
             android:layout_marginBottom="12dp" />
@@ -98,7 +69,7 @@
             android:layout_marginTop="8dp" />
 
         <EditText
-            android:id="@+id/editTextRazaAnimal"
+            android:id="@+id/edit_raza"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Raza"
@@ -109,16 +80,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Observaciones:"
+            android:text="Peso Nacimiento (kg):"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp" />
 
         <EditText
-            android:id="@+id/editTextObservaciones"
+            android:id="@+id/edit_peso_nacimiento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Observaciones"
+            android:hint="Peso Nacimiento (kg)"
             android:background="@drawable/rounded_edit_text"
             android:padding="8dp"
             android:layout_marginBottom="12dp" />
@@ -126,33 +97,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Peso al Nacimiento (kg):"
+            android:text="Peso Destete (kg):"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp" />
 
         <EditText
-            android:id="@+id/editTextPesoNacimiento"
+            android:id="@+id/edit_peso_destete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Peso al Nacimiento (kg)"
-            android:background="@drawable/rounded_edit_text"
-            android:padding="8dp"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Peso al Destete (kg):"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp" />
-
-        <EditText
-            android:id="@+id/editTextPesoDestete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Peso al Destete (kg)"
+            android:hint="Peso Destete (kg)"
             android:background="@drawable/rounded_edit_text"
             android:padding="8dp"
             android:layout_marginBottom="12dp" />
@@ -166,7 +120,7 @@
             android:layout_marginTop="8dp" />
 
         <EditText
-            android:id="@+id/editTextPesoActual"
+            android:id="@+id/edit_peso_actual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Peso Actual (kg)"
@@ -177,47 +131,205 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Estado (Vivo/Muerto):"
+            android:text="Fecha de Nacimiento:"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp" />
 
         <EditText
-            android:id="@+id/editTextEstado"
+            android:id="@+id/edit_fecha_nacimiento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Estado (Vivo/Muerto)"
+            android:hint="Fecha de Nacimiento"
+            android:focusable="false"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="8dp"
+            android:layout_marginBottom="12dp" />
+
+        <Spinner
+            android:id="@+id/spinner_sexo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/sexoanimal" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estado:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/edit_estado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Estado"
             android:background="@drawable/rounded_edit_text"
             android:padding="8dp"
             android:layout_marginBottom="12dp" />
 
         <CheckBox
-            android:id="@+id/checkBoxInseminacion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Inseminación"
-            android:layout_marginTop="8dp" />
-
-        <!-- Botón para guardar el animal -->
-        <Button
-            android:id="@+id/btnGuardarAnimal"
+            android:id="@+id/checkbox_inseminacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar Animal"
-            android:background="@drawable/rounded_button"
-            android:textColor="#ffffff"
-            android:layout_marginTop="24dp"
+            android:text="Inseminación" />
+
+        <EditText
+            android:id="@+id/edit_observaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Observaciones"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="8dp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Botón para capturar imagen -->
+        <Button
+            android:id="@+id/btn_imagen_animal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subir Imagen del Animal" />
+
+        <!-- Historial de Productos Aplicados -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Historial de Productos Aplicados"
             android:textStyle="bold" />
 
-        <!-- Nuevo botón para eliminar el animal -->
-        <Button
-            android:id="@+id/btnEliminarAnimal"
+        <Spinner
+            android:id="@+id/spinner_producto_aplicado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Eliminar Animal"
-            android:background="@drawable/rounded_button"
-            android:textColor="#ff0000"
-        android:layout_marginTop="12dp"
-        android:textStyle="bold" />
+            android:hint="Selecciona un Producto" />
+
+        <EditText
+            android:id="@+id/edit_dosis_producto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Dosis Aplicada" />
+
+        <EditText
+            android:id="@+id/edit_fecha_producto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fecha del Producto"
+            android:focusable="false" />
+
+        <Button
+            android:id="@+id/btn_agregar_producto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agregar Producto Aplicado" />
+
+        <!-- Lista de productos aplicados -->
+        <LinearLayout
+            android:id="@+id/layout_productos_aplicados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" />
+
+        <!-- Historial de Enfermedades -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Historial de Enfermedades"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner_enfermedad_aplicada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Selecciona una Enfermedad" />
+
+        <EditText
+            android:id="@+id/edit_fecha_enfermedad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fecha de Enfermedad"
+            android:focusable="false" />
+
+        <Button
+            android:id="@+id/btn_agregar_enfermedad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agregar Enfermedad" />
+
+        <!-- Lista de enfermedades -->
+        <LinearLayout
+            android:id="@+id/layout_enfermedades"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" />
+
+        <!-- Control de Baños -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Control de Baños"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner_producto_bano"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Selecciona un Producto de Baño" />
+
+        <EditText
+            android:id="@+id/edit_fecha_bano"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fecha de Baño"
+            android:focusable="false" />
+
+        <Button
+            android:id="@+id/btn_agregar_bano"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agregar Baño" />
+
+        <!-- Lista de baños -->
+        <LinearLayout
+            android:id="@+id/layout_banos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" />
+
+        <!-- Inseminación -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Inseminación"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edit_tipo_inseminacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tipo de Inseminación" />
+
+        <EditText
+            android:id="@+id/edit_resultado_inseminacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Resultado" />
+
+        <!-- Botones -->
+        <Button
+            android:id="@+id/btn_guardar_animal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar" />
+
+        <Button
+            android:id="@+id/btn_eliminar_animal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eliminar"
+            android:visibility="gone" />
     </LinearLayout>
 </ScrollView>

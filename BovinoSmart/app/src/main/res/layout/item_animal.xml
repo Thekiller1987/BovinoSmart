@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,38 +10,47 @@
     android:clickable="true"
     android:focusable="true">
 
-    <!-- Borde verde oscuro alrededor del CardView -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/border_green_dark"
-        android:padding="4dp">
+        android:padding="4dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-
+            android:padding="8dp"
+            android:orientation="vertical">
             <TextView
-                android:id="@+id/textViewNombreAnimal"
+                android:id="@+id/animal_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre del Animal"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:textColor="@android:color/black" />
 
+            <TextView
+                android:id="@+id/animal_raza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Raza del Animal"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginBottom="4dp" />
+
             <ImageView
-                android:id="@+id/imageViewAnimalItem"
+                android:id="@+id/animal_image"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
                 android:background="@android:color/darker_gray"
                 android:adjustViewBounds="true"
-                android:clickable="true"
-                android:focusable="true" />
+                android:layout_marginBottom="8dp" />
+
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

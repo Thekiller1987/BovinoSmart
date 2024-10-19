@@ -1,4 +1,4 @@
-package com.example.bovinosmart.animales
+package com.example.bovinosmart.animal
 
 data class Animal(
     val idAnimal: Int = 0,

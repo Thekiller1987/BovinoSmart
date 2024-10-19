@@ -150,8 +150,6 @@ class GestionProductos : AppCompatActivity() {
         alertDialog.show()
     }
 
-
-
     private fun showEditDialog(producto: Producto) {
         val builder = AlertDialog.Builder(this)
         dialogView = layoutInflater.inflate(R.layout.dialog_create_producto, null)
@@ -188,7 +186,7 @@ class GestionProductos : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_IMAGE_PICK)
         }
 
-        // Mostrar opciones de "Editar" y "Eliminar" al tocar el ítem
+        // Cambiar el texto del botón a "Editar"
         guardarButton?.text = "Editar"
         guardarButton?.setOnClickListener {
             val nombre = nombreInput?.text.toString()
@@ -213,28 +211,30 @@ class GestionProductos : AppCompatActivity() {
                 put("imagen", imageBase64 ?: producto.imagenBase64)
             }
 
-            // Actualizar el producto en la base de datos
+            // Actualizar en la base de datos
             db.update("Productos", values, "idProductos = ?", arrayOf(producto.id.toString()))
             loadProductosFromDatabase()
             alertDialog.dismiss()
             Toast.makeText(this, "Producto actualizado con éxito", Toast.LENGTH_SHORT).show()
         }
 
-        // Botón "Eliminar" creado programáticamente
-        val eliminarButton = Button(this)
-        eliminarButton.text = "Eliminar"
-        eliminarButton.setOnClickListener {
-            db.delete("Productos", "idProductos = ?", arrayOf(producto.id.toString()))
-            loadProductosFromDatabase()
-            alertDialog.dismiss()
-            Toast.makeText(this, "Producto eliminado con éxito", Toast.LENGTH_SHORT).show()
+        // Botón "Eliminar" creado programáticamente y solo visible en este diálogo
+        val eliminarButton = Button(this).apply {
+            text = "Eliminar"
+            setOnClickListener {
+                db.delete("Productos", "idProductos = ?", arrayOf(producto.id.toString()))
+                loadProductosFromDatabase()
+                alertDialog.dismiss()
+                Toast.makeText(this@GestionProductos, "Producto eliminado con éxito", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Agregar el botón "Eliminar" al layout del diálogo
-        (dialogView as? LinearLayout)?.addView(eliminarButton)
+        (dialogView?.findViewById<LinearLayout>(R.id.formContainer))?.addView(eliminarButton)
 
         alertDialog.show()
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

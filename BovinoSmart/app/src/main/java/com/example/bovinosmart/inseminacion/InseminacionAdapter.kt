@@ -3,7 +3,6 @@ package com.example.bovinosmart.inseminacion
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bovinosmart.R
 import com.example.bovinosmart.database.BoVinoSmartDBHelper
-import com.example.bovinosmart.animales.Animal
+import com.example.bovinosmart.animal.Animal
 
 class InseminacionAdapter(
     private val context: Context,

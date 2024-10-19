@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bovinosmart.R
-import com.example.bovinosmart.animales.Animal
+import com.example.bovinosmart.animal.Animal
 import com.example.bovinosmart.database.BoVinoSmartDBHelper
 import com.example.bovinosmart.produccion.ProduccionLeche
 

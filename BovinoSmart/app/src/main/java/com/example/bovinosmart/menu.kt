@@ -1,17 +1,16 @@
 package com.example.bovinosmart
 
-import com.example.bovinosmart.animales.GestionAnimalesActivity
+
+import com.example.bovinosmart.animal.GestionAnimalesActivity
 import com.example.bovinosmart.producto.GestionProductos
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.bovinosmart.Enfermedades.GestionEnfermedades
-import com.example.bovinosmart.inseminacion.GestionInseminacionesActivity
 
 
 class menu : AppCompatActivity() {

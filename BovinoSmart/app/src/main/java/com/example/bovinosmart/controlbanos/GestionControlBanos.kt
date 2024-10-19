@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bovinosmart.Banos.ControlBanoAdapter
 import com.example.bovinosmart.R
-import com.example.bovinosmart.animales.Animal
+import com.example.bovinosmart.animal.Animal
 import com.example.bovinosmart.database.BoVinoSmartDBHelper
 import com.example.bovinosmart.producto.Producto
 import java.util.*

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bovinosmart.R
-import com.example.bovinosmart.animales.Animal
+import com.example.bovinosmart.animal.Animal
 
 class ControlBanoAdapter(
     private val controlBanosList: List<ControlBano>,
